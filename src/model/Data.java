@@ -1,49 +1,48 @@
 package model;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileWriter;
-import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Map;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.enumerations.Role;
 
 public class Data {
 
+//	private static String pathPrefix = "";
+	private static String pathPrefix = "../webapps/";
+	
 	private static HashMap<String, User> users = null;
+	private static ObjectMapper obj = new ObjectMapper();
 	
 	public static void saveUsers () {
-		ObjectMapper obj = new ObjectMapper();
 		try {
-			String fileName = "../webapps/users.txt";
+//			String filePath = "../webapps/users.txt";
+			String filePath = pathPrefix + "users.txt";
 			System.out.println(obj.writeValueAsString(users));
 			
-			
-			
-			FileWriter fileWriter = new FileWriter(fileName);
+			FileWriter fileWriter = new FileWriter(filePath);
 		    PrintWriter printWriter = new PrintWriter(fileWriter);
-		    printWriter.print("Some String");
-		    printWriter.printf(obj.writeValueAsString(users));
+		    printWriter.print(obj.writeValueAsString(users));
 		    printWriter.close();
-		    
-		    
 		    
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static HashMap<String, User> getUsers () {	
 		if (users == null) {
 			try {
-				FileInputStream fin = new FileInputStream ("users.txt");
-				ObjectInputStream ois = new ObjectInputStream (fin);
-				users = (HashMap<String, User>) ois.readObject();
-				ois.close();
-				fin.close();
+				users = obj.readValue(new File(pathPrefix + "users.txt"), new TypeReference<Map<String, User>>(){});
+				System.out.println("Uspeo da ucitam: ");
+				for (User u : users.values()) {
+					System.out.println(u.getUsername());
+				}
 			} catch (Exception e) {
 				System.out.println("Error while loading users! ");
 			

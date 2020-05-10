@@ -1,6 +1,5 @@
 package services;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.ws.rs.Consumes;

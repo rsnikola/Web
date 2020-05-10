@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script src="scripts/login.js"></script>
+	<title>Login</title>
+</head>
+
+<body>
+	<p>Please log in:</p>
+	<br/>
+	<table >
+		<tr>
+			<td>
+				<p>Username:</p>
+			</td>
+			<td>
+				<input type="text" id="tb_user">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Password:</p>
+			</td>
+			<td>
+				<input type="password" id="tb_pass">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<button type="button" id="btn_login" class="buton-primary">Log in</button>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<button type="button" id="btn_logout" class="buton-primary" hidden="true">Log out</button>
+			</td>
+		</tr>
+	</table>
+	<!-- 
+		Ovce ubaciti nevidljivi tekst koji ce se prikazivati kada korisnik
+		omane pri loginu, umesto alert
+	-->
+	<br/>
+	<p>
+		New here? <a href="http://localhost:8080/NarsProj/register.html" id="link_register">Create an account!</a>
+	</p>
+	
+	
+</body>
+
+</html>
