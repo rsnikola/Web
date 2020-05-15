@@ -2,32 +2,75 @@
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
+		<link rel="stylesheet" href="css/welcome.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 		<script src="scripts/welcome.js"></script>
 	<title>Welcome</title>
 	</head>
 	
 	<body>
-		<h1>Hello!</h1>
-		<p id="p_welcome"></p>
-		<p id="p_data"></p>
+		<div class="topnav">
+			<div class="topnav-left">
+				<p id="p_data"></p>
+			</div>
+			<div class="topnav-right">
+				<table>
+					<tr>
+						<td rowspan="2">
+							<button id="b_logout" hidden="true">Log Out</button>
+						</td>
+						<td rowspan="2">
+							<button id="b_login">Log In</button>
+						</td>
+						<td>
+							<label id="l_username">Username: </label>
+						</td>
+						<td>
+							<input type="text" id="i_username"/>
+						</td>
+						<td hidden="true" id="w_username">
+							<p class="warning">Username can't be empty!</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label id="l_password">Password: </label>
+						</td>
+						<td>
+							<input type="password" id="i_password"/>
+						</td>
+						<td hidden="true" id="w_password">
+							<p class="warning">Password can't be empty!</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div> 
+		<div class="title-bar">
+			<h1>Rent a place!</h1>
+		</div>
+		<div class="content">
+			<table border="1px solid" id="t_apartments" width="100%">
+			
+				<tr id="h_apartments">
+					<th>ID</th>
+					<th>Tip</th>
+					<th>Broj soba</th>
+					<th>Broj gostiju</th>
+					<th>Lokacija</th>
+					<th>Domacin</th>
+				</tr>
+			
+			</table>
+		</div>
+	
+	
+		
+		<!-- p id="p_welcome"></p-->
+		
 		<!--button id="b_test">
 			Test button
 		</button-->
 		
-		<table id="t_login">
-			<tr>
-				<td><label>Username: </label></td>
-				<td><input type="text" id="i_username"/></td>
-			</tr>
-			<tr>
-				<td><label>Password: </label></td>
-				<td><input type="password" id="i_password"/></td>
-			</tr>
-			<tr>
-				<td><button id="b_login">Log In</button></td>
-				<td><button id="b_logout" hidden="true">Log Out</button></td>
-			</tr>
-		</table>
 	</body>
 </html>

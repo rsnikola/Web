@@ -1,0 +1,37 @@
+.topnav-center {
+	float: none;
+	position: absolute;
+	left: 40%;
+	top: 0%;
+}
+
+.topnav-right {
+  float: right;
+}
+
+.topnav-left {
+  float: left;
+}
+
+.content {
+	position: absolute;
+	top: 30%
+}
+
+.title-bar {
+	position: absolute;
+	top: 10%;
+	left: 40%;
+}
+
+.content {
+	position: absolute;
+	top: 30%;
+	right: 10%;
+	left: 10%;
+}
+
+.warning {
+	color: red;
+}
+

@@ -40,14 +40,29 @@ $(document).ready(function() {
 	
 	$('#b_login').click(function () {
 //		$('#p_welcome').text ("Form is submitted; Username: " + $('#i_username').val() + "; password: " + $('#i_password').val());
+		let username = $('#i_username').val();
+		let password = $('#i_password').val();
+		
+		$('#w_username').hide();
+		if (username.length < 3) {
+			$('#w_username').show();
+			return;
+		}
+
+		$('#w_password').hide();
+		if (password.length < 3) {
+			$('#w_password').show();
+			return;
+		}
+		
 		$.ajax({
 			type: "POST",
 			url: "http://localhost:8080/NarsProj/rest/users/login",
 			contentType : "application/json;charset=utf-8",
 			dataType : "json", 
 			data: JSON.stringify({
-				"username": $('#i_username').val(), 
-				"password": $('#i_password').val(),
+				"username": username, 
+				"password": password,
 			})
 		}).then (function (data) {	
 			role = data;
@@ -55,6 +70,10 @@ $(document).ready(function() {
 			if (role != undefined) {
 				$('#p_data').text("Login succeeded for " + role);
 				$('#b_login').hide();
+				$('#l_username').hide();
+				$('#i_username').hide();
+				$('#l_password').hide();
+				$('#i_password').hide();
 				$('#b_logout').show();
 			} else {
 				$('#p_data').text("Login failed");
@@ -71,9 +90,25 @@ $(document).ready(function() {
 		}).then (function (data) {	
 			$('#p_data').text("User logged out");
 			$('#b_login').show();
+			$('#l_username').show();
+			$('#i_username').show();
+			$('#l_password').show();
+			$('#i_password').show();
 			$('#b_logout').hide();
 			role = null;
 		});
 	});
+	
+	for (let i = 0; i < 10; ++i) {
+		$('#t_apartments').append(
+				'<tr>' +
+					'<td>Info</td>' +
+					'<td>Info</td>' +
+					'<td>Info</td>' +
+					'<td>Info</td>' +
+					'<td>Info</td>' +
+					'<td>Info</td>' +
+				'</tr>' );
+	}
 	
 });
