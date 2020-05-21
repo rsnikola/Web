@@ -5,7 +5,7 @@ public class Comment {
 	public Comment() {
 		
 	}
-	public Comment(Integer id, Integer guest, Integer apartment, String text, Integer rating) {
+	public Comment(Integer id, String guest, Integer apartment, String text, Integer rating) {
 		super();
 		this.id = id;
 		this.guest = guest;
@@ -14,7 +14,7 @@ public class Comment {
 		this.rating = rating;
 	}
 	private Integer id; 
-	private Integer guest;
+	private String guest;
 	private Integer apartment;
 	private String text; 
 	private Integer rating;
@@ -24,10 +24,10 @@ public class Comment {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getGuest() {
+	public String getGuest() {
 		return guest;
 	}
-	public void setGuest(Integer guest) {
+	public void setGuest(String guest) {
 		this.guest = guest;
 	}
 	public Integer getApartment() {

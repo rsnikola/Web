@@ -7,18 +7,20 @@ public class Address {
 	private String street; 
 	private String town; 
 	private String zipCode;
+	private String country;
 	
 	public Address() {
 
 	}
 
-	public Address(Integer id, int streetNumber, String street, String town, String zipCode) {
+	public Address(Integer id, int streetNumber, String street, String town, String zipCode, String country) {
 		super();
 		this.id = id;
 		this.streetNumber = streetNumber;
 		this.street = street;
 		this.town = town;
 		this.zipCode = zipCode;
+		this.country = country;
 	}
 	
 	public int getStreetNumber() {
@@ -61,6 +63,14 @@ public class Address {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public String getCountry () {
+		return country;
+	}
+	
+	public void setCountry (String country) {
+		this.country = country;
 	}
 	
 	

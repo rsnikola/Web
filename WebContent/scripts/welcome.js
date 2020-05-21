@@ -27,6 +27,15 @@ $(document).ready(function() {
 	}).then(function(data) {
 		role = data;
 	}).then (function () {	
+		if (role === 'HOST') {
+			window.location.href = 'host.html';
+		} 
+		if (role === 'ADMIN') {
+			window.location.href = 'admin.html';
+		}
+		if (role === 'GUEST') {
+			window.location.href = 'user.html';
+		}
 		if (role != null) {
 			$('#p_data').text("Hello, " + role);
 			$('#b_login').hide();
@@ -75,6 +84,15 @@ $(document).ready(function() {
 				$('#l_password').hide();
 				$('#i_password').hide();
 				$('#b_logout').show();
+				if (role === 'ADMIN') {
+					window.location.href = 'admin.html';
+				}
+				if (role === 'HOST') {
+					window.location.href = 'host.html';
+				}
+				if (role === 'GUEST') {
+					window.location.href = 'user.html';
+				}
 			} else {
 				$('#p_data').text("Login failed");
 			}
@@ -85,8 +103,8 @@ $(document).ready(function() {
 		$.ajax({
 			type: "POST",
 			url: "http://localhost:8080/NarsProj/rest/users/logout",
-			contentType : "application/json;charset=utf-8",
-			dataType : "json"
+			contentType: "application/json;charset=utf-8",
+			dataType: "json"
 		}).then (function (data) {	
 			$('#p_data').text("User logged out");
 			$('#b_login').show();
@@ -99,16 +117,36 @@ $(document).ready(function() {
 		});
 	});
 	
-	for (let i = 0; i < 10; ++i) {
-		$('#t_apartments').append(
-				'<tr>' +
-					'<td>Info</td>' +
-					'<td>Info</td>' +
-					'<td>Info</td>' +
-					'<td>Info</td>' +
-					'<td>Info</td>' +
-					'<td>Info</td>' +
-				'</tr>' );
-	}
+	
+	$.ajax({
+		type: "GET", 
+		url: "http://localhost:8080/NarsProj/rest/apartments/getAll", 
+		contentType: "application/json;charset=utf-8",
+		dataType: "json"
+	}).then (function (data) {
+		
+		for (let i = 0; i < data.length; ++i) {
+			$.ajax({
+				type: "GET", 
+				url: "http://localhost:8080/NarsProj/rest/apartments/getAddress/" + data[i].location, 
+				contentType: "application/json;charset=utf-8",
+				dataType: "json"
+			}).then (function (loc) {
+				data[i].location = loc.retVal;
+				$('#t_apartments').append(
+						'<tr>' +
+							'<td>' + data[i].id + '</td>' +
+							'<td>' + ((data[i].type === 'ROOM') ? ('Single room') : ('Full apartment')) + '</td>' +
+							'<td>' + data[i].rooms + '</td>' +
+							'<td>' + data[i].guests + '</td>' +
+							'<td>' + data[i].location + '</td>' +
+							'<td>' + data[i].host + '</td>' +
+							'<td> $' + data[i].pricePerNight + '</td>' +
+						'</tr>'
+					);
+			});
+		}
+	});
+
 	
 });
