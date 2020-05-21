@@ -15,17 +15,17 @@ public class User {
 	private boolean isMale; 
 	private Role role; 
 	
-	private ArrayList<Apartment> apartmentsToOffer = new ArrayList<Apartment> (); 
-	private ArrayList<Apartment> rentetAppartments = new ArrayList<Apartment> ();
-	private ArrayList<Reservation> reservations = new ArrayList<Reservation> ();
+	private ArrayList<Integer> apartmentsToOffer = new ArrayList<Integer> (); 
+	private ArrayList<Integer> rentetAppartments = new ArrayList<Integer> ();
+	private ArrayList<Integer> reservations = new ArrayList<Integer> ();
 
 	public User() {
 		super();
 	}
 
 	public User(String username, String password, String firstName, String lastName, boolean isMale, Role role,
-			ArrayList<Apartment> apartmentsToOffer, ArrayList<Apartment> rentetAppartments,
-			ArrayList<Reservation> reservations) {
+			ArrayList<Integer> apartmentsToOffer, ArrayList<Integer> rentetAppartments,
+			ArrayList<Integer> reservations) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -96,40 +96,28 @@ public class User {
 		this.role = role;
 	}
 
-	public ArrayList<Apartment> getApartmentsToOffer() {
+	public ArrayList<Integer> getApartmentsToOffer() {
 		return apartmentsToOffer;
 	}
 
-	public void setApartmentsToOffer(ArrayList<Apartment> apartmentsToOffer) {
+	public void setApartmentsToOffer(ArrayList<Integer> apartmentsToOffer) {
 		this.apartmentsToOffer = apartmentsToOffer;
 	}
 
-	public ArrayList<Apartment> getRentetAppartments() {
+	public ArrayList<Integer> getRentetAppartments() {
 		return rentetAppartments;
 	}
 
-	public void setRentetAppartments(ArrayList<Apartment> rentetAppartments) {
+	public void setRentetAppartments(ArrayList<Integer> rentetAppartments) {
 		this.rentetAppartments = rentetAppartments;
 	}
 
-	public ArrayList<Reservation> getReservations() {
+	public ArrayList<Integer> getReservations() {
 		return reservations;
 	}
 
-	public void setReservations(ArrayList<Reservation> reservations) {
+	public void setReservations(ArrayList<Integer> reservations) {
 		this.reservations = reservations;
 	}
 	
-	
-//	private String username;
-//	private String password;
-//	private String firstName; 
-//	private String lastName;
-//	private boolean isMale; 
-//	private Role role; 
-//	
-//	private ArrayList<Apartment> apartmentsToOffer = new ArrayList<Apartment> (); 
-//	private ArrayList<Apartment> rentetAppartments = new ArrayList<Apartment> ();
-//	private ArrayList<Reservation> reservations = new ArrayList<Reservation> ();
-
 }
