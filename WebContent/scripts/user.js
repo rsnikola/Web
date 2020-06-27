@@ -53,20 +53,17 @@ $(document).ready(function () {
 				);
 			});
 		}
-		
 	});
-	
-	
-//	alert ("Ja sam autistican");
-	
 });
 
+
 function funkcija (id) {
-	alert("Ja sam autistican: " + id);
 	$.ajax({
 		type: "GET", 
 		url: "http://localhost:8080/NarsProj/rest/apartments/" + id, 
 		contentType: "application/json;charset=utf-8",
 		dataType: "json"
+	}).then (function() {
+		window.location.replace("http://localhost:8080/NarsProj/apartment_details.html")
 	});
 }

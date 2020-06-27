@@ -122,9 +122,11 @@ public class ApartmentService {
 		// Ako sam obican korisnik, ne smem da vidim neaktivne apartmane
 		else if (Data.getUsers().get(request.getSession().getAttribute("username")).getRole() == Role.GUEST || (request.getSession().getAttribute("username") == null)) {
 			if (retVal.isActive()) {
+				request.getSession().setAttribute("selected_apartment", retVal);
 				return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
 			}
 			else {
+				request.getSession().setAttribute("selected_apartment", null);
 				return Response.status(401).build();
 			}
 		}
@@ -134,4 +136,17 @@ public class ApartmentService {
 		}
 	}
 	
-}
+	@GET
+	@Path("/selected")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getSelectedApartment (@Context HttpServletRequest request) {
+		Apartment retVal = (Apartment) request.getSession().getAttribute("selected_apartment");
+		if (retVal == null) {
+			return Response.status(404).build();
+		} else {
+			return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
+		}
+	}
+	
+} 
