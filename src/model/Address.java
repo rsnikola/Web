@@ -8,6 +8,7 @@ public class Address {
 	private String town; 
 	private String zipCode;
 	private String country;
+	private boolean deleted = false;
 	
 	public Address() {
 
@@ -72,6 +73,15 @@ public class Address {
 	public void setCountry (String country) {
 		this.country = country;
 	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+	
 	
 	
 }

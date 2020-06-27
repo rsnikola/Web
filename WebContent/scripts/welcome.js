@@ -128,7 +128,7 @@ $(document).ready(function() {
 		for (let i = 0; i < data.length; ++i) {
 			$.ajax({
 				type: "GET", 
-				url: "http://localhost:8080/NarsProj/rest/apartments/getAddress/" + data[i].location, 
+				url: "http://localhost:8080/NarsProj/rest/apartments/address/" + data[i].location, 
 				contentType: "application/json;charset=utf-8",
 				dataType: "json"
 			}).then (function (loc) {

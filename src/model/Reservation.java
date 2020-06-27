@@ -6,6 +6,17 @@ import model.enumerations.ReservationStatus;
 
 public class Reservation {
 
+
+	private Integer id;
+	private Integer apartment;
+	private String guest;
+	private Date start;
+	private Date end; 
+	private double price;
+	private String reservationMessage;
+	private ReservationStatus status;
+	private boolean deleted = false;
+	
 	public Reservation() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -22,14 +33,6 @@ public class Reservation {
 		this.reservationMessage = reservationMessage;
 		this.status = status;
 	}
-	private Integer id;
-	private Integer apartment;
-	private String guest;
-	private Date start;
-	private Date end; 
-	private double price;
-	private String reservationMessage;
-	private ReservationStatus status;
 	public Integer getId() {
 		return id;
 	}
@@ -78,5 +81,12 @@ public class Reservation {
 	public void setStatus(ReservationStatus status) {
 		this.status = status;
 	}
+	public boolean isDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+	
 	
 }

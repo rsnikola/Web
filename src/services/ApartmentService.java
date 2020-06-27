@@ -87,7 +87,7 @@ public class ApartmentService {
 	}
 	
 	@GET
-	@Path("/getAddress/{location_id}")
+	@Path("/address/{location_id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String getAddress (@PathParam("location_id") Integer location_id) {
@@ -97,6 +97,41 @@ public class ApartmentService {
 		String retVal = "{\"retVal\":\"" + address.getStreetNumber() + " " + address.getStreet() + ",  " + 
 					address.getZipCode() + " " + address.getTown() + ", " + address.getCountry() + "\"}";
 		return retVal;
+	}
+	
+	@GET
+	@Path("/{apartment_id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getAparment (@PathParam("apartment_id") Integer apartment_id, @Context HttpServletRequest request) {
+		System.out.println("Apartment service: getting apartment: " + apartment_id);
+		Apartment retVal = Data.getApartments().get(apartment_id);
+		// Ako nisam nasao apartman, ili ako je obrisan
+		if ((retVal == null) || (retVal.isDeleted())) {
+			return Response.status(404).build();
+		}
+		// Ako sam domacin, smem da vidim samo MOJE apartmane
+		else if (Data.getUsers().get(request.getSession().getAttribute("username")).getRole() == Role.HOST) {
+			if (retVal.getHost().equals(request.getSession().getAttribute("username"))) {
+				return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
+			}
+			else {
+				return Response.status(401).build();
+			}
+		}
+		// Ako sam obican korisnik, ne smem da vidim neaktivne apartmane
+		else if (Data.getUsers().get(request.getSession().getAttribute("username")).getRole() == Role.GUEST || (request.getSession().getAttribute("username") == null)) {
+			if (retVal.isActive()) {
+				return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
+			}
+			else {
+				return Response.status(401).build();
+			}
+		}
+		// Admin je svevideci
+		else {
+			return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
+		}
 	}
 	
 }

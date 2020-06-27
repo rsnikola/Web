@@ -2,6 +2,13 @@ package model;
 
 public class Comment {
 
+	private Integer id; 
+	private String guest;
+	private Integer apartment;
+	private String text; 
+	private Integer rating;
+	private boolean deleted = false; 
+
 	public Comment() {
 		
 	}
@@ -13,11 +20,6 @@ public class Comment {
 		this.text = text;
 		this.rating = rating;
 	}
-	private Integer id; 
-	private String guest;
-	private Integer apartment;
-	private String text; 
-	private Integer rating;
 	public Integer getId() {
 		return id;
 	}
@@ -48,5 +50,12 @@ public class Comment {
 	public void setRating(Integer rating) {
 		this.rating = rating;
 	}
+	public boolean isDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+	
 	
 }

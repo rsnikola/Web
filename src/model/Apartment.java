@@ -26,6 +26,7 @@ public class Apartment {
 	private Time checkinTime;
 	private Time checkoutTime;
 	private boolean active;
+	private boolean deleted = false;
 	
 	private ArrayList<Integer> amenities;
 	private ArrayList<Integer> reservations;
@@ -154,5 +155,14 @@ public class Apartment {
 	public void setReservations(ArrayList<Integer> reservations) {
 		this.reservations = reservations;
 	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+	
 	
 }

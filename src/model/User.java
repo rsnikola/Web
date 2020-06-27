@@ -14,6 +14,7 @@ public class User {
 	private String lastName;
 	private boolean isMale; 
 	private Role role; 
+	private boolean deleted = false;
 	
 	private ArrayList<Integer> apartmentsToOffer = new ArrayList<Integer> (); 
 	private ArrayList<Integer> rentetAppartments = new ArrayList<Integer> ();
@@ -119,5 +120,14 @@ public class User {
 	public void setReservations(ArrayList<Integer> reservations) {
 		this.reservations = reservations;
 	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+	
 	
 }

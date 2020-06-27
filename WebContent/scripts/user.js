@@ -36,24 +36,37 @@ $(document).ready(function () {
 		for (let i = 0; i < data.length; ++i) {
 			$.ajax({
 				type: "GET", 
-				url: "http://localhost:8080/NarsProj/rest/apartments/getAddress/" + data[i].location, 
+				url: "http://localhost:8080/NarsProj/rest/apartments/address/" + data[i].location, 
 				contentType: "application/json;charset=utf-8",
 				dataType: "json"
 			}).then (function (loc) {
 				data[i].location = loc.retVal;
 				$('#t_apartments').append(
-						'<tr>' +
-							'<td>' + data[i].id + '</td>' +
-							'<td>' + ((data[i].type === 'ROOM') ? ('Single room') : ('Full apartment')) + '</td>' +
-							'<td>' + data[i].rooms + '</td>' +
-							'<td>' + data[i].guests + '</td>' +
-							'<td>' + data[i].location + '</td>' +
-							'<td>' + data[i].host + '</td>' +
-							'<td> $' + data[i].pricePerNight + '</td>' +
-						'</tr>'
-					);
+						"<tr class='apartment_row' onclick='funkcija("+ data[i].id +")'>" +
+							"<td>" + ((data[i].type === "ROOM") ? ("Single room") : ("Full apartment")) + "</td>" +
+							"<td>" + data[i].rooms + "</td>" +
+							"<td>" + data[i].guests + "</td>" +
+							"<td>" + data[i].location + "</td>" +
+							"<td>" + data[i].host + "</td>" +
+							"<td> $" + data[i].pricePerNight + "</td>" +
+						"</tr>"
+				);
 			});
 		}
+		
 	});
 	
+	
+//	alert ("Ja sam autistican");
+	
 });
+
+function funkcija (id) {
+	alert("Ja sam autistican: " + id);
+	$.ajax({
+		type: "GET", 
+		url: "http://localhost:8080/NarsProj/rest/apartments/" + id, 
+		contentType: "application/json;charset=utf-8",
+		dataType: "json"
+	});
+}
