@@ -11,6 +11,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import model.Data;
+import model.enumerations.Role;
+
 public class Utility {
 
 	private static ObjectMapper obj = new ObjectMapper();
@@ -26,6 +29,15 @@ public class Utility {
 		String line = reader.readLine();
 		HashMap<String, String> retVal = jsonToMap(line);
 		return retVal;
+	}
+	
+	public static Role getRole (HttpServletRequest request) {
+		if (request.getSession().getAttribute("username") == null) {
+			return Role.UNREGISTERED;
+		}
+		else  {
+			return Data.getUsers().get(request.getSession().getAttribute("username")).getRole();
+		}
 	}
 	
 	

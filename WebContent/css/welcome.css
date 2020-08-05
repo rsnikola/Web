@@ -35,3 +35,11 @@
 	color: red;
 }
 
+
+#t_apartments, #t_apartments * {
+	border: 1px solid;
+}
+
+#t_apartments {
+	width: 100%;
+}

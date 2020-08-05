@@ -2,23 +2,6 @@ $(document).ready(function() {
 	
 	var role = null;
 	
-//	$('#p_welcome').text ("Welcoem to the store! =)");
-//	
-//	$('#b_test').click (function() {
-//		$('#p_welcome').text ("Rejoice! The button works! =D");
-//		
-//		$.ajax({
-//			type: "GET",
-//			url: "http://localhost:8080/NarsProj/rest/users/test", 
-//			contentType : "application/json;charset=utf-8",
-//			dataType : "json",
-//		}).then(function(data) {
-//			if (data != null) {
-//				$('#p_data').text (data.adi2.password + ", " + data.adi1.username);
-//			}
-//		})
-//	});
-	
 	$.ajax({
 		type: "GET",
 		url: "http://localhost:8080/NarsProj/rest/users/isLoggedIn",
@@ -27,19 +10,15 @@ $(document).ready(function() {
 	}).then(function(data) {
 		role = data;
 	}).then (function () {	
-		if (role === 'HOST') {
-			window.location.href = 'host.html';
-		} 
-		if (role === 'ADMIN') {
-			window.location.href = 'admin.html';
-		}
-		if (role === 'GUEST') {
-			window.location.href = 'user.html';
-		}
 		if (role != null) {
 			$('#p_data').text("Hello, " + role);
 			$('#b_login').hide();
 			$('#b_logout').show();
+			
+			$('#l_username').hide();
+			$('#i_username').hide();
+			$('#l_password').hide();
+			$('#i_password').hide();
 		} else {
 			$('#p_data').text("Please log in");
 			$('#b_login').show();
@@ -48,7 +27,6 @@ $(document).ready(function() {
 	})
 	
 	$('#b_login').click(function () {
-//		$('#p_welcome').text ("Form is submitted; Username: " + $('#i_username').val() + "; password: " + $('#i_password').val());
 		let username = $('#i_username').val();
 		let password = $('#i_password').val();
 		
@@ -77,22 +55,7 @@ $(document).ready(function() {
 			role = data;
 		}).then (function() {
 			if (role != undefined) {
-				$('#p_data').text("Login succeeded for " + role);
-				$('#b_login').hide();
-				$('#l_username').hide();
-				$('#i_username').hide();
-				$('#l_password').hide();
-				$('#i_password').hide();
-				$('#b_logout').show();
-				if (role === 'ADMIN') {
-					window.location.href = 'admin.html';
-				}
-				if (role === 'HOST') {
-					window.location.href = 'host.html';
-				}
-				if (role === 'GUEST') {
-					window.location.href = 'user.html';
-				}
+				window.location.href = "welcome.html";
 			} else {
 				$('#p_data').text("Login failed");
 			}
@@ -105,22 +68,15 @@ $(document).ready(function() {
 			url: "http://localhost:8080/NarsProj/rest/users/logout",
 			contentType: "application/json;charset=utf-8",
 			dataType: "json"
-		}).then (function (data) {	
-			$('#p_data').text("User logged out");
-			$('#b_login').show();
-			$('#l_username').show();
-			$('#i_username').show();
-			$('#l_password').show();
-			$('#i_password').show();
-			$('#b_logout').hide();
-			role = null;
+		}).then (function (data) {
+			window.location.href = "welcome.html";
 		});
 	});
 	
 	
 	$.ajax({
 		type: "GET", 
-		url: "http://localhost:8080/NarsProj/rest/apartments/getAll", 
+		url: "http://localhost:8080/NarsProj/rest/apartments/", 
 		contentType: "application/json;charset=utf-8",
 		dataType: "json"
 	}).then (function (data) {

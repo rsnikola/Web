@@ -18,12 +18,13 @@ import model.Apartment;
 import model.Data;
 import model.Location;
 import model.enumerations.Role;
+import utility.Utility;
 
 @Path("/apartments")
 public class ApartmentService {
 
 	public ApartmentService () {
-		System.out.println("Apartment service");
+//		System.out.println("Apartment service");
 	}
 	
 	@GET
@@ -31,57 +32,39 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public HashMap<Integer, Apartment> loadApartments () {
-		
 		System.out.println("Apartment service: test");
-		
 		return Data.getApartments();
 	}
 	
 	@GET
-	@Path("/getAll")
+	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ArrayList<Apartment> getAll (@Context HttpServletRequest request) {
-		System.out.println("Apartment service: get all");
+	public Response getApartments (@Context HttpServletRequest request) {
 		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
-		for (Apartment a : Data.getApartments().values()) {
-			if (a.isActive()) {
-				retVal.add(a);
-			}
-		}
-		return retVal;
-	}
-	
-	@GET
-	@Path("/getAllMy")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getAllMy (@Context HttpServletRequest request) {
-		System.out.println("Apartment service: get all host");
-		if (Data.getUsers().get(request.getSession().getAttribute("username")).getRole() != Role.HOST) {
-			return Response.status(Response.Status.FORBIDDEN).build();
-		}
-		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
-		for (Apartment a : Data.getApartments().values()) {
-			if (a.getHost().equals(request.getSession().getAttribute("username"))) {
-				retVal.add(a);
-			}
-		}
-		return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
-	}
-	
-	@GET
-	@Path("/getAllAdmin")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getAllAdmin (@Context HttpServletRequest request) {
-		System.out.println("Apartment service: get all admin");
-		if (Data.getUsers().get(request.getSession().getAttribute("username")).getRole() != Role.ADMIN) {
-			return Response.status(Response.Status.FORBIDDEN).build();
-		}
-		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
-		for (Apartment a : Data.getApartments().values()) {
-			retVal.add(a);
+		switch (Utility.getRole(request)) {
+			case UNREGISTERED:
+			case GUEST: 
+				for (Apartment a : Data.getApartments().values()) {
+					if (a.isActive()) {
+						retVal.add(a);
+					}
+				}
+				break;
+			case HOST:
+				for (Apartment a : Data.getApartments().values()) {
+					if (a.getHost().equals(request.getSession().getAttribute("username"))) {
+						retVal.add(a);
+					}
+				}
+				break;
+			case ADMIN: 
+				for (Apartment a : Data.getApartments().values()) {
+					retVal.add(a);
+				}
+				break;
+			default:
+				return Response.status(Response.Status.FORBIDDEN).build();
 		}
 		return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
 	}
@@ -91,7 +74,6 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String getAddress (@PathParam("location_id") Integer location_id) {
-		System.out.println("Apartment service: getting address: " + location_id);
 		Location location = Data.getLocations().get(location_id);
 		Address address = Data.getAddresses().get(location.getAddress());
 		String retVal = "{\"retVal\":\"" + address.getStreetNumber() + " " + address.getStreet() + ",  " + 
@@ -104,7 +86,6 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getAparment (@PathParam("apartment_id") Integer apartment_id, @Context HttpServletRequest request) {
-		System.out.println("Apartment service: getting apartment: " + apartment_id);
 		Apartment retVal = Data.getApartments().get(apartment_id);
 		// Ako nisam nasao apartman, ili ako je obrisan
 		if ((retVal == null) || (retVal.isDeleted())) {

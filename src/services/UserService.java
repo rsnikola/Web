@@ -22,7 +22,7 @@ import utility.Utility;
 public class UserService {
 	
 	public UserService () {
-		System.out.println("User service");
+//		System.out.println("User service");
 	}
 	
 	@GET
@@ -31,7 +31,7 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public HashMap<String, User> loadUsers () {
 		
-		System.out.println("User service : test");
+//		System.out.println("User service : test");
 		
 		return Data.getUsers();
 	}
@@ -42,7 +42,7 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Role login (@Context HttpServletRequest request) throws IOException {
 		
-		System.out.println("User service : login");
+//		System.out.println("User service : login");
 
 		if (request.getSession().getAttribute("username") != null) {
 			return null;
@@ -64,7 +64,7 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean logout (@Context HttpServletRequest request) {
 		
-		System.out.println("User service : logout");
+//		System.out.println("User service : logout");
 
 		if (request.getSession().getAttribute("username") != null) {
 			System.out.println("Logging " + request.getSession().getAttribute("username") + " out");
@@ -81,7 +81,7 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Role isLoggedIn (@Context HttpServletRequest request) {
 		
-		System.out.println("User service : isLoggedIn");
+//		System.out.println("User service : isLoggedIn");
 
 		if (request.getSession().getAttribute("username") != null) {
 			return Data.getUsers().get(request.getSession().getAttribute("username")).getRole();
