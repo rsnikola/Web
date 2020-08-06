@@ -73,7 +73,6 @@ $(document).ready(function() {
 		});
 	});
 	
-	
 	$.ajax({
 		type: "GET", 
 		url: "http://localhost:8080/NarsProj/rest/apartments/", 
@@ -89,16 +88,18 @@ $(document).ready(function() {
 				dataType: "json"
 			}).then (function (loc) {
 				data[i].location = loc.retVal;
+				let onClickString = "\"window.location.href=\'apartment_details.html\'\"";
 				$('#t_apartments').append(
-						'<tr>' +
-							'<td>' + data[i].id + '</td>' +
-							'<td>' + ((data[i].type === 'ROOM') ? ('Single room') : ('Full apartment')) + '</td>' +
-							'<td>' + data[i].rooms + '</td>' +
-							'<td>' + data[i].guests + '</td>' +
-							'<td>' + data[i].location + '</td>' +
-							'<td>' + data[i].host + '</td>' +
-							'<td> $' + data[i].pricePerNight + '</td>' +
-						'</tr>'
+//						"<tr onclick=" + onClickString + ">" +
+						"<tr onclick=" + "\'selectApartment(" + data[i].id + ")\'" + ">" +
+							"<td>" + data[i].id + "</td>" +
+							"<td>" + ((data[i].type === "ROOM") ? ("Single room") : ("Full apartment")) + "</td>" +
+							"<td>" + data[i].rooms + "</td>" +
+							"<td>" + data[i].guests + "</td>" +
+							"<td>" + data[i].location + "</td>" +
+							"<td>" + data[i].host + "</td>" +
+							"<td> $" + data[i].pricePerNight + "</td>" +
+						"</tr>"
 					);
 			});
 		}
@@ -106,3 +107,15 @@ $(document).ready(function() {
 
 	
 });
+
+
+function selectApartment (apartmentId) {
+	$.ajax({
+		type: "GET",
+		url: "http://localhost:8080/NarsProj/rest/apartments/" + apartmentId,
+		contentType: "application/json;charset=utf-8",
+		dataType: "json"
+	}).then (function (response){
+		window.location.href="apartment_details.html";
+	});
+}

@@ -1,19 +1,19 @@
 $(document).ready(function (){
 	
-	$.ajax({
-		type: "GET",
-		url: "http://localhost:8080/NarsProj/rest/users/isLoggedIn",
-		contentType : "application/json;charset=utf-8",
-		dataType : "json", 
-	}).then(function(data) {
-		role = data;
-	}).then (function () {	
-		if (role !== 'GUEST') {
-			window.location.href = 'welcome.html';
-		} else {
-			
-		}
-	});
+//	$.ajax({
+//		type: "GET",
+//		url: "http://localhost:8080/NarsProj/rest/users/isLoggedIn",
+//		contentType : "application/json;charset=utf-8",
+//		dataType : "json", 
+//	}).then(function(data) {
+//		role = data;
+//	}).then (function () {	
+//		if (role !== 'GUEST') {
+//			window.location.href = 'welcome.html';
+//		} else {
+//			
+//		}
+//	});
 	
 	
 	$.ajax({
