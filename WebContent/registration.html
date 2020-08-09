@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="ISO-8859-1">
+		<link rel="stylesheet" href="css/welcome.css">
+		<title>Registration</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<script src="scripts/registration.js"></script>
+	</head>
+	<body>
+		<div class="topnav">
+			<div class="topnav-left">
+				<p id="p_data"></p>
+			</div>
+			<div class="topnav-right">
+				<table>
+					<tr>
+						<td rowspan="4">
+							<button id="b_logout" hidden="true">Log Out</button>
+						</td>
+						<td rowspan="4">
+							<button id="b_login">Log In</button>
+						</td>
+						<td>
+							<label id="l_username">Username: </label>
+						</td>
+						<td>
+							<input type="text" id="i_username"/>
+						</td>
+					</tr>
+					<tr>
+						<td hidden="true" id="w_username" colspan="2">
+							<label class="warning">Username can't be empty!</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label id="l_password">Password: </label>
+						</td>
+						<td>
+							<input type="password" id="i_password"/>
+						</td>
+						
+					</tr>
+					<tr>
+						<td hidden="true" id="w_password" colspan="2">
+							<label class="warning">Password can't be empty!</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div> 
+		<div class="title-bar">
+			<h1>Create an account</h1>
+		</div>
+		<div class="content">
+			<table>
+				<tr>
+					<td>
+						<label id="l_email">Email: </label>
+					</td>
+					<td>
+						<input type="text" id="i_email"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="w_emailEmpty" hidden="true">
+						<label class="warning">Email can't be empty!</label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="w_emailTaken" hidden="true">
+						<label class="warning">Email already taken!</label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="w_invalidEmail" hidden="true">
+						<label class="warning">Please write a proper email address!</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label id="l_newPassword">Password: </label>
+					</td>
+					<td>
+						<input type="password" id="i_newPassword"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="w_newPassword" hidden="true">
+						<label class="warning">Password can't be empty!</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label id="l_confirmPassword">Confirm password: </label>
+					</td>
+					<td>
+						<input type="password" id="i_confirmPassword"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="w_confirmPassword" hidden="true">
+						<label class="warning">Please make sure passwords match!</label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="w_confirmPasswordEmpty" hidden="true">
+						<label class="warning">You must copy your password!</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label id="l_fristName">First name: </label>
+					</td>
+					<td>
+						<input type="text" id="i_fristName"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="w_fristName" hidden="true">
+						<label class="warning">First name can't be empty!</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label id="l_lastName">Last name: </label>
+					</td>
+					<td>
+						<input type="text" id="i_lastName"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="w_lastName" hidden="true">
+						<label class="warning">Last name can't be empty!</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label id="l_gender">Gender: </label>
+					</td>
+					<td>
+						<input type="radio" id="o_male" name="r_gender" value="male">
+						<label for="o_male">Male</label>
+						<input type="radio" id="o_female" name="r_gender" value="female">
+						<label for="o_female">Female</label><br>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="w_gender" hidden="true">
+						<label class="warning">Please select a gender!</label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<button onclick="register()">Confirm</button>
+					</td>
+				</tr>
+			</table>
+			<p><a href="welcome.html">Back</a> to welcome page</p>
+		</div>
+	</body>
+</html>

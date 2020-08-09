@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -89,6 +90,27 @@ public class UserService {
 		
 		return null;
 	}
+	
+	@PUT
+	@Path("/register")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean register (@Context HttpServletRequest request) throws IOException {
+		Map<String, String> requestData = Utility.getBodyMap(request);
+		// Ukoliko je mail adresa vec zauzeta, ne treba je ponovo dodavati u sistem
+		if (Data.getUsers().containsKey(requestData.get("email"))) {
+			return false;
+		}
+
+		User newUser = new User(requestData.get("email"), requestData.get("newPassword"), 
+					requestData.get("firstName"), requestData.get("lastName"), 
+					((requestData.get("male").equals("true")) ? (true) : (false)), Role.GUEST);
+		Data.getUsers().put(newUser.getUsername(), newUser);
+		Data.saveUsers();
+		return true;
+	}
+	
+	
 	
 	
 }

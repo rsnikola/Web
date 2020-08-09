@@ -2,6 +2,7 @@ $(document).ready(function() {
 	
 	var role = null;
 	
+	// Da li je korisnik ulogovan? 
 	$.ajax({
 		type: "GET",
 		url: "http://localhost:8080/NarsProj/rest/users/isLoggedIn",
@@ -11,6 +12,7 @@ $(document).ready(function() {
 		role = data;
 	}).then (function () {	
 		if (role != null) {
+			// Ako je korisnik ulogovan
 			$('#p_data').text("Hello, " + role);
 			$('#b_login').hide();
 			$('#b_logout').show();
@@ -19,13 +21,24 @@ $(document).ready(function() {
 			$('#i_username').hide();
 			$('#l_password').hide();
 			$('#i_password').hide();
+			
+			$('#l_register').hide();
 		} else {
+			// Ako korisnik nije ulogovan
 			$('#p_data').text("Please log in");
 			$('#b_login').show();
 			$('#b_logout').hide();
+
+			$('#l_username').show();
+			$('#i_username').show();
+			$('#l_password').show();
+			$('#i_password').show();
+			
+			$('#l_register').show();
 		}
 	})
 	
+	// Login
 	$('#b_login').click(function () {
 		let username = $('#i_username').val();
 		let password = $('#i_password').val();
@@ -62,6 +75,7 @@ $(document).ready(function() {
 		});
 	});
 	
+	// Logout
 	$('#b_logout').click(function () {
 		$.ajax({
 			type: "POST",
@@ -73,6 +87,7 @@ $(document).ready(function() {
 		});
 	});
 	
+	// Popuni tabelu sa apartmanima
 	$.ajax({
 		type: "GET", 
 		url: "http://localhost:8080/NarsProj/rest/apartments/", 
@@ -108,7 +123,7 @@ $(document).ready(function() {
 	
 });
 
-
+// Kada kliknem na apartman, zelim da je bas taj apartman selektovan
 function selectApartment (apartmentId) {
 	$.ajax({
 		type: "GET",

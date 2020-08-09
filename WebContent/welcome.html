@@ -14,12 +14,12 @@
 				<p id="p_data"></p>
 			</div>
 			<div class="topnav-right">
-				<table >
+				<table>
 					<tr>
-						<td rowspan="2">
+						<td rowspan="5">
 							<button id="b_logout" hidden="true">Log Out</button>
 						</td>
-						<td rowspan="2">
+						<td rowspan="5">
 							<button id="b_login">Log In</button>
 						</td>
 						<td>
@@ -28,8 +28,10 @@
 						<td>
 							<input type="text" id="i_username"/>
 						</td>
-						<td hidden="true" id="w_username">
-							<p class="warning">Username can't be empty!</p>
+					</tr>
+					<tr>
+						<td hidden="true" id="w_username" colspan="2">
+							<label class="warning">Username can't be empty!</label>
 						</td>
 					</tr>
 					<tr>
@@ -39,9 +41,18 @@
 						<td>
 							<input type="password" id="i_password"/>
 						</td>
-						<td hidden="true" id="w_password">
-							<p class="warning">Password can't be empty!</p>
+						
+					</tr>
+					<tr>
+						<td hidden="true" id="w_password" colspan="2">
+							<label class="warning">Password can't be empty!</label>
 						</td>
+					</tr>
+					<tr>
+					
+						<td colspan="2">
+							<label id="l_register">New? <a href="registration.html">Register</a> here</label>
+						</td>	
 					</tr>
 				</table>
 			</div>

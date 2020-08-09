@@ -43,3 +43,8 @@
 #t_apartments {
 	width: 100%;
 }
+
+body {
+	background-color: #0b360c;
+	color: #ba479a;
+}
