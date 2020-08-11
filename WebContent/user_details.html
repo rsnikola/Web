@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="ISO-8859-1">
+		<link rel="stylesheet" href="css/welcome.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<script src="scripts/user_details.js"></script>
+		<title>Profile</title>
+	</head>
+	
+	<body>
+		<div class="topnav">
+			<div class="topnav-left">
+				<p id="p_data"></p>
+				<table>
+					<tr>
+						<td >
+							<a style="color:#e600ff" href="welcome.html">Home</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="topnav-right">
+				<table>
+					<tr>
+						<td rowspan="5">
+							<button id="b_profile">Profile</button>
+						</td>	
+						<td rowspan="5">
+							<button id="b_logout">Log Out</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div> 
+		<div class="title-bar">
+			<h1>User details</h1>
+		</div>
+		<div class="content">
+			<table>
+				<tr>
+					<td>
+						<label>Email: </label>
+					</td>
+					<td class="output">
+						<label id="l_email"></label>
+					</td>
+					<td class="input">
+						<input type="text" id="i_email" disabled />
+					</td>
+				</tr>
+				<tr class="input">
+					<td>
+						<label>New password: </label>
+					</td>
+					<td class="input">
+						<input type="password" id="i_newPassword" />
+						<div id="w_newPassword" class="warn">
+							<label style="color:red">Password can't be empty!</label>
+						</div>
+					</td>
+				</tr>
+				<tr class="input">
+					<td>
+						<label>Confirm password: </label>
+					</td>
+					<td class="input">
+						<input type="password" id="i_confirmPassword" />
+						<div id="w_confirmPasswordEmpty" class="warn">
+							<label style="color:red">You must copy your password!</label>
+						</div>
+						<div id="w_confirmPassword" class="warn">
+							<label style="color:red">Please make sure passwords match!</label>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>First name: </label>
+					</td>
+					<td class="output">
+						<label id="l_firstName"></label>
+					</td>
+					<td class="input">
+						<input type="text" id="i_firstName"/>
+						<div id="w_fristName" class="warn">
+							<label style="color:red">First name can't be empty!</label>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>Last name: </label>
+					</td>
+					<td class="output">
+						<label id="l_lastName"></label>
+					</td>
+					<td class="input">
+						<input type="text" id="i_lastName"/>
+						<div id="w_lastName" class="warn">
+							<label style="color:red">Last name can't be empty!</label>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>Gender: </label>
+					</td>
+					<td class="output">
+						<label id="l_gender"></label>
+					</td>
+					<td class="input">
+						<input type="radio" id="o_male" name="gender" value="male">
+						<label for="male">Male</label>
+						<input type="radio" id="o_female" name="gender" value="female">
+						<label for="female">Female</label><br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>Role: </label>
+					</td>
+					<td class="output">
+						<label id="l_role"></label>
+					</td>
+					<td class="input">
+						<input type="text" id="i_role" disabled />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" align="center" class="output">
+						<button id="b_change">Change</button>
+					</td>
+					<td colspan="3" align="center" class="input">
+						<button id="b_confirm">Confirm</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

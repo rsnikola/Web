@@ -16,6 +16,7 @@ $(document).ready(function() {
 			$('#p_data').text("Hello, " + role);
 			$('#b_login').hide();
 			$('#b_logout').show();
+			$('#b_profile').show();
 			
 			$('#l_username').hide();
 			$('#i_username').hide();
@@ -28,6 +29,7 @@ $(document).ready(function() {
 			$('#p_data').text("Please log in");
 			$('#b_login').show();
 			$('#b_logout').hide();
+			$('#b_profile').hide();
 
 			$('#l_username').show();
 			$('#i_username').show();
@@ -86,6 +88,11 @@ $(document).ready(function() {
 			window.location.href = "welcome.html";
 		});
 	});
+	
+	// To profile
+	$('#b_profile').click(function () {
+		window.location.href = "user_details.html";
+	}) 
 	
 	// Popuni tabelu sa apartmanima
 	$.ajax({

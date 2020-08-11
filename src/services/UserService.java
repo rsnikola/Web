@@ -91,6 +91,54 @@ public class UserService {
 		return null;
 	}
 	
+	@GET
+	@Path("/details")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public User getLoggedUser (@Context HttpServletRequest request) {
+		
+		if (request.getSession().getAttribute("username") != null) {
+			return Data.getUsers().get(request.getSession().getAttribute("username"));
+		}
+		
+		return null;
+	}
+	
+	@POST
+	@Path("/update")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void update (@Context HttpServletRequest request) throws IOException {
+		
+//		System.out.println("User service : login");
+
+		if (request.getSession().getAttribute("username") == null) {
+			return;
+		}
+		
+		Map<String, String> requestData = Utility.getBodyMap(request);
+		for (String s : requestData.keySet()) {
+			System.out.println(s + ": " + requestData.get(s));
+		}
+		if (request.getSession().getAttribute("username") != null) {
+			User currentUser = Data.getUsers().get(request.getSession().getAttribute("username"));
+			System.out.println("Email to update: " + currentUser.getUsername());
+			currentUser.setFirstName(requestData.get("firstName"));
+			currentUser.setLastName(requestData.get("lastName"));
+			currentUser.setPassword(requestData.get("password"));
+			currentUser.setMale((requestData.get("male").equals("true")) ? (true) : (false));
+			Data.saveUsers();
+		}
+		else {
+			return;
+		}
+	}
+	
+	
+	
+	
+	
+	
 	@PUT
 	@Path("/register")
 	@Produces(MediaType.APPLICATION_JSON)
