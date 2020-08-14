@@ -140,6 +140,10 @@ $(document).ready(function() {
     	$('#b_prev').attr("disabled", true);
     	getData();
     });
+    
+	$('#b_users').click (function () {
+		window.location.href = 'users.html';
+	});
 	
 });
 

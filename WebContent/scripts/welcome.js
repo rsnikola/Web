@@ -135,9 +135,10 @@ $(document).ready(function() {
 		}
 	});
 	
+	// ToUsers
 	$('#b_users').click (function () {
 		window.location.href = 'users.html';
-	})
+	});
 
 	
 });
