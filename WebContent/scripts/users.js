@@ -252,6 +252,10 @@ function getData () {
     	if ((d[4].username === null)) {
 			$('#b_next').attr("disabled", true);
 		}
+    	else if (last) {
+    		$('#b_next').attr("disabled", true);
+    		last = false;
+    	}
 		else {
 			$('#b_next').attr("disabled", false);
 		}
