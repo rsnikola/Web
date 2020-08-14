@@ -1,6 +1,7 @@
 package services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,9 +11,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import model.Data;
 import model.User;
@@ -134,11 +137,6 @@ public class UserService {
 		}
 	}
 	
-	
-	
-	
-	
-	
 	@PUT
 	@Path("/register")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -158,8 +156,102 @@ public class UserService {
 		return true;
 	}
 	
+	@GET
+	@Path("/page/{p}/{email}/{firstName}/{lastName}/{gender}/{role}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getUsers (@Context HttpServletRequest request, 
+				@PathParam("p") Integer p, @PathParam("email") String email, 
+				@PathParam("firstName") String firstName, @PathParam("lastName") String lastName, 
+				@PathParam("gender") String gender, @PathParam("role") String role) {
+		ArrayList<User> retVal;
+		if (Utility.getRole(request) == Role.ADMIN) {
+			ArrayList<User> allUsers = Utility.getAllUsers();
+			
+			retVal = Utility.paginateUsers(filter(allUsers, email, firstName, 
+					lastName, gender, role), p);
+		}
+		else {
+			return Response.status(Response.Status.FORBIDDEN).build();
+		}
+		
+		return Response.ok(retVal, MediaType.APPLICATION_JSON).build();	
+	}
+
+	private ArrayList<User> filter (ArrayList<User> users, String email, String firstName, 
+				String lastName, String gender, String role) {
+		ArrayList<User> retVal = new ArrayList<User> (users);
+		if (!email.equals("unfiltered")) {
+			retVal = filterByEmail(users, email);
+		}
+		if (!firstName.equals("unfiltered")) {
+			retVal = filterByfirstName(retVal, firstName);
+		}
+		if (!lastName.equals("unfiltered")) {
+			retVal = filterByLastName(retVal, lastName);
+		}
+		if (!gender.equals("unfiltered")) {
+			retVal = filterByGender(retVal, gender);
+		}
+		if (!role.equals("unfiltered")) {
+			retVal = filterByRole(retVal, role);
+		}
+		
+		
+		
+		return retVal;
+	}
 	
-	
-	
+	private ArrayList<User> filterByEmail (ArrayList<User> users, String email) {
+		ArrayList<User> retVal = new ArrayList<User>();
+		for (User u : users) {
+			if (u.getUsername().toLowerCase().contains(email.toLowerCase())) {
+				retVal.add(u);
+			}
+		}
+		return retVal;
+	}
+
+	private ArrayList<User> filterByfirstName (ArrayList<User> users, String firstName) {
+		ArrayList<User> retVal = new ArrayList<User>();
+		for (User u : users) {
+			if (u.getFirstName().toLowerCase().contains(firstName.toLowerCase())) {
+				retVal.add(u);
+			}
+		}
+		return retVal;
+	}
+
+	private ArrayList<User> filterByLastName (ArrayList<User> users, String lastName) {
+		ArrayList<User> retVal = new ArrayList<User>();
+		for (User u : users) {
+			if (u.getLastName().toLowerCase().contains(lastName.toLowerCase())) {
+				retVal.add(u);
+			}
+		}
+		return retVal;
+	}
+
+	private ArrayList<User> filterByGender (ArrayList<User> users, String gender) {
+		ArrayList<User> retVal = new ArrayList<User>();
+		boolean male = ((gender.equals("true")) ? (true) : (false));
+		for (User u : users) {
+			if (u.isMale() == male) {
+				retVal.add(u);
+			}
+		}
+		return retVal;
+	}
+
+	private ArrayList<User> filterByRole (ArrayList<User> users, String role) {
+		ArrayList<User> retVal = new ArrayList<User>();
+		for (User u : users) {
+			if (u.getRole().toString().equals(role)) {
+				retVal.add(u);
+			}
+		}
+		return retVal;
+	}
+
 }
 

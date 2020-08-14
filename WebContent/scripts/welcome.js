@@ -18,6 +18,13 @@ $(document).ready(function() {
 			$('#b_logout').show();
 			$('#b_profile').show();
 			
+			if (role === 'ADMIN') {
+				$('#b_users').show();
+			}
+			else {
+				$('#b_users').hide();
+			}
+			
 			$('#l_username').hide();
 			$('#i_username').hide();
 			$('#l_password').hide();
@@ -29,6 +36,7 @@ $(document).ready(function() {
 			$('#p_data').text("Please log in");
 			$('#b_login').show();
 			$('#b_logout').hide();
+			$('#b_users').hide();
 			$('#b_profile').hide();
 
 			$('#l_username').show();
@@ -38,7 +46,7 @@ $(document).ready(function() {
 			
 			$('#l_register').show();
 		}
-	})
+	});
 	
 	// Login
 	$('#b_login').click(function () {
@@ -126,6 +134,10 @@ $(document).ready(function() {
 			});
 		}
 	});
+	
+	$('#b_users').click (function () {
+		window.location.href = 'users.html';
+	})
 
 	
 });

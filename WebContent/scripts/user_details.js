@@ -21,7 +21,7 @@ $(document).ready(function() {
 	}).then (function () {	
 		// Ako je korisnik ulogovan, full cool
 		if (role != null) {
-			
+		
 		} else {	// Ako korisnik nije ulogovan, samo je bacio ovaj url, redirect na welcome.html
 			window.location.href = "welcome.html";
 		}
@@ -74,6 +74,7 @@ $(document).ready(function() {
 		(userDetails.male) ? ($('#o_male').prop('checked', true)) : ($('#o_female').prop('checked', true));
 	});
 	
+	// Confirm data update
 	$('#b_confirm').click (function () {
 		var val = validate();
 		if (val) {
@@ -98,7 +99,10 @@ $(document).ready(function() {
 		}
 	});
 	
-	
+	// To users
+	$('#b_users').click (function () {
+		window.location.href = "users.html";
+	})
 	
 });
 

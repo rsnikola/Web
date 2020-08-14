@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="ISO-8859-1">
+		<link rel="stylesheet" href="css/welcome.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<script src="scripts/users.js"></script>
+		<title>Welcome</title>
+	</head>
+	
+	<body>
+		<div class="topnav">
+			<div class="topnav-left">
+				<table>
+					<tr>
+						<td >
+							<a style="color:#e600ff" href="welcome.html">Home</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="topnav-right">
+				<table>
+					<tr>
+						<td>
+							<button id="b_users">Users</button>
+						</td>
+						<td>
+							<button id="b_profile">Profile</button>
+						</td>					
+						<td>
+							<button id="b_logout">Log Out</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div> 
+		<div class="title-bar">
+			<h1>Rent a place!</h1>
+		</div>
+		<div class="content">
+			<table style="width:80%">
+				<tr>
+					<th>
+						Email
+					</th>
+					<th>
+						First name
+					</th>
+					<th>
+						Last name
+					</th>
+					<th>
+						Gender
+					</th>
+					<th>
+						Role
+					</th>
+				</tr>
+				<tr align="center">
+					<td>
+						<input type="text" id="i_email" onchange="mailChange()"/>
+					</td>
+					<td>
+						<input type="text" id="i_firstName" onchange="firstNameChange()"/>
+					</td>
+					<td>
+						<input type="text" id="i_lastName" onchange="lastNameChange()"/>
+					</td>
+					<td>
+						<select name="i_gender" id="i_gender">
+							<option value="-">-</option>
+							<option value="male">male</option>
+							<option value="female">female</option>
+						</select>
+					</td>
+					<td>
+						<select name="i_role" id="i_role">
+							<option value="-">-</option>
+							<option value="GUEST">guest</option>
+							<option value="ADMIN">admin</option>
+							<option value="HOST">host</option>
+						</select>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<p id="p_mail1">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_firstNme1">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_lastName1">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_gender1">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_role1">Placeholder</p>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<p id="p_mail2">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_firstNme2">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_lastName2">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_gender2">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_role2">Placeholder</p>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<p id="p_mail3">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_firstNme3">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_lastName3">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_gender3">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_role3">Placeholder</p>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<p id="p_mail4">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_firstNme4">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_lastName4">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_gender4">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_role4">Placeholder</p>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<p id="p_mail5">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_firstNme5">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_lastName5">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_gender5">Placeholder</p>
+					</td>
+					<td>
+						<p id="p_role5">Placeholder</p>
+					</td>
+				</tr>
+			</table>
+			<div>
+				<button id="b_prev">Previous</button>
+				<label id="l_page"></label>
+				<button id="b_next">Next</button>
+			</div>
+		</div>
+	</body>
+</html>
