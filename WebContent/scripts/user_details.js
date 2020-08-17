@@ -102,7 +102,9 @@ $(document).ready(function() {
 	// To users
 	$('#b_users').click (function () {
 		window.location.href = "users.html";
-	})
+	});
+	
+	
 	
 });
 

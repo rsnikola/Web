@@ -252,6 +252,43 @@ public class UserService {
 		}
 		return retVal;
 	}
+	
+	@PUT
+	@Path("/{username}/{role}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getUsers (@Context HttpServletRequest request, 
+				@PathParam("username") String username, @PathParam("role") String role) {
+		System.out.println("================================================================================");
+		System.out.println("Username: " + username);
+		System.out.println("Role: " + role);
+		System.out.println("================================================================================");
+		if (Utility.getRole(request) == Role.ADMIN) {
+			User user = Data.getUsers().get(username);
+			switch (role) {
+				case "ADMIN":
+					user.setRole(Role.ADMIN);
+					Data.saveUsers();
+					break;
+				case "GUEST":
+					user.setRole(Role.GUEST);
+					Data.saveUsers();
+					break;
+				case "HOST":
+					user.setRole(Role.HOST);
+					Data.saveUsers();
+					break;
+				default: 
+					return Response.ok(false, MediaType.APPLICATION_JSON).build();
+			}
+		}
+		else { 
+			return Response.ok(false, MediaType.APPLICATION_JSON).build();
+		}
+
+		
+		return Response.ok(true, MediaType.APPLICATION_JSON).build();
+	}
 
 }
 

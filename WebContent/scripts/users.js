@@ -27,6 +27,12 @@ $(document).ready(function() {
 			// Ako korisnik nije ulogovan
 			window.location.href = "welcome.html";
 		}
+		if (role === 'ADMIN') {
+			$('.i_changeRole').show();
+			$('.l_role').hide();
+			
+		}
+		//document.getElementById("myP").style.visibility = "hidden";
 	});
 	
 	// Logout
@@ -141,11 +147,61 @@ $(document).ready(function() {
     	getData();
     });
     
+    $('#i_role1').change(function(){
+    	var newRole = $('#i_role1').val();
+    	var ema = $('#p_mail1').text();
+    	changeRole (ema, newRole);
+    });
+    
+    $('#i_role2').change(function(){
+    	var newRole = $('#i_role2').val();
+    	var ema = $('#p_mail2').text();
+    	changeRole (ema, newRole);
+    });
+    
+    $('#i_role3').change(function(){
+    	var newRole = $('#i_role3').val();
+    	var ema = $('#p_mail3').text();
+    	changeRole (ema, newRole);
+    });
+    
+    $('#i_role4').change(function(){
+    	var newRole = $('#i_role4').val();
+    	var ema = $('#p_mail4').text();
+    	changeRole (ema, newRole);
+    });
+    
+    $('#i_role5').change(function(){
+    	var newRole = $('#i_role5').val();
+    	var ema = $('#p_mail5').text();
+    	changeRole (ema, newRole);
+    });
+    
 	$('#b_users').click (function () {
 		window.location.href = 'users.html';
 	});
 	
 });
+
+function changeRole (em, ro) {
+	$.ajax({
+		type: "PUT",
+		url: "http://localhost:8080/NarsProj/rest/users/" + em + "/" + ro,
+		contentType: "application/json;charset=utf-8",
+		dataType: "json", 
+		success: function (data) {
+			if (data) {
+    			alert ("Role successfully changed");
+			}
+			else {
+				alert("Someting went wrong, please try again");
+			}
+		}, 
+		error: function (data) {
+			alert("Someting went wrong, please try again");
+		}
+	});
+}
 
 function mailChange() {
 	page = 0;
@@ -280,12 +336,15 @@ function showData (data) {
 		switch (data[i].role) {
 			case 'ADMIN':
 				$('#p_role' + (i + 1)).text("admin");
+				$('#i_role' + (i + 1)).val("ADMIN");
 				break;
 			case 'HOST':
 				$('#p_role' + (i + 1)).text("host");
+				$('#i_role' + (i + 1)).val("HOST");
 				break;
 			case 'GUEST':
 				$('#p_role' + (i + 1)).text("guest");
+				$('#i_role' + (i + 1)).val("GUEST");
 				break;
 			default: 
 				$('#p_role' + (i + 1)).text("-");
