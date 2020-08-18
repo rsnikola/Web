@@ -18,11 +18,18 @@ $(document).ready(function() {
 			$('#b_logout').show();
 			$('#b_profile').show();
 			
+			// Podela funkcionalnosti po ulogama
 			if (role === 'ADMIN') {
 				$('#b_users').show();
+				$('#b_addApartment').hide();
+			}
+			else if (role === 'HOST') {
+				$('#b_users').hide();
+				$('#b_addApartment').show();
 			}
 			else {
 				$('#b_users').hide();
+				$('#b_addApartment').hide();
 			}
 			
 			$('#l_username').hide();
@@ -139,6 +146,11 @@ $(document).ready(function() {
 	$('#b_users').click (function () {
 		window.location.href = 'users.html';
 	});
+	
+	// ToAddApartments
+	$('#b_addApartment').click (function () {
+		window.location.href = 'add_apartment.html';
+	}); 
 
 	
 });

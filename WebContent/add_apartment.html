@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="ISO-8859-1">
+		<link rel="stylesheet" href="css/welcome.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<script src="scripts/add_apartment.js"></script>
+		<title>Welcome</title>
+	</head>
+	
+	<body>
+		<div class="topnav">
+			<div class="topnav-left">
+				<table>
+					<tr>
+						<td >
+							<a style="color:#e600ff" href="welcome.html">Home</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="topnav-right">
+				<table>
+					<tr>
+						<td>
+							<button id="b_addApartment">Add apartment</button>
+						</td>
+						<td>
+							<button id="b_users">Users</button>
+						</td>
+						<td>
+							<button id="b_profile">Profile</button>
+						</td>					
+						<td>
+							<button id="b_logout">Log Out</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div> 
+		<div class="title-bar">
+			<h1>Create an apartment</h1>
+		</div>
+		<div class="content">
+			<h3>New apartment details: </h3>
+			<table>
+				<tr>
+					<td>Longitude</td>
+					<td>
+						<input id="i_long" type="number" step="0.0001"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyLongitude" class="warning">Longitude can not be empty! </label>
+						<br class="warning" />
+						<label id="w_valueLongitude" class="warning">Longitude value must be between -180 and 180! </label>
+					</td>
+				</tr>
+				<tr>
+					<td>Latitude</td>
+					<td>
+						<input id="i_lat" type="number" step="0.0001"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyLatitude" class="warning">Latitude can not be empty! </label>
+						<br class="warning" />
+						<label id="w_valueLatitude" class="warning">Latitude value must be between -90 and 90! </label>
+					</td>
+				</tr>
+				<tr>
+					<td>Street number</td>
+					<td>
+						<input id="i_strNu" type="number" min="1"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyStreetNu" class="warning">Street number can not be empty! </label>
+						<br class="warning" />
+						<label id="w_valueStreetNu" class="warning">Street number must be positive! </label>
+					</td>
+				</tr>
+				<tr>
+					<td>Street name</td>
+					<td>
+						<input id="i_strNa" type="text"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyStreetNa" class="warning">Street name can not be empty! </label>
+					</td>
+				</tr>
+				<tr>
+					<td>Town</td>
+					<td>
+						<input id="i_town" type="text"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyTownNa" class="warning">Town can not be empty! </label>
+					</td>
+				</tr>
+				<tr>
+					<td>Zip code</td>
+					<td>
+						<input id="i_zip" type="number"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyZip" class="warning">Zip code can not be empty! </label>
+						<br class="warning" />
+						<label id="w_valueZip" class="warning">Zip code must be positive! </label>
+					</td>
+				</tr>
+				<tr>
+					<td>Country</td>
+					<td>
+						<input id="i_coun" type="text"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyCountry" class="warning">Country can not be empty! </label>
+					</td>
+				</tr>
+				<tr>
+					<td>Single room/apartment</td>
+					<td>
+						<select name="singleRoom" id="singleRoom">
+							<option value="-">-</option>
+							<option value="room">Single room</option>
+							<option value="apartment">Apartment</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyType" class="warning">You have to select a room type! </label>
+					</td>
+				</tr>
+				<tr>
+					<td>Number of rooms</td>
+					<td>
+						<input id="i_nor" type="number"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyNuOfRooms" class="warning">Number of rooms can not be empty! </label>
+						<br class="warning" />
+						<label id="w_valueNuOfRooms" class="warning">Number of rooms must be positive! </label>
+					</td>
+				</tr>
+				<tr>
+					<td>Price per night</td>
+					<td>
+						<input id="i_ppn" type="number" step="0.01"/>
+						<label>$</label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyPrice" class="warning">Price per night can not be empty! </label>
+						<br class="warning" />
+						<label id="w_valuePrice" class="warning">Price per night must be positive! </label>
+					</td>
+				</tr>
+				<tr>
+					<td>Checkin time</td>
+					<td>
+						<input id="i_checkIn" type="time"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyCheckin" class="warning">Please provide a check-in time in format HH:MM aa! </label>
+					</td>
+				</tr>
+				<tr>
+					<td>Checkout time</td>
+					<td>
+						<input id="i_checkOut" type="time"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyCheckout" class="warning">Please provide a check-in time in format HH:MM aa! </label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<button id="b_confirm">Confirm</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

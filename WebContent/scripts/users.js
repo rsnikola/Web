@@ -21,6 +21,21 @@ $(document).ready(function() {
 	}).then(function(data) {
 		role = data;
 	}).then (function () {	
+		
+		// Podela funkcionalnosti po ulogama
+		if (role === 'ADMIN') {
+			$('#b_users').show();
+			$('#b_addApartment').hide();
+		}
+		else if (role === 'HOST') {
+			$('#b_users').hide();
+			$('#b_addApartment').show();
+		}
+		else {
+			$('#b_users').hide();
+			$('#b_addApartment').hide();
+		}
+		
 		if (role != null) {
 		
 		} else {

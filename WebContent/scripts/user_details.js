@@ -18,7 +18,22 @@ $(document).ready(function() {
 		dataType : "json", 
 	}).then(function(data) {
 		role = data;
-	}).then (function () {	
+	}).then (function () {
+		
+		// Podela funkcionalnosti po ulogama
+		if (role === 'ADMIN') {
+			$('#b_users').show();
+			$('#b_addApartment').hide();
+		}
+		else if (role === 'HOST') {
+			$('#b_users').hide();
+			$('#b_addApartment').show();
+		}
+		else {
+			$('#b_users').hide();
+			$('#b_addApartment').hide();
+		}
+		
 		// Ako je korisnik ulogovan, full cool
 		if (role != null) {
 		
@@ -104,7 +119,10 @@ $(document).ready(function() {
 		window.location.href = "users.html";
 	});
 	
-	
+	// ToAddApartments
+	$('#b_addApartment').click (function () {
+		window.location.href = 'add_apartment.html';
+	}); 
 	
 });
 
