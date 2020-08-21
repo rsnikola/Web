@@ -143,7 +143,7 @@ public class Data {
 		System.out.println("Data: Users saved. ");
 	}
 	
-	private static void saveAddresses() {
+	public static void saveAddresses() {
 		try {
 			String filePath = pathPrefix + "addresses.txt";
 			
@@ -157,7 +157,7 @@ public class Data {
 		System.out.println("Data: Addresses saved. ");
 	}
 	
-	private static void saveLocations() {
+	public static void saveLocations() {
 		try {
 			String filePath = pathPrefix + "locations.txt";
 			
@@ -171,7 +171,7 @@ public class Data {
 		System.out.println("Data: Locations saved. ");
 	}
 	
-	private static void saveApartments () {
+	public static void saveApartments () {
 		try {
 			String filePath = pathPrefix + "apartments.txt";
 			

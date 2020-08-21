@@ -10,6 +10,7 @@ var noOfRooms = "";
 var pricePerNight = "";
 var checkinTime = "";
 var checkoutTime = "";
+var noOfGuests = "";
 
 
 $(document).ready(function() {
@@ -84,7 +85,36 @@ $(document).ready(function() {
 		getValues();
 		
 		if (validate()) {
-			alert ("Validacija uspesna! =D");
+			$.ajax({
+				type: "POST",
+				url: "http://localhost:8080/NarsProj/rest/apartments/add",
+				contentType: "application/json;charset=utf-8",
+				dataType: "json", 
+				data: JSON.stringify({
+					"longitude": longitude, 
+					"latitude": latitude,
+					"streetNumber": streetNumber,
+					"streetName": streetName,
+					"town": town,
+					"zipCode": zipCode,
+					"country": country,
+					"room": room,
+					"noOfRooms": noOfRooms,
+					"pricePerNight": pricePerNight,
+					"checkinTime": checkinTime,
+					"checkoutTime": checkoutTime, 
+					"noOfGuests": noOfGuests
+				})
+			}).then (function (data) {
+//				window.location.href = "welcome.html";
+				if (data === true) {
+					alert ("You have successfully addad an apartment! ");
+					window.location.href = "welcome.html";
+				}
+				else {
+					alert ("There seem to be an unknown error, please try again! ");
+				}
+			});
 		}
 		else {
 			
@@ -92,20 +122,6 @@ $(document).ready(function() {
 	});
 	
 });
-
-//var longitude;
-//var latitude;
-//var streetNumber;
-//var streetName;
-//var town;
-//var zipCode;
-//var country;
-//var room;
-//var apartment;
-//var noOfRooms;
-//var pricePerNight;
-//var checkinTime;
-//var checkoutTime;
 
 function validate () {
 	if (longitude === "") {
@@ -156,11 +172,11 @@ function validate () {
 		$("#w_emptyType").show();
 		return false;
 	}
-	if (noOfRooms === "") {
+	if ((noOfRooms === "") && (room === "apartment")) {
 		$("#w_emptyNuOfRooms").show();
 		return false;
 	}
-	if (noOfRooms < 1) {
+	if ((noOfRooms < 1) && (room === "apartment")) {
 		$("#w_valueNuOfRooms").show();
 		return false;
 	}
@@ -180,6 +196,14 @@ function validate () {
 		$("#w_emptyCheckout").show();
 		return false;
 	}
+	if (noOfGuests === "") {
+		$("#w_emptyNoOfGuests").show();
+		return false;
+	}
+	if (noOfGuests < 1) {
+		$("#w_valueNoOfGuests").show();
+		return false;
+	}
 	
 	return true;
 }
@@ -197,4 +221,18 @@ function getValues () {
 	pricePerNight = $('#i_ppn').val();
 	checkinTime = $('#i_checkIn').val();
 	checkoutTime = $('#i_checkOut').val();
+	noOfGuests = $('#i_noOfGuests').val();
+}
+
+function blockNOR () {
+	if ($('#singleRoom').val() !== 'apartment') {
+		$('#i_nor').hide();
+		$('#l_numberOfRooms').hide();
+		$('#r_numberOfRooms').hide();
+	}
+	else {
+		$('#i_nor').show();
+		$('#l_numberOfRooms').show();
+		$('#r_numberOfRooms').show();
+	}
 }

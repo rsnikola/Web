@@ -1,11 +1,15 @@
 package services;
 
+import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -17,6 +21,7 @@ import model.Address;
 import model.Apartment;
 import model.Data;
 import model.Location;
+import model.enumerations.ApartmentType;
 import model.enumerations.Role;
 import utility.Utility;
 
@@ -128,6 +133,76 @@ public class ApartmentService {
 		} else {
 			return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
 		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	@POST
+	@Path("/add")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addApartment (@Context HttpServletRequest request) throws IOException {
+		if (Utility.getRole(request) != Role.HOST) {
+			return Response.status(401).build(); 
+		}
+		Map<String, String> requestData = Utility.getBodyMap(request);
+		for (String s : requestData.keySet()) {
+			System.out.println("    " + s + ": " + requestData.get(s));
+		}
+		Apartment newApartment = new Apartment();
+		newApartment.setHost((String) request.getSession().getAttribute("username"));
+		newApartment.setId(Data.getApartments().keySet().size() + 1);
+		if (requestData.get("room").equals("apartment")) {
+			newApartment.setType(ApartmentType.APARTMENT);
+			newApartment.setRooms(Integer.valueOf(requestData.get("noOfRooms")));
+		}
+		else {
+			newApartment.setType(ApartmentType.ROOM);
+			newApartment.setRooms(1);
+		}
+		newApartment.setGuests(Integer.valueOf(requestData.get("noOfGuests")));
+		// TODO: Location
+		/*
+		 * 
+		 * */
+		Location newLocation = new Location();
+		newLocation.setId(Data.getLocations().keySet().size() + 1);
+		newLocation.setLongitude(Double.valueOf(requestData.get("longitude")));
+		newLocation.setLatitude(Double.valueOf(requestData.get("latitude")));
+		newLocation.setDeleted(false);
+		
+		Address newAddress = new Address();
+		newAddress.setId(Data.getAddresses().keySet().size() + 1);
+		newAddress.setStreetNumber(Integer.valueOf(requestData.get("streetNumber")));
+		newAddress.setStreet(requestData.get("streetName"));
+		newAddress.setTown(requestData.get("town"));
+		newAddress.setZipCode(requestData.get("zipCode"));
+		newAddress.setCountry(requestData.get("country"));
+		newAddress.setDeleted(false);
+
+		newLocation.setAddress(newAddress.getId());
+		newApartment.setLocation(newLocation.getId());
+		/*
+		 * 
+		 * */
+		newApartment.setCheckinTime(new Time((int) Integer.valueOf(requestData.get("checkinTime").split(":")[0]), 
+				(int) Integer.valueOf(requestData.get("checkinTime").split(":")[1]), 0));
+		newApartment.setCheckoutTime(new Time((int) Integer.valueOf(requestData.get("checkoutTime").split(":")[0]), 
+				(int) Integer.valueOf(requestData.get("checkoutTime").split(":")[1]), 0));
+		newApartment.setFirstAvailable(null);
+		newApartment.setLastAvailable(null);
+		newApartment.setComments(null);
+		newApartment.setPricePerNight(Double.valueOf(requestData.get("pricePerNight")));
+		newApartment.setActive(false);
+		newApartment.setDeleted(false);
+		newApartment.setAmenities(null);
+		newApartment.setReservations(null);
+		Data.getAddresses().put(newAddress.getId(), newAddress);
+		Data.getLocations().put(newLocation.getId(), newLocation);
+		Data.getApartments().put(newApartment.getId(), newApartment);
+		Data.saveAddresses();
+		Data.saveLocations();
+		Data.saveApartments();
+		return Response.ok(true, MediaType.APPLICATION_JSON).build();
 	}
 	
 } 

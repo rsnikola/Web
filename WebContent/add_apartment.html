@@ -132,7 +132,7 @@
 				<tr>
 					<td>Single room/apartment</td>
 					<td>
-						<select name="singleRoom" id="singleRoom">
+						<select name="singleRoom" id="singleRoom" onchange="blockNOR()">
 							<option value="-">-</option>
 							<option value="room">Single room</option>
 							<option value="apartment">Apartment</option>
@@ -144,10 +144,12 @@
 						<label id="w_emptyType" class="warning">You have to select a room type! </label>
 					</td>
 				</tr>
-				<tr>
-					<td>Number of rooms</td>
+				<tr id="r_numberOfRooms" hidden="true">
 					<td>
-						<input id="i_nor" type="number"/>
+						<label id="l_numberOfRooms" hidden="true">Number of rooms</label>
+					</td>
+					<td>
+						<input id="i_nor" type="number" hidden="true"/>
 					</td>
 				</tr>
 				<tr>
@@ -193,6 +195,25 @@
 						<label id="w_emptyCheckout" class="warning">Please provide a check-in time in format HH:MM aa! </label>
 					</td>
 				</tr>
+	<!-- ************************************************* -->	
+	<!-- ************************************************* -->	
+	<!-- ************************************************* -->					
+				<tr>
+					<td>Maximum alowed gusets: </td>
+					<td>
+						<input id="i_noOfGuests" type="number"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label id="w_emptyNoOfGuests" class="warning">Maximum alowed number of guests can not be empty! </label>
+						<br class="warning" />
+						<label id="w_valueNoOfGuests" class="warning">Maximum alowed number of guests must be positive! </label>
+					</td>
+				</tr>
+	<!-- ************************************************* -->	
+	<!-- ************************************************* -->	
+	<!-- ************************************************* -->				
 				<tr>
 					<td colspan="2" align="center">
 						<button id="b_confirm">Confirm</button>
