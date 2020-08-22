@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -65,6 +66,12 @@ public class Utility {
 			};
 		}
 		return retVal;
+	}
+	
+	public static void printMap (Map<String, String> map) {
+		for (String s : map.keySet()) {
+			System.out.println("    " + s + ": " + map.get(s));
+		}
 	}
 	
 }

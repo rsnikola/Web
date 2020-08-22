@@ -67,6 +67,10 @@ $(document).ready(function() {
 		window.location.href = "user_details.html";
 	});
 	
+	$('#b_amenities').click (function () {
+		window.location.href = "amenities.html"
+	})
+	
 	// Dobavi spisak sa beka
 	$.ajax({
 		type: "GET",

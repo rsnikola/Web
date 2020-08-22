@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="ISO-8859-1">
+		<link rel="stylesheet" href="css/welcome.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<script src="scripts/amenities.js"></script>
+		<title>Amenities</title>
+	</head>
+	<body>
+		<div>
+			<div class="topnav-left">
+				<p id="p_data"></p>
+				<table>
+					<tr>
+						<td >
+							<a style="color:#e600ff" href="welcome.html">Home</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="topnav-right">
+				<table>
+					<tr>
+						<td>
+							<button id="b_amenities">Amenities</button>
+						</td>
+						<td>
+							<button id="b_users">Users</button>
+						</td>
+						<td>
+							<button id="b_profile">Profile</button>
+						</td>
+						<td>
+							<button id="b_logout">Log Out</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div> 
+		<div class="title-bar">
+			<h1 id="title">Amenities</h1>
+		</div>
+		<div class="content">
+			<table>
+				<tr>
+					<td colspan="2">
+						<input id="i_amenities" type="text" />
+					</td>
+					<td></td>
+					<td align="center">
+						<button id="b_addAmenities">Add</button>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" id="r_warnEmpty" class="warning" hidden="true">
+						<label>Please give an amenitie name!</label>
+					</td>
+				</tr>
+			</table>
+			<table id="t_amenities">
+				
+			</table>
+			
+		</div>
+	</body>
+</html>

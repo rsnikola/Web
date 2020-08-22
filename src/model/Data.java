@@ -24,6 +24,7 @@ public class Data {
 	private static HashMap<Integer, Address> addresses = null;
 	private static HashMap<Integer, Location> locations = null;
 	private static HashMap<Integer, Apartment> apartments = null;
+	private static HashMap<Integer, Amenity> amenities = null;
 	private static ObjectMapper obj = new ObjectMapper();
 	
 	public static HashMap<String, User> getUsers () {	
@@ -128,6 +129,27 @@ public class Data {
 		return apartments;
 	}
 	
+	
+	public static HashMap<Integer, Amenity> getAmenities () {
+		if (amenities == null) {
+			System.out.println("Data: Loading amenities. ");
+			try {
+				amenities = obj.readValue(new File(pathPrefix + "amenities.txt"), new TypeReference<Map<Integer, Amenity>>() {});
+			} catch (Exception e) {
+				System.out.println("Error while loading amenities! ");
+				Amenity a1 = new Amenity(1, "towels");
+				Amenity a2 = new Amenity(2, "shower");
+				Amenity a3 = new Amenity(3, "sheets");
+				amenities = new HashMap<Integer, Amenity> ();
+				amenities.put(a1.getId(), a1);
+				amenities.put(a2.getId(), a2);
+				amenities.put(a3.getId(), a3);
+				Data.saveAmenities();
+			}
+		}
+		return amenities;
+	}
+	
 	public static void saveUsers () {
 		try {
 			String filePath = pathPrefix + "users.txt";
@@ -183,6 +205,21 @@ public class Data {
 			e.printStackTrace();
 		}
 		System.out.println("Data: Apartments saved. ");
+	}
+	
+	public static void saveAmenities () {
+		try {
+			String filePath = pathPrefix + "amenities.txt";
+			
+			FileWriter fileWriter = new FileWriter(filePath);
+		    PrintWriter printWriter = new PrintWriter(fileWriter);
+		    printWriter.print(obj.writeValueAsString(amenities));
+		    printWriter.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Data: Amenities saved. ");
+		
 	}
 
 }

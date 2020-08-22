@@ -59,6 +59,10 @@ $(document).ready(function() {
 		window.location.href = "user_details.html";
 	});
 	
+	$('#b_amenities').click(function () {
+		window.location.href = "amenities.html";
+	});
+	
 	$.ajax({
 		type: "GET", 
 		url: "http://localhost:8080/NarsProj/rest/users/details", 

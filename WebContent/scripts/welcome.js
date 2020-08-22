@@ -22,14 +22,17 @@ $(document).ready(function() {
 			if (role === 'ADMIN') {
 				$('#b_users').show();
 				$('#b_addApartment').hide();
+				$('#b_amenities').show();
 			}
 			else if (role === 'HOST') {
 				$('#b_users').hide();
 				$('#b_addApartment').show();
+				$('#b_amenities').hide();
 			}
 			else {
 				$('#b_users').hide();
 				$('#b_addApartment').hide();
+				$('#b_amenities').hide();
 			}
 			
 			$('#l_username').hide();
@@ -150,6 +153,11 @@ $(document).ready(function() {
 	// ToAddApartments
 	$('#b_addApartment').click (function () {
 		window.location.href = 'add_apartment.html';
+	}); 
+
+	// ToAmenities
+	$('#b_amenities').click (function () {
+		window.location.href = 'amenities.html';
 	}); 
 
 	
