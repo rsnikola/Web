@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -99,9 +100,11 @@ public class ApartmentService {
 		// Ako sam domacin, smem da vidim samo MOJE apartmane
 		else if (Utility.getRole(request) == Role.HOST) {
 			if (retVal.getHost().equals(request.getSession().getAttribute("username"))) {
+				request.getSession().setAttribute("selected_apartment", retVal);
 				return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
 			}
 			else {
+				request.getSession().setAttribute("selected_apartment", null);
 				return Response.status(401).build();
 			}
 		}
@@ -128,11 +131,12 @@ public class ApartmentService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getSelectedApartment (@Context HttpServletRequest request) {
 		Apartment retVal = (Apartment) request.getSession().getAttribute("selected_apartment");
-		if (retVal == null) {
-			return Response.status(404).build();
-		} else {
-			return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
+		if (retVal != null) {
+			if (!retVal.isDeleted()) {
+				return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
+			}
 		}
+		return Response.status(404).build();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -145,9 +149,9 @@ public class ApartmentService {
 			return Response.status(401).build(); 
 		}
 		Map<String, String> requestData = Utility.getBodyMap(request);
-		for (String s : requestData.keySet()) {
-			System.out.println("    " + s + ": " + requestData.get(s));
-		}
+//		for (String s : requestData.keySet()) {
+//			System.out.println("    " + s + ": " + requestData.get(s));
+//		}
 		Apartment newApartment = new Apartment();
 		newApartment.setHost((String) request.getSession().getAttribute("username"));
 		newApartment.setId(Data.getApartments().keySet().size() + 1);
@@ -160,10 +164,7 @@ public class ApartmentService {
 			newApartment.setRooms(1);
 		}
 		newApartment.setGuests(Integer.valueOf(requestData.get("noOfGuests")));
-		// TODO: Location
-		/*
-		 * 
-		 * */
+
 		Location newLocation = new Location();
 		newLocation.setId(Data.getLocations().keySet().size() + 1);
 		newLocation.setLongitude(Double.valueOf(requestData.get("longitude")));
@@ -204,5 +205,32 @@ public class ApartmentService {
 		Data.saveApartments();
 		return Response.ok(true, MediaType.APPLICATION_JSON).build();
 	}
+	
+	@SuppressWarnings("deprecation")
+	@PUT
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateApartment (@Context HttpServletRequest request) throws IOException {
+		Map<String, String> requestData = Utility.getBodyMap(request);
+		Apartment apartment = Data.getApartments().get(Integer.valueOf(requestData.get("id").split(" ")[0]));
+		apartment.setCheckinTime(new Time((int) Integer.valueOf(requestData.get("checkinTime").split(":")[0]), 
+				(int) Integer.valueOf(requestData.get("checkinTime").split(":")[1]), 0));
+		apartment.setCheckoutTime(new Time((int) Integer.valueOf(requestData.get("checkoutTime").split(":")[0]), 
+				(int) Integer.valueOf(requestData.get("checkoutTime").split(":")[1]), 0));
+		apartment.setGuests(Integer.valueOf(requestData.get("noOfGuests").split(" ")[0]));
+		apartment.setPricePerNight(Double.valueOf(requestData.get("pricePerNight").split(" ")[0]));
+		if (requestData.get("room").equals("apartment")) {
+			apartment.setType(ApartmentType.APARTMENT);
+			apartment.setRooms(Integer.valueOf(requestData.get("noOfRooms").split(" ")[0]));
+		}
+		else {
+			apartment.setType(ApartmentType.ROOM);
+			apartment.setRooms(1);
+		}
+		Data.saveApartments();
+		return Response.ok(true, MediaType.APPLICATION_JSON).build();	
+	}
+	
 	
 } 

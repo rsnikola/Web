@@ -24,14 +24,17 @@ $(document).ready(function() {
 		if (role === 'ADMIN') {
 			$('#b_users').show();
 			$('#b_addApartment').hide();
+			$('#b_amenities').show();
 		}
 		else if (role === 'HOST') {
 			$('#b_users').hide();
 			$('#b_addApartment').show();
+			$('#b_amenities').hide();
 		}
 		else {
 			$('#b_users').hide();
 			$('#b_addApartment').hide();
+			$('#b_amenities').hide();
 		}
 		
 		// Ako je korisnik ulogovan, full cool
