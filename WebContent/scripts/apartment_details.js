@@ -42,23 +42,34 @@ $(document).ready(function (){
 			$('#b_addApartment').hide();
 			$('#b_amenities').show();
 			$('#t_activateDeactivate').hide();
+			$('#b_makeReservation').hide();
 		}
 		else if (role === 'HOST') {
 			$('#b_users').hide();
 			$('#b_addApartment').show();
 			$('#b_amenities').hide();
 			$('#t_activateDeactivate').show();
+			$('#b_makeReservation').hide();
+		}
+		else if (role === "GUEST") {
+			$('#b_users').hide();
+			$('#b_addApartment').hide();
+			$('#b_amenities').hide();
+			$('#t_activateDeactivate').hide();
+			$('#b_makeReservation').show();
 		}
 		else {
 			$('#b_users').hide();
 			$('#b_addApartment').hide();
 			$('#b_amenities').hide();
 			$('#t_activateDeactivate').hide();
+			$('#b_makeReservation').hide();
 		}
 		if (role === undefined) {
 			$('#b_profile').hide();
 			$('#b_logout').hide();
 			$('#t_activateDeactivate').hide();
+			$('#b_makeReservation').hide();
 		}
 	});
 	
@@ -81,7 +92,12 @@ $(document).ready(function (){
 	});
 	$('#b_updateActive').click(function () {
 		updateActive();
-	})
+	});
+	$('#b_makeReservation').click(function () {
+		window.location.href = "reserve.html";
+	});
+	
+	
 	
 	$('#b_logout').click(function () {
 		$.ajax({
@@ -124,7 +140,10 @@ function getSelectedApartment () {
 		type: "GET", 
 		url: "http://localhost:8080/NarsProj/rest/apartments/selected", 
 		contentType: "application/json;charset=utf-8", 
-		dataType: "json"
+		dataType: "json", 
+		error: function () {
+			window.location.href = "welcome.html";
+		}
 	}).then (function (data) {
 		apartment = data;
 		getLocationData(apartment.location);

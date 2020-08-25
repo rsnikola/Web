@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.enumerations.ApartmentType;
+import model.enumerations.ReservationStatus;
 import model.enumerations.Role;
 
 public class Data {
@@ -25,6 +26,7 @@ public class Data {
 	private static HashMap<Integer, Location> locations = null;
 	private static HashMap<Integer, Apartment> apartments = null;
 	private static HashMap<Integer, Amenity> amenities = null;
+	private static HashMap<Integer, Reservation> reservations = null;
 	private static ObjectMapper obj = new ObjectMapper();
 	
 	public static HashMap<String, User> getUsers () {	
@@ -35,12 +37,12 @@ public class Data {
 			} catch (Exception e) {
 				System.out.println("Data: Error while loading users! ");
 			
-				User u1 = new User("adi1", "1234", "Milan", "Milic", true, Role.ADMIN);
-				User u2 = new User("adi2", "4321", "Jovana", "Jovic", false, Role.ADMIN);
-				User u3 = new User("gue1", "1234", "Pero", "Jovic", true, Role.GUEST);
-				User u4 = new User("gue2", "4321", "Gile", "Glisic", false, Role.GUEST);
-				User u5 = new User("hos1", "1234", "Bojana", "Bojic", true, Role.HOST);
-				User u6 = new User("hos2", "4321", "Vuk", "Vukovic", false, Role.HOST);
+				User u1 = new User("adi1@mail.com", "1234", "Milan", "Milic", true, Role.ADMIN);
+				User u2 = new User("adi2@mail.com", "4321", "Jovana", "Jovic", false, Role.ADMIN);
+				User u3 = new User("gue1@mail.com", "1234", "Pero", "Jovic", true, Role.GUEST);
+				User u4 = new User("gue2@mail.com", "4321", "Gile", "Glisic", false, Role.GUEST);
+				User u5 = new User("hos1@mail.com", "1234", "Bojana", "Bojic", true, Role.HOST);
+				User u6 = new User("hos2@mail.com", "4321", "Vuk", "Vukovic", false, Role.HOST);
 				users = new HashMap<String, User> ();
 				users.put(u1.getUsername(), u1);
 				users.put(u2.getUsername(), u2);
@@ -64,7 +66,7 @@ public class Data {
 			} catch (Exception e) {
 				System.out.println("Data: Error while loading addresses! ");
 				
-				Address a1 = new Address(1, 31, "Stevan Musica", "Novi Sad", "21000", "Serbia");
+				Address a1 = new Address(1, 30, "Stevana Musica", "Novi Sad", "21000", "Serbia");
 				Address a2 = new Address(2, 21, "Stevan Musica", "Novi Sad", "21000", "Serbia");
 				Address a3 = new Address(3, 31, "Skadarska", "Beograd", "11000", "Serbia");
 				addresses = new HashMap<Integer, Address> ();
@@ -109,13 +111,13 @@ public class Data {
 			} catch (Exception e) {
 				System.out.println("Data: Error while loading apartments! ");
 				
-				Apartment a1 = new Apartment(1, ApartmentType.APARTMENT, 3, 5, 1, new Date(2, 2, 2), new Date(3, 3, 3), "hos2", 
+				Apartment a1 = new Apartment(1, ApartmentType.APARTMENT, 3, 5, 1, new Date(120, 10, 2), new Date(120, 10, 20), "hos2@mail.com", 
 							new ArrayList<Integer>(), 12.99, new Time(2, 2, 2), new Time(3, 3, 3), true, new ArrayList<Integer> (), 
 							new ArrayList<Integer>());
-				Apartment a2 = new Apartment(2, ApartmentType.APARTMENT, 2, 3, 2, new Date(2, 2, 2), new Date(3, 3, 3), "hos2", 
+				Apartment a2 = new Apartment(2, ApartmentType.APARTMENT, 2, 3, 2, new Date(120, 10, 12), new Date(120, 11, 13), "hos2@mail.com", 
 						new ArrayList<Integer>(), 12.99, new Time(2, 2, 2), new Time(3, 3, 3), false, new ArrayList<Integer> (), 
 						new ArrayList<Integer>());
-				Apartment a3 = new Apartment(3, ApartmentType.ROOM, 1, 1, 3, new Date(2, 2, 2), new Date(3, 3, 3), "hos1", 
+				Apartment a3 = new Apartment(3, ApartmentType.ROOM, 1, 1, 3, new Date(120, 10, 12), new Date(120, 11, 9), "hos1@mail.com", 
 								new ArrayList<Integer>(), 12.99, new Time(2, 2, 2), new Time(3, 3, 3), true, new ArrayList<Integer> (), 
 								new ArrayList<Integer>());
 				apartments = new HashMap<Integer, Apartment> ();
@@ -148,6 +150,23 @@ public class Data {
 			}
 		}
 		return amenities;
+	}
+
+	@SuppressWarnings("deprecation")
+	public static HashMap<Integer, Reservation> getReservations () {
+		if (reservations == null) {
+			System.out.println("Data: Loading reservations. ");
+			try {
+				reservations = obj.readValue(new File(pathPrefix + "reservations.txt"), new TypeReference<Map<Integer, Reservation>>() {});
+			} catch (Exception e) {
+				System.out.println("Error while loading reservations! ");
+				Reservation r1 = new Reservation(1, 1, "gue1@mail.com", new Date(120, 10, 15), new Date(120, 10, 25), 14.4, "Please", ReservationStatus.CREATED);
+				reservations = new HashMap<Integer, Reservation> ();
+				reservations.put(r1.getId(), r1);
+				Data.saveReservations();
+			}
+		}
+		return reservations;
 	}
 	
 	public static void saveUsers () {
@@ -219,7 +238,20 @@ public class Data {
 			e.printStackTrace();
 		}
 		System.out.println("Data: Amenities saved. ");
-		
+	}
+	
+	public static void saveReservations() {
+		try {
+			String filePath = pathPrefix + "reservations.txt";
+			
+			FileWriter fileWriter = new FileWriter(filePath);
+		    PrintWriter printWriter = new PrintWriter(fileWriter);
+		    printWriter.print(obj.writeValueAsString(reservations));
+		    printWriter.close(); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Data: Reservations saved. ");
 	}
 
 }

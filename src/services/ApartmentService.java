@@ -2,9 +2,11 @@ package services;
 
 import java.io.IOException;
 import java.sql.Time;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -215,6 +217,9 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateApartment (@Context HttpServletRequest request) throws IOException {
+		if (Utility.getRole(request) != Role.HOST) {
+			return Response.status(401).build(); 
+		}
 		Map<String, String> requestData = Utility.getBodyMap(request);
 		Apartment apartment = Data.getApartments().get(Integer.valueOf(requestData.get("id").split(" ")[0]));
 		if (apartment == null) {
@@ -243,6 +248,9 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateActive (@Context HttpServletRequest request) throws IOException, ParseException {
+		if (Utility.getRole(request) != Role.HOST) {
+			return Response.status(401).build(); 
+		}
 		Map<String, String> requestData = Utility.getBodyMap(request);
 		Apartment apartment = Data.getApartments().get(Integer.valueOf(requestData.get("id").split(" ")[0]));
 		if (apartment == null) {
@@ -254,6 +262,13 @@ public class ApartmentService {
 				if (requestData.get("isActive").equals("true ")) {
 					Date ativeFrom = new SimpleDateFormat("yyyy-MM-dd").parse(requestData.get("activeFrom"));
 					Date activeTo = new SimpleDateFormat("yyyy-MM-dd").parse(requestData.get("activeTo"));
+					Calendar c = Calendar.getInstance();
+					c.setTime(ativeFrom);
+					c.add(Calendar.DATE, 1);
+					ativeFrom = c.getTime();
+					c.setTime(activeTo);
+					c.add(Calendar.DATE, 1);
+					activeTo = c.getTime();
 					apartment.setActive(true);
 					apartment.setFirstAvailable(ativeFrom);
 					apartment.setLastAvailable(activeTo);
@@ -267,11 +282,38 @@ public class ApartmentService {
 			}
 			return Response.status(401).build();
 		}
-		
-		
-		
-		
 		return Response.status(401).build();
 	}
-
+	
+	@GET
+	@Path("/dates")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getFreeDates (@Context HttpServletRequest request) throws IOException {
+		if (Utility.getRole(request) != Role.GUEST) {
+			return Response.status(401).build(); 
+		}
+		Apartment apartment = (Apartment) request.getSession().getAttribute("selected_apartment");
+		if (apartment == null) {
+			return Response.status(404).build();
+		}
+		Date firstDate = apartment.getFirstAvailable();
+		Date lastAvailable = apartment.getLastAvailable();
+		ArrayList<ArrayList<String>> retVal = new ArrayList<ArrayList<String>> ();
+		Date temp = firstDate;
+		Calendar c = Calendar.getInstance();
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		ArrayList<String> tempList;
+		while (temp.before(lastAvailable)) {
+			System.out.println(temp.toString() + ": " + dateFormat.format(temp));
+			tempList = new ArrayList<String>();
+			tempList.add(temp.toString());
+			tempList.add(dateFormat.format(temp));
+			retVal.add(tempList);
+			c.setTime(temp);
+			c.add(Calendar.DATE, 1);
+			temp = c.getTime();
+		}
+		return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
+	}
 } 
