@@ -17,6 +17,11 @@ var checkinTime = "";
 var checkoutTime = "";
 var noOfGuests = "";
 
+var showActive = true;
+
+var activeFrom = "";
+var activeTo = "";
+
 var role = "";
 
 $(document).ready(function (){
@@ -36,20 +41,24 @@ $(document).ready(function (){
 			$('#b_users').show();
 			$('#b_addApartment').hide();
 			$('#b_amenities').show();
+			$('#t_activateDeactivate').hide();
 		}
 		else if (role === 'HOST') {
 			$('#b_users').hide();
 			$('#b_addApartment').show();
 			$('#b_amenities').hide();
+			$('#t_activateDeactivate').show();
 		}
 		else {
 			$('#b_users').hide();
 			$('#b_addApartment').hide();
 			$('#b_amenities').hide();
+			$('#t_activateDeactivate').hide();
 		}
 		if (role === undefined) {
 			$('#b_profile').hide();
 			$('#b_logout').hide();
+			$('#t_activateDeactivate').hide();
 		}
 	});
 	
@@ -70,6 +79,9 @@ $(document).ready(function (){
 	$('#b_amenities').click(function() {
 		window.location.href = 'amenities.html';
 	});
+	$('#b_updateActive').click(function () {
+		updateActive();
+	})
 	
 	$('#b_logout').click(function () {
 		$.ajax({
@@ -102,6 +114,7 @@ $(document).ready(function (){
 			$('.out').hide();
 		}
 	});
+	
 	
 	
 });
@@ -157,7 +170,23 @@ function fillInApartmentData() {
 	$('#l_checkOut').text(apartment.checkoutTime);
 	$('#i_checkOut').val(apartment.checkoutTime);
 	checkoutTime = apartment.checkoutTime;
+	
+	if (apartment.active) {
+		$('#d_active').val('yes');
+		$('#t_active').show();
+		var first = new Date(apartment.firstAvailable);
+		var today = new Date(apartment.firstAvailable).toISOString().split('T')[0];
+		$("#i_activeFrom").val(today);
+		var today = new Date(apartment.lastAvailable).toISOString().split('T')[0];
+		$("#i_activeTill").val(today);
+	}
+	else {
+		$('#d_active').val('no');
+		$('#t_active').hide();
+	}
+	
 }
+//(1995, 11, 17)    
 
 function getLocationData (id) {
 	$.ajax({
@@ -414,6 +443,70 @@ function postUpdatedAddress () {
 }
 
 
+function checkActive () {
+	if ($('#d_active').val() === "yes") {
+		$('#t_active').show();
+	}
+	else {
+		$('#t_active').hide();
+	}
+}
 
 
 
+
+function updateActive() {
+	$('#w_emptyActiveYes').hide();
+	$('#w_valueActiveYes').hide();
+	$('#w_emptyActiveNo').hide();
+	$('#w_valueActiveNo').hide();
+	if ($('#d_active').val() === "yes") {
+		activeFrom = $('#i_activeFrom').val();
+		activeTo = $('#i_activeTill').val();
+		var today = new Date();
+		
+		if (activeFrom === "") {	
+			$('#w_emptyActiveYes').show();
+		}
+		else if (today >= (new Date(activeFrom))) {
+			$('#w_valueActiveYes').show();
+		}
+		else if (activeTo === "") {
+			$('#w_emptyActiveNo').show();
+		}
+		else if ((new Date(activeFrom)) >= (new Date(activeTo))) {
+			$('#w_valueActiveNo').show();
+		}
+		else {
+			putActive(true);	
+		}
+	}
+	else {
+		putActive(false);
+	}
+}
+
+
+function putActive(value) {
+	var today = new Date();
+	$.ajax({
+		type: "PUT",
+		url: "http://localhost:8080/NarsProj/rest/apartments/active",
+		contentType: "application/json;charset=utf-8",
+		dataType: "json", 
+		data: JSON.stringify({
+			"id": apartment.id + " ",
+			"activeFrom": activeFrom, 
+			"activeTo" : activeTo, 
+			"isActive": value + " "
+		}), 
+		error: function () {
+			alert("Error while updating apartment!");
+		}
+	}).then (function (data) {
+		if (data) {
+			alert ("Apartment active status updated! ");
+			window.location.href = "apartment_details.html";
+		}
+	});
+}

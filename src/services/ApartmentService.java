@@ -2,7 +2,10 @@ package services;
 
 import java.io.IOException;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -214,6 +217,9 @@ public class ApartmentService {
 	public Response updateApartment (@Context HttpServletRequest request) throws IOException {
 		Map<String, String> requestData = Utility.getBodyMap(request);
 		Apartment apartment = Data.getApartments().get(Integer.valueOf(requestData.get("id").split(" ")[0]));
+		if (apartment == null) {
+			return Response.status(404).build();
+		}
 		apartment.setCheckinTime(new Time((int) Integer.valueOf(requestData.get("checkinTime").split(":")[0]), 
 				(int) Integer.valueOf(requestData.get("checkinTime").split(":")[1]), 0));
 		apartment.setCheckoutTime(new Time((int) Integer.valueOf(requestData.get("checkoutTime").split(":")[0]), 
@@ -232,5 +238,40 @@ public class ApartmentService {
 		return Response.ok(true, MediaType.APPLICATION_JSON).build();	
 	}
 	
-	
+	@PUT
+	@Path("/active")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateActive (@Context HttpServletRequest request) throws IOException, ParseException {
+		Map<String, String> requestData = Utility.getBodyMap(request);
+		Apartment apartment = Data.getApartments().get(Integer.valueOf(requestData.get("id").split(" ")[0]));
+		if (apartment == null) {
+			return Response.status(404).build();
+		}
+		if (Utility.getRole(request) == Role.HOST) {
+			if (apartment.getHost().equals(request.getSession().getAttribute("username"))) {
+				Utility.printMap(requestData);
+				if (requestData.get("isActive").equals("true ")) {
+					Date ativeFrom = new SimpleDateFormat("yyyy-MM-dd").parse(requestData.get("activeFrom"));
+					Date activeTo = new SimpleDateFormat("yyyy-MM-dd").parse(requestData.get("activeTo"));
+					apartment.setActive(true);
+					apartment.setFirstAvailable(ativeFrom);
+					apartment.setLastAvailable(activeTo);
+					Data.saveApartments();
+				}
+				else {
+					apartment.setActive(false);
+					Data.saveApartments();
+				}
+				return Response.ok(true, MediaType.APPLICATION_JSON).build();
+			}
+			return Response.status(401).build();
+		}
+		
+		
+		
+		
+		return Response.status(401).build();
+	}
+
 } 

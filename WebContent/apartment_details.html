@@ -44,216 +44,275 @@
 			<h1 id="title">Apartment details</h1>
 		</div>
 		<div class="content">
- 			<table>
+			<table>
 				<tr>
-					<td>Longitude</td>
-					<td>
-						<input id="i_long" type="number" step="0.0001" class="in"/>
+					<td rowspan="27">
+			 			<table>
+							<tr>
+								<td>Longitude</td>
+								<td>
+									<input id="i_long" type="number" step="0.0001" class="in"/>
+								</td>
+								<td>
+									<label id="l_long" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyLongitude" class="warning">Longitude can not be empty! </label>
+									<br class="warning" />
+									<label id="w_valueLongitude" class="warning">Longitude value must be between -180 and 180! </label>
+								</td>
+							</tr>
+							<tr>
+								<td>Latitude</td>
+								<td>
+									<input id="i_lat" type="number" step="0.0001" class="in"/>
+								</td>
+								<td>
+									<label id="l_lat" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyLatitude" class="warning">Latitude can not be empty! </label>
+									<br class="warning" />
+									<label id="w_valueLatitude" class="warning">Latitude value must be between -90 and 90! </label>
+								</td>
+							</tr>
+							<tr>
+								<td>Street number</td>
+								<td>
+									<input id="i_strNu" type="number" min="1" class="in"/>
+								</td>
+								<td>
+									<label id="l_strNu" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyStreetNu" class="warning">Street number can not be empty! </label>
+									<br class="warning" />
+									<label id="w_valueStreetNu" class="warning">Street number must be positive! </label>
+								</td>
+							</tr>
+							<tr>
+								<td>Street name</td>
+								<td>
+									<input id="i_strNa" type="text" class="in"/>
+								</td>
+								<td>
+									<label id="l_strNa" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyStreetNa" class="warning">Street name can not be empty! </label>
+								</td>
+							</tr>
+							<tr>
+								<td>Town</td>
+								<td>
+									<input id="i_town" type="text" class="in"/>
+								</td>
+								<td>
+									<label id="l_town" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyTownNa" class="warning">Town can not be empty! </label>
+								</td>
+							</tr>
+							<tr>
+								<td>Zip code</td>
+								<td>
+									<input id="i_zip" type="number" class="in"/>
+								</td>
+								<td>
+									<label id="l_zip" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyZip" class="warning">Zip code can not be empty! </label>
+									<br class="warning" />
+									<label id="w_valueZip" class="warning">Zip code must be positive! </label>
+								</td>
+							</tr>
+							<tr>
+								<td>Country</td>
+								<td>
+									<input id="i_coun" type="text" class="in"/>
+								</td>
+								<td>
+									<label id="l_coun" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyCountry" class="warning">Country can not be empty! </label>
+								</td>
+							</tr>
+							<tr>
+								<td>Single room/apartment</td>
+								<td>
+									<select class="in" name="singleRoom" id="singleRoom" onchange="blockNOR()">
+										<option value="-">-</option>
+										<option value="room">Single room</option>
+										<option value="apartment">Apartment</option>
+									</select>
+								</td>
+								<td>
+									<label id="l_singleRoom" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyType" class="warning">You have to select a room type! </label>
+								</td>
+							</tr>
+							<tr id="r_numberOfRooms" hidden="true">
+								<td>
+									<label id="l_numberOfRooms">Number of rooms</label>
+								</td>
+								<td>
+									<input id="i_nor" type="number" hidden="true" class="in"/>
+								</td>
+								<td>
+									<label id="l_nor" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyNuOfRooms" class="warning">Number of rooms can not be empty! </label>
+									<br class="warning" />
+									<label id="w_valueNuOfRooms" class="warning">Number of rooms must be positive! </label>
+								</td>
+							</tr>
+							<tr>
+								<td>Price per night</td>
+								<td>
+									<input id="i_ppn" type="number" step="0.01" class="in"/>
+									<label class="in">$</label>
+								</td>
+								<td>
+									<label id="l_ppn" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyPrice" class="warning">Price per night can not be empty! </label>
+									<br class="warning" />
+									<label id="w_valuePrice" class="warning">Price per night must be positive! </label>
+								</td>
+							</tr>
+							<tr>
+								<td>Checkin time</td>
+								<td>
+									<input id="i_checkIn" type="time" class="in"/>
+								</td>
+								<td>
+									<label id="l_checkIn" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyCheckin" class="warning">Please provide a check-in time in format HH:MM aa! </label>
+								</td>
+							</tr>
+							<tr>
+								<td>Checkout time</td>
+								<td>
+									<input id="i_checkOut" type="time" class="in"/>
+								</td>
+								<td>
+									<label id="l_checkOut" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyCheckout" class="warning">Please provide a check-in time in format HH:MM aa! </label>
+								</td>
+							</tr>
+							<tr>
+								<td>Maximum alowed gusets: </td>
+								<td>
+									<input id="i_noOfGuests" type="number" class="in"/>
+								</td>
+								<td>
+									<label id="l_noOfGuests" class="out">Placeholder</label>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label id="w_emptyNoOfGuests" class="warning">Maximum alowed number of guests can not be empty! </label>
+									<br class="warning" />
+									<label id="w_valueNoOfGuests" class="warning">Maximum alowed number of guests must be positive! </label>
+								</td>
+							</tr>	
+							<tr>
+								<td colspan="3" align="center">
+									<button id="b_confirm">Confirm</button>
+								</td>
+							</tr>
+						</table>
 					</td>
-					<td>
-						<label id="l_long" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyLongitude" class="warning">Longitude can not be empty! </label>
-						<br class="warning" />
-						<label id="w_valueLongitude" class="warning">Longitude value must be between -180 and 180! </label>
-					</td>
-				</tr>
-				<tr>
-					<td>Latitude</td>
-					<td>
-						<input id="i_lat" type="number" step="0.0001" class="in"/>
-					</td>
-					<td>
-						<label id="l_lat" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyLatitude" class="warning">Latitude can not be empty! </label>
-						<br class="warning" />
-						<label id="w_valueLatitude" class="warning">Latitude value must be between -90 and 90! </label>
-					</td>
-				</tr>
-				<tr>
-					<td>Street number</td>
-					<td>
-						<input id="i_strNu" type="number" min="1" class="in"/>
-					</td>
-					<td>
-						<label id="l_strNu" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyStreetNu" class="warning">Street number can not be empty! </label>
-						<br class="warning" />
-						<label id="w_valueStreetNu" class="warning">Street number must be positive! </label>
-					</td>
-				</tr>
-				<tr>
-					<td>Street name</td>
-					<td>
-						<input id="i_strNa" type="text" class="in"/>
-					</td>
-					<td>
-						<label id="l_strNa" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyStreetNa" class="warning">Street name can not be empty! </label>
-					</td>
-				</tr>
-				<tr>
-					<td>Town</td>
-					<td>
-						<input id="i_town" type="text" class="in"/>
-					</td>
-					<td>
-						<label id="l_town" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyTownNa" class="warning">Town can not be empty! </label>
-					</td>
-				</tr>
-				<tr>
-					<td>Zip code</td>
-					<td>
-						<input id="i_zip" type="number" class="in"/>
-					</td>
-					<td>
-						<label id="l_zip" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyZip" class="warning">Zip code can not be empty! </label>
-						<br class="warning" />
-						<label id="w_valueZip" class="warning">Zip code must be positive! </label>
-					</td>
-				</tr>
-				<tr>
-					<td>Country</td>
-					<td>
-						<input id="i_coun" type="text" class="in"/>
-					</td>
-					<td>
-						<label id="l_coun" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyCountry" class="warning">Country can not be empty! </label>
-					</td>
-				</tr>
-				<tr>
-					<td>Single room/apartment</td>
-					<td>
-						<select class="in" name="singleRoom" id="singleRoom" onchange="blockNOR()">
-							<option value="-">-</option>
-							<option value="room">Single room</option>
-							<option value="apartment">Apartment</option>
-						</select>
-					</td>
-					<td>
-						<label id="l_singleRoom" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyType" class="warning">You have to select a room type! </label>
-					</td>
-				</tr>
-				<tr id="r_numberOfRooms" hidden="true">
-					<td>
-						<label id="l_numberOfRooms">Number of rooms</label>
-					</td>
-					<td>
-						<input id="i_nor" type="number" hidden="true" class="in"/>
-					</td>
-					<td>
-						<label id="l_nor" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyNuOfRooms" class="warning">Number of rooms can not be empty! </label>
-						<br class="warning" />
-						<label id="w_valueNuOfRooms" class="warning">Number of rooms must be positive! </label>
-					</td>
-				</tr>
-				<tr>
-					<td>Price per night</td>
-					<td>
-						<input id="i_ppn" type="number" step="0.01" class="in"/>
-						<label class="in">$</label>
-					</td>
-					<td>
-						<label id="l_ppn" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyPrice" class="warning">Price per night can not be empty! </label>
-						<br class="warning" />
-						<label id="w_valuePrice" class="warning">Price per night must be positive! </label>
-					</td>
-				</tr>
-				<tr>
-					<td>Checkin time</td>
-					<td>
-						<input id="i_checkIn" type="time" class="in"/>
-					</td>
-					<td>
-						<label id="l_checkIn" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyCheckin" class="warning">Please provide a check-in time in format HH:MM aa! </label>
-					</td>
-				</tr>
-				<tr>
-					<td>Checkout time</td>
-					<td>
-						<input id="i_checkOut" type="time" class="in"/>
-					</td>
-					<td>
-						<label id="l_checkOut" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyCheckout" class="warning">Please provide a check-in time in format HH:MM aa! </label>
-					</td>
-				</tr>
-				<tr>
-					<td>Maximum alowed gusets: </td>
-					<td>
-						<input id="i_noOfGuests" type="number" class="in"/>
-					</td>
-					<td>
-						<label id="l_noOfGuests" class="out">Placeholder</label>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<label id="w_emptyNoOfGuests" class="warning">Maximum alowed number of guests can not be empty! </label>
-						<br class="warning" />
-						<label id="w_valueNoOfGuests" class="warning">Maximum alowed number of guests must be positive! </label>
-					</td>
-				</tr>	
-				<tr>
-					<td colspan="3" align="center">
-						<button id="b_confirm">Confirm</button>
+					<td rowspan="27">
+						<table id="t_activateDeactivate">
+							<tr>
+								<td>Active status: </td>
+								<td>
+									<select id="d_active" onchange="checkActive()">
+										<option value="yes">Yes</option>
+										<option value="no">No</option>
+									</select>
+								</td>
+								<td>
+									<button id="b_updateActive">Confirm</button>
+								</td>
+								<td >
+									<table id="t_active">
+										<tr id="r_activeFrom">
+											<td>Active from</td>
+											<td>
+												<input type="date" id="i_activeFrom">
+											</td>
+											<td>
+												<p> </p>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3">
+												<label style="color:red" id="w_emptyActiveYes" hidden="true">Please give a date! </label>
+												<br hidden="true"/>
+												<label style="color:red" id="w_valueActiveYes" hidden="true">Date must be after today! </label>
+											</td>
+										</tr>
+										<tr id="r_activeTo">
+											<td>Active till</td>
+											<td>
+												<input type="date" id="i_activeTill">
+											</td>
+											<td>
+												<p> </p>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3">
+												<label style="color:red" id="w_emptyActiveNo" hidden="true">Please give a date! </label>
+												<br hidden="true"/>
+												<label style="color:red" id="w_valueActiveNo" hidden="true">Date must be after the from date! </label>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
 					</td>
 				</tr>
 			</table>
+			
 		</div>
 	</body>
 </html>
