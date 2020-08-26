@@ -66,9 +66,9 @@ public class Data {
 			} catch (Exception e) {
 				System.out.println("Data: Error while loading addresses! ");
 				
-				Address a1 = new Address(1, 30, "Stevana Musica", "Novi Sad", "21000", "Serbia");
-				Address a2 = new Address(2, 21, "Stevan Musica", "Novi Sad", "21000", "Serbia");
-				Address a3 = new Address(3, 31, "Skadarska", "Beograd", "11000", "Serbia");
+				Address a1 = new Address(1, 12, "Stevana Musica", "Novi Sad", "21000", "Serbia");
+				Address a2 = new Address(2, 41, "Stevan Musica", "Novi Sad", "21000", "Serbia");
+				Address a3 = new Address(3, 25, "Skadarska", "Beograd", "11000", "Serbia");
 				addresses = new HashMap<Integer, Address> ();
 				addresses.put(a1.getId(), a1);
 				addresses.put(a2.getId(), a2);
@@ -160,14 +160,26 @@ public class Data {
 				reservations = obj.readValue(new File(pathPrefix + "reservations.txt"), new TypeReference<Map<Integer, Reservation>>() {});
 			} catch (Exception e) {
 				System.out.println("Error while loading reservations! ");
-				Reservation r1 = new Reservation(1, 1, "gue1@mail.com", new Date(120, 10, 15), new Date(120, 10, 25), 14.4, "Please", ReservationStatus.CREATED);
+				Reservation r1 = new Reservation(1, 1, "gue1@mail.com", new Date(120, 10, 15), new Date(120, 10, 25), 11.45, "Please", ReservationStatus.CREATED);
+				Reservation r2 = new Reservation(2, 3, "gue1@mail.com", new Date(120, 9, 15), new Date(120, 9, 25), 12.45, "Please", ReservationStatus.DENIED);
+				Reservation r3 = new Reservation(3, 1, "gue1@mail.com", new Date(120, 8, 15), new Date(120, 8, 25), 13.45, "Please", ReservationStatus.CANCELED);
+				Reservation r4 = new Reservation(4, 3, "gue1@mail.com", new Date(120, 11, 15), new Date(120, 11, 25), 14.45, "Please", ReservationStatus.ACCEPTED);
+				Reservation r5 = new Reservation(5, 3, "gue1@mail.com", new Date(120, 02, 15), new Date(120, 02, 25), 14.45, "Please", ReservationStatus.ACCEPTED);
+				Reservation r6 = new Reservation(6, 1, "gue1@mail.com", new Date(120, 7, 15), new Date(120, 7, 25), 15.45, "Please", ReservationStatus.FINISHED);
 				reservations = new HashMap<Integer, Reservation> ();
 				reservations.put(r1.getId(), r1);
+				reservations.put(r2.getId(), r2);
+				reservations.put(r3.getId(), r3);
+				reservations.put(r4.getId(), r4);
+				reservations.put(r5.getId(), r5);
+				reservations.put(r6.getId(), r6);
 				Data.saveReservations();
 			}
 		}
 		return reservations;
 	}
+	
+
 	
 	public static void saveUsers () {
 		try {

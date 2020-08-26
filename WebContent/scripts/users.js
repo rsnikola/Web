@@ -66,10 +66,12 @@ $(document).ready(function() {
 	$('#b_profile').click(function () {
 		window.location.href = "user_details.html";
 	});
-	
 	$('#b_amenities').click (function () {
 		window.location.href = "amenities.html"
-	})
+	});
+	$('#b_reservations').click(function () {
+		window.location.href = "reservations.html";
+	});
 	
 	// Dobavi spisak sa beka
 	$.ajax({

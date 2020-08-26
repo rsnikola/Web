@@ -77,6 +77,10 @@ $(document).ready(function() {
 	$('#b_addApartment').click (function () {
 		window.location.href = 'add_apartment.html';
 	}); 
+	
+	$('#b_reservations').click (function () {
+		window.location.href = "reservations.html";
+	});
 
 	$('.warning').hide();
 	

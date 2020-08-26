@@ -96,6 +96,9 @@ $(document).ready(function (){
 	$('#b_makeReservation').click(function () {
 		window.location.href = "reserve.html";
 	});
+	$('#b_reservations').click(function () {
+		window.location.href = "reservations.html";
+	});
 	
 	
 	

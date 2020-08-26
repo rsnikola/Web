@@ -76,6 +76,10 @@ $(document).ready(function() {
 	$('#b_profile').click (function () {
 		window.location.href = "user_details.html";
 	});
+	$('#b_reservations').click(function() {
+		window.location.href = "reservations.html";
+	});
+	
 	
 	$('#b_addAmenities').click (function () {
 		getData();

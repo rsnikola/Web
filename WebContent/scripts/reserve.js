@@ -1,4 +1,5 @@
-dates = "";
+var dates = "";
+var role;
 
 $(document).ready(function (){
 	
@@ -54,6 +55,12 @@ $(document).ready(function (){
 	
 	$('#b_confirm').click(function () {
 		sendReservationRequest();
+	});
+	$('#b_addApartment').click(function () {
+		window.location.href = "add_apartment.html";
+	});
+	$('#b_reservations').click(function () {
+		window.location.href = "reservations.html";
 	});
 	
 });

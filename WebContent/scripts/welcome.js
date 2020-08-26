@@ -17,6 +17,7 @@ $(document).ready(function() {
 			$('#b_login').hide();
 			$('#b_logout').show();
 			$('#b_profile').show();
+			$('#b_reservations').show();
 			
 			// Podela funkcionalnosti po ulogama
 			if (role === 'ADMIN') {
@@ -158,6 +159,10 @@ $(document).ready(function() {
 	$('#b_amenities').click (function () {
 		window.location.href = 'amenities.html';
 	}); 
+	
+	$('#b_reservations').click(function () {
+		window.location.href = "reservations.html";
+	});
 
 	
 });
