@@ -83,17 +83,105 @@
 			<h1>Rent a place!</h1>
 		</div>
 		<div class="content">
-			<table id="t_apartments">
-				<tr id="h_apartments">
-					<th>ID</th>
-					<th>Type</th>
-					<th>Number of rooms</th>
-					<th>Number of guests</th>
-					<th>Address</th>
-					<th>Owner</th>
-					<th>Price per night</th>
+			<table>
+				<tr>
+					<td>
+						<table>
+							<tr>
+								<td>From: </td>
+								<td>Until: </td>
+								<td>City: </td>
+								<td>Country: </td>
+								<td>Price min: </td>
+								<td>Price max: </td>
+								<td>Type: </td>
+							</tr>
+							<tr>
+								<td>
+									<input id="i_fromDate" type="date" />
+								</td>
+								<td>
+									<input id="i_toDate" type="date" />
+								</td>
+								<td>
+									<input id="i_city" type="text"/>
+								</td>
+								<td>
+									<input id="i_country" type="text"/>
+								</td>
+								<td>
+									<input id="i_priceMin" type="number" step="0.01" min="0" />
+								</td>
+								<td>
+									<input id="i_priceMax" type="number" step="0.01" min="0" />
+								</td>
+								<td>
+									<select id="o_type">
+										<option value="-">-</option>
+										<option value="apartment">Full apartment</option>
+										<option value="room">Single room</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>Room # min: </td>
+								<td>Room # max: </td>
+								<td>Guest # min: </td>
+								<td>Guest # max: </td>
+								<td>Sort price: </td>
+								<td>
+									<button id="b_search">Search</button>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input id="i_roomsMin" type="number" step="1" min="1" />
+								</td>
+								<td>
+									<input id="i_roomsMax" type="number" step="1" min="1" />
+								</td>
+								<td>
+									<input id="i_guestsMin" type="number" step="1" min="1" />
+								</td>
+								<td>
+									<input id="i_guestsMax" type="number" step="1" min="1" />
+								</td>
+								<td>
+									<select id="o_ascDesc" onchange="">
+										<option value="asc">Ascending</option>
+										<option value="desc">Descending</option>
+									</select>
+								</td>
+								<td>
+									<button>Clear all</button>
+								</td>
+							</tr>
+						</table>
+					</td>
 				</tr>
+				<tr>
+					<td>
+						<table id="t_apartments">
+							<tr id="h_apartments">
+								<th>ID</th>
+								<th>Type</th>
+								<th>First available date</th>
+								<th>Last available date</th>
+								<th>Number of rooms</th>
+								<th>Number of guests</th>
+								<th>Address</th>
+								<th>Owner</th>
+								<th>Price per night</th>
+							</tr>
+							<tbody id="t_apartmentsBody">
+								
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			
 			</table>
+
 		</div>
 	</body>
 </html>

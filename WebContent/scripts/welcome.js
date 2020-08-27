@@ -1,3 +1,18 @@
+var fromDate = "";
+var toDate = "";
+var city = "";
+var country = "";
+var priceMin = "";
+var priceMax = "";
+var roomsMin = "";
+var roomsMax = "";
+var guestsMin = "";
+var guestsMax = "";
+var ascDesc = "";
+var sorted;
+var apartmentType = "-";
+
+
 $(document).ready(function() {
 	
 	var role = null;
@@ -113,37 +128,7 @@ $(document).ready(function() {
 		window.location.href = "user_details.html";
 	}) 
 	
-	// Popuni tabelu sa apartmanima
-	$.ajax({
-		type: "GET", 
-		url: "http://localhost:8080/NarsProj/rest/apartments/", 
-		contentType: "application/json;charset=utf-8",
-		dataType: "json"
-	}).then (function (data) {
-		for (let i = 0; i < data.length; ++i) {
-			$.ajax({
-				type: "GET", 
-				url: "http://localhost:8080/NarsProj/rest/apartments/address/" + data[i].location, 
-				contentType: "application/json;charset=utf-8",
-				dataType: "json"
-			}).then (function (loc) {
-				data[i].location = loc.retVal;
-				let onClickString = "\"window.location.href=\'apartment_details.html\'\"";
-				$('#t_apartments').append(
-//						"<tr onclick=" + onClickString + ">" +
-						"<tr onclick=" + "\'selectApartment(" + data[i].id + ")\'" + ">" +
-							"<td>" + data[i].id + "</td>" +
-							"<td>" + ((data[i].type === "ROOM") ? ("Single room") : ("Full apartment")) + "</td>" +
-							"<td>" + data[i].rooms + "</td>" +
-							"<td>" + data[i].guests + "</td>" +
-							"<td>" + data[i].location + "</td>" +
-							"<td>" + data[i].host + "</td>" +
-							"<td> $" + data[i].pricePerNight + "</td>" +
-						"</tr>"
-					);
-			});
-		}
-	});
+	search();
 	
 	// ToUsers
 	$('#b_users').click (function () {
@@ -164,7 +149,9 @@ $(document).ready(function() {
 		window.location.href = "reservations.html";
 	});
 
-	
+	$('#b_search').click(function () {
+		search();
+	})
 });
 
 // Kada kliknem na apartman, zelim da je bas taj apartman selektovan
@@ -178,3 +165,101 @@ function selectApartment (apartmentId) {
 		window.location.href="apartment_details.html";
 	});
 }
+
+
+function search () {
+	getData();
+	$.ajax({
+		type: "POST",
+		url: "http://localhost:8080/NarsProj/rest/apartments/filter",
+		contentType: "application/json;charset=utf-8",
+		dataType: "json", 
+		data: JSON.stringify({
+			"fromDate": fromDate, 
+			"toDate": toDate,
+			"city": city, 
+			"country": country,
+			"priceMin": priceMin, 
+			"priceMax": priceMax,
+			"roomsMin": roomsMin, 
+			"roomsMax": roomsMax,
+			"guestsMin": guestsMin, 
+			"guestsMax": guestsMax, 
+			"ascDesc": ascDesc, 
+			"apartmentType": apartmentType
+		})
+	}).then (function (response){
+		sorted = response;
+	}).then (function () {
+		
+		$("#t_apartmentsBody").empty();
+
+		sorted.forEach(element => putRow(element));
+	});
+}
+
+function getData() {
+	fromDate = (($('#i_fromDate').val() === "") ? ("unfiltered") : ($('#i_fromDate').val()));
+	toDate = (($('#i_toDate').val() === "") ? ("unfiltered") : ($('#i_toDate').val()));
+	city = (($('#i_city').val() === "") ? ("unfiltered") : ($('#i_city').val()));
+	country = (($('#i_country').val() === "") ? ("unfiltered") : ($('#i_country').val()));
+	priceMin = (($('#i_priceMin').val() === "") ? ("unfiltered") : ($('#i_priceMin').val()));
+	priceMax = (($('#i_priceMax').val() === "") ? ("unfiltered") : ($('#i_priceMax').val()));
+	roomsMin = (($('#i_roomsMin').val() === "") ? ("unfiltered") : ($('#i_roomsMin').val()));
+	roomsMax = (($('#i_roomsMax').val() === "") ? ("unfiltered") : ($('#i_roomsMax').val()));
+	guestsMin = (($('#i_guestsMin').val() === "") ? ("unfiltered") : ($('#i_guestsMin').val()));
+	guestsMax = (($('#i_guestsMax').val() === "") ? ("unfiltered") : ($('#i_guestsMax').val()));
+	ascDesc = (($('#o_ascDesc').val() === "") ? ("unfiltered") : ($('#o_ascDesc').val()));
+	apartmentType = (($('#o_type').val() === "-") ? ("unfiltered") : ($('#o_type').val()));
+}
+
+function putRow (row) {
+	$('#t_apartmentsBody').append(
+		"<tr onclick=" + "\'selectApartment(" + row.id + ")\'" + ">" +
+			"<td>" + row.id + "</td>" +
+			"<td>" + 
+				row.type + 
+			"</td>" +
+			"<td>" +
+				row.firstDate +
+			"</td>" +
+			"<td>" + 
+				row.lastDate +
+			"</td>" +
+			"<td>" + row.rooms + "</td>" +
+			"<td>" + row.guests + "</td>" +
+			"<td>" + row.address + "</td>" +
+			"<td>" + row.owner + "</td>" +
+			"<td> $" + row.price + "</td>" +
+		"</tr>"
+	);
+}
+
+
+
+
+//
+//$('#t_apartments').append(
+////		"<tr onclick=" + onClickString + ">" +
+//		"<tr onclick=" + "\'selectApartment(" + data[i].id + ")\'" + ">" +
+//			"<td>" + data[i].id + "</td>" +
+//			"<td>" + ((data[i].type === "ROOM") ? ("Single room") : ("Full apartment")) + "</td>" +
+//			"<td>" +
+//				new Date(data[i].firstAvailable).getDate() + "." +
+//				((new Date(data[i].firstAvailable).getMonth()) + 1) + "." +
+//				((new Date(data[i].firstAvailable).getYear()) + 1900) + "." +
+////				+ (new Date()) + 
+//			"</td>" +
+//			"<td>" + 
+//				new Date(data[i].lastAvailable).getDate() + "." +
+//				((new Date(data[i].lastAvailable).getMonth()) + 1) + "." +
+//				((new Date(data[i].lastAvailable).getYear()) + 1900) + "." +
+////				data[i].lastAvailable + 
+//			"</td>" +
+//			"<td>" + data[i].rooms + "</td>" +
+//			"<td>" + data[i].guests + "</td>" +
+//			"<td>" + data[i].location + "</td>" +
+//			"<td>" + data[i].host + "</td>" +
+//			"<td> $" + data[i].pricePerNight + "</td>" +
+//		"</tr>"
+//	);

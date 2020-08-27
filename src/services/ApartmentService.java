@@ -23,6 +23,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import dto.ApartmentOverviewDTO;
 import model.Address;
 import model.Apartment;
 import model.Data;
@@ -316,4 +317,274 @@ public class ApartmentService {
 		}
 		return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
 	}
+	
+	@POST
+	@Path("/filter")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response filter (@Context HttpServletRequest request) throws IOException {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
+		Map<String, String> requestData = Utility.getBodyMap(request);
+		Utility.printMap(requestData);
+		if (Utility.getRole(request) == Role.ADMIN) {
+			for (Apartment a : Data.getApartments().values()) {
+				if (!a.isDeleted()) {
+					retVal.add(a);
+				}
+			}
+		}
+		else if ((Utility.getRole(request) == Role.GUEST) || (Utility.getRole(request) == Role.UNREGISTERED)) {
+			for (Apartment a : Data.getApartments().values()) {
+				if (!a.isDeleted()) {
+					if (a.isActive()) {
+						retVal.add(a);
+					}
+				}
+			}
+		}
+		else if (Utility.getRole(request) == Role.HOST) {
+			for (Apartment a : Data.getApartments().values()) {
+				if (!a.isDeleted()) {
+					if (a.getHost().equals(request.getSession().getAttribute("username"))) {
+						retVal.add(a);
+					}
+				}
+			}
+		}
+		if (!requestData.get("fromDate").equals("unfiltered")) {
+			retVal = filterFromDate(retVal, requestData.get("fromDate"));
+		}
+		if (!requestData.get("priceMin").equals("unfiltered")) {
+			retVal = filterPriceMin(retVal, requestData.get("priceMin"));
+		}
+		if (!requestData.get("country").equals("unfiltered")) {
+			retVal = filterCountry(retVal, requestData.get("country"));
+		}
+		if (!requestData.get("priceMax").equals("unfiltered")) {
+			retVal = filterPriceMax(retVal, requestData.get("priceMax"));
+		}
+		if (!requestData.get("roomsMin").equals("unfiltered")) {
+			retVal = filterRoomsMin(retVal, requestData.get("roomsMin"));
+		}
+		if (!requestData.get("city").equals("unfiltered")) {
+			retVal = filterCity(retVal, requestData.get("city"));
+		}
+		if (!requestData.get("roomsMax").equals("unfiltered")) {
+			retVal = filterRoomsMax(retVal, requestData.get("roomsMax"));
+		}
+		if (!requestData.get("guestsMax").equals("unfiltered")) {
+			retVal = filterGuestsMax(retVal, requestData.get("guestsMax"));
+		}
+		if (!requestData.get("toDate").equals("unfiltered")) {
+			retVal = filterToDate(retVal, requestData.get("toDate"));
+		}
+		if (!requestData.get("guestsMin").equals("unfiltered")) {
+			retVal = filterGuestsMin(retVal, requestData.get("guestsMin"));
+		}
+		if (!requestData.get("apartmentType").equals("unfiltered")) {
+			retVal = filterType(retVal, requestData.get("apartmentType"));
+		}
+		// Nakon sto sam profiltrirao, vreme je da sortiram
+		if (requestData.get("ascDesc").equals("asc")) {
+			retVal = sortAsc(retVal);
+		}
+		else {
+			retVal = sortDesc(retVal);
+		}
+		ArrayList<ApartmentOverviewDTO> dto = new ArrayList<ApartmentOverviewDTO> ();
+		for (int i = 0; i < retVal.size(); ++i) {
+			ApartmentOverviewDTO newDto = new ApartmentOverviewDTO(retVal.get(i));
+			dto.add(newDto);
+		}
+		return Response.ok(dto, MediaType.APPLICATION_JSON).build();
+	}
+
+	private ArrayList<Apartment> filterFromDate (ArrayList<Apartment> input, String fromDate) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment> ();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date dat = new Date();
+		try {
+			dat = dateFormat.parse(fromDate);
+		} 
+		catch (Exception e) {
+			System.out.println("Nisam uspeo da parsiram " + fromDate);
+			return null;
+		}
+		for (Apartment a : input) {
+			if (!a.getFirstAvailable().before(dat)) {
+				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+	
+	private ArrayList<Apartment> filterToDate (ArrayList<Apartment> input, String fromDate) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment> ();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date dat = new Date();
+		try {
+			dat = dateFormat.parse(fromDate);
+		
+
+		    Calendar cLastAvailable = Calendar.getInstance();
+			for (Apartment a : input) {
+			    cLastAvailable.setTime(a.getLastAvailable());
+			    cLastAvailable.set(Calendar.HOUR, 0);
+			    cLastAvailable.set(Calendar.MINUTE, 0);
+			    cLastAvailable.set(Calendar.SECOND, 0);
+			    cLastAvailable.set(Calendar.MILLISECOND, 0);
+				if (!cLastAvailable.getTime().after(dat)) {
+					retVal.add(a);
+				    System.out.println(dateFormat.format(cLastAvailable.getTime()));
+				    System.out.println("V");
+				    System.out.println(dateFormat.format(dat));
+				}
+			}
+		} 
+		catch (Exception e) {
+			System.out.println("Nisam uspeo da parsiram " + fromDate);
+			return null;
+		}  
+		return retVal;
+	}
+	
+	private ArrayList<Apartment> filterPriceMin (ArrayList<Apartment> input, String priceMin) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
+		for (Apartment a : input) {
+			if (a.getPricePerNight() >= Double.parseDouble(priceMin)) {
+				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+	
+	private ArrayList<Apartment> filterPriceMax (ArrayList<Apartment> input, String priceMax) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
+		for (Apartment a : input) {
+			if (a.getPricePerNight() <= Double.parseDouble(priceMax)) {
+				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+
+	private ArrayList<Apartment> filterCountry(ArrayList<Apartment> input, String country) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
+		for (Apartment a : input) {
+			Location loc = Data.getLocations().get(a.getLocation());
+			Address adr = Data.getAddresses().get(loc.getAddress());
+			if (adr.getCountry().toLowerCase().contains(country.toLowerCase())) {
+				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+	
+	private ArrayList<Apartment> filterCity(ArrayList<Apartment> input, String city) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
+		for (Apartment a : input) {
+			Location loc = Data.getLocations().get(a.getLocation());
+			Address adr = Data.getAddresses().get(loc.getAddress());
+			if (adr.getTown().toLowerCase().contains(city.toLowerCase())) {
+				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+
+	private ArrayList<Apartment> filterRoomsMin (ArrayList<Apartment> input, String roomsMin) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
+		for (Apartment a : input) {
+			if (a.getRooms() >= Integer.valueOf(roomsMin)) {
+				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+	
+	private ArrayList<Apartment> filterRoomsMax (ArrayList<Apartment> input, String roomsMax) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
+		for (Apartment a : input) {
+			if (a.getRooms() <= Integer.valueOf(roomsMax)) {
+				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+	
+	private ArrayList<Apartment> filterGuestsMax (ArrayList<Apartment> input, String guestsMax) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
+		for (Apartment a : input) {
+			if (a.getGuests() <= Integer.valueOf(guestsMax)) {
+				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+
+	private ArrayList<Apartment> filterGuestsMin (ArrayList<Apartment> input, String guestsMin) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
+		for (Apartment a : input) {
+			if (a.getGuests() >= Integer.valueOf(guestsMin)) {
+				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+	
+	private ArrayList<Apartment> sortAsc (ArrayList<Apartment> input) {
+		Apartment temp;
+		Apartment[] list = new Apartment[input.size()];
+		for (int i = 0; i < input.size(); ++i) {
+			list[i] = input.get(i);
+		}
+		for (int i = 0; i < input.size() - 1; ++i) {
+			for (int j = i + 1; j < input.size(); ++j) {
+				if (list[i].getPricePerNight() > list[j].getPricePerNight()) {
+					temp = list[i];
+					list[i] = list[j];
+					list[j] = temp;
+				}
+			}
+		}
+		input = new ArrayList<Apartment> ();
+		for (int i = 0; i < list.length; ++i) {
+			input.add(list[i]);
+		}
+		return input;
+	}
+	
+	private ArrayList<Apartment> sortDesc (ArrayList<Apartment> input) {
+		Apartment temp;
+		Apartment[] list = new Apartment[input.size()];
+		for (int i = 0; i < input.size(); ++i) {
+			list[i] = input.get(i);
+		}
+		for (int i = 0; i < input.size() - 1; ++i) {
+			for (int j = i + 1; j < input.size(); ++j) {
+				if (list[i].getPricePerNight() < list[j].getPricePerNight()) {
+					temp = list[i];
+					list[i] = list[j];
+					list[j] = temp;
+				}
+			}
+		}
+		input = new ArrayList<Apartment> ();
+		for (int i = 0; i < list.length; ++i) {
+			input.add(list[i]);
+		}
+		return input;
+	}
+	
+	private ArrayList<Apartment> filterType (ArrayList<Apartment> input, String type) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment> ();
+		ApartmentType t = ((type.equals("apartment")) ? (ApartmentType.APARTMENT) : (ApartmentType.ROOM));
+		for (Apartment a : input) {
+			if (a.getType() == t) {
+				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+	
 } 

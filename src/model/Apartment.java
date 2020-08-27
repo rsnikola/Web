@@ -20,8 +20,6 @@ public class Apartment {
 	
 	private ArrayList<Integer> comments; 
 	
-//	private Image image;
-	
 	private double pricePerNight;
 	private Time checkinTime;
 	private Time checkoutTime;
@@ -64,7 +62,7 @@ public class Apartment {
 		this.location = location;
 		this.host = host;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}

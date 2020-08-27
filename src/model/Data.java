@@ -112,13 +112,13 @@ public class Data {
 				System.out.println("Data: Error while loading apartments! ");
 				
 				Apartment a1 = new Apartment(1, ApartmentType.APARTMENT, 3, 5, 1, new Date(120, 10, 2), new Date(120, 10, 20), "hos2@mail.com", 
-							new ArrayList<Integer>(), 12.99, new Time(2, 2, 2), new Time(3, 3, 3), true, new ArrayList<Integer> (), 
+							new ArrayList<Integer>(), 11.99, new Time(2, 2, 2), new Time(3, 3, 3), true, new ArrayList<Integer> (), 
 							new ArrayList<Integer>());
 				Apartment a2 = new Apartment(2, ApartmentType.APARTMENT, 2, 3, 2, new Date(120, 10, 12), new Date(120, 11, 13), "hos2@mail.com", 
 						new ArrayList<Integer>(), 12.99, new Time(2, 2, 2), new Time(3, 3, 3), false, new ArrayList<Integer> (), 
 						new ArrayList<Integer>());
 				Apartment a3 = new Apartment(3, ApartmentType.ROOM, 1, 1, 3, new Date(120, 10, 12), new Date(120, 11, 9), "hos1@mail.com", 
-								new ArrayList<Integer>(), 12.99, new Time(2, 2, 2), new Time(3, 3, 3), true, new ArrayList<Integer> (), 
+								new ArrayList<Integer>(), 13.99, new Time(2, 2, 2), new Time(3, 3, 3), true, new ArrayList<Integer> (), 
 								new ArrayList<Integer>());
 				apartments = new HashMap<Integer, Apartment> ();
 				apartments.put(a1.getId(), a1);
