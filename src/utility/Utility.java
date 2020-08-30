@@ -13,7 +13,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import model.Apartment;
 import model.Data;
+import model.Reservation;
 import model.User;
 import model.enumerations.Role;
 
@@ -46,11 +48,45 @@ public class Utility {
 	public static ArrayList<User> getAllUsers () {
 		ArrayList<User> retVal = new ArrayList<User> ();
 		for (String s : Data.getUsers().keySet()) {
-			retVal.add(Data.getUsers().get(s));
+			if (!Data.getUsers().get(s).isDeleted()) {
+				retVal.add(Data.getUsers().get(s));
+			}
 		}
 		return retVal;
 	}
-	
+
+	public static ArrayList<User> getMyGuests (String host) {
+		HashMap<String, Boolean> userCheck = new HashMap<String, Boolean> ();
+		ArrayList<User> retVal = new ArrayList<User> ();
+		// Izvuci mi sve goste
+		for (User u : Data.getUsers().values()) {
+			if (!u.isDeleted()) {
+				if (u.getRole() == Role.GUEST) {
+					userCheck.put(u.getUsername(), false);
+				}
+			}
+		}
+		// Prodji kroz sve moje rezervacije, i u spisku otkaci sve moje goste
+		for (Reservation r : Data.getReservations().values()) {
+			if (!r.isDeleted()) {
+				Apartment a = Data.getApartments().get(r.getApartment());
+				if (a != null) {
+					if (!a.isDeleted()) {
+						if (a.getHost().equals(host)) {
+							userCheck.put(r.getGuest(), true);
+						}
+					}
+				}
+			}
+		}
+		for (String s : userCheck.keySet()) {
+			if (userCheck.get(s)) {
+				retVal.add(Data.getUsers().get(s));
+			}
+		}
+		return retVal;
+	}
+ 	
 	public static ArrayList<User> paginateUsers (ArrayList<User> users, Integer page) {
 		ArrayList<User> retVal = new ArrayList<User> ();
 		for (int i = page * 5; i < page * 5 + 5; ++i) {

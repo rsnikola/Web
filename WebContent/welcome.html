@@ -128,7 +128,8 @@
 								<td>Room # max: </td>
 								<td>Guest # min: </td>
 								<td>Guest # max: </td>
-								<td>Sort price: </td>
+								<td>Sort by: </td>
+								<td>Sort ascending/descending: </td>
 								<td>
 									<button id="b_search">Search</button>
 								</td>
@@ -145,6 +146,19 @@
 								</td>
 								<td>
 									<input id="i_guestsMax" type="number" step="1" min="1" />
+								</td>
+								<td>
+									<select id="o_crit">
+										<option value="-">-</option>
+										<option value="firstAvailable">First available date</option>
+										<option value="lastAvailable">Last available date</option>
+										<option value="noOfRooms">Number of rooms</option>
+										<option value="noOfGuests">Number of guests</option>
+										<option value="price">Price</option>
+										<option value="city">City</option>
+										<option value="country">Country</option>
+										<option value="type">Type</option>
+									</select>
 								</td>
 								<td>
 									<select id="o_ascDesc" onchange="">
@@ -174,7 +188,7 @@
 								<th>Price per night</th>
 							</tr>
 							<tbody id="t_apartmentsBody">
-								
+								<!-- Data goes here -->
 							</tbody>
 						</table>
 					</td>

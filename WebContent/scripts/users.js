@@ -6,9 +6,11 @@ var gender = "unfiltered";
 var role = "unfiltered";
 var last = false;
 
+// Ulogovani korisnik
+var rol = null;
+
 $(document).ready(function() {
 	
-	var role = null;
 	
 	$('#l_page').text(page + 1);
 	
@@ -19,33 +21,41 @@ $(document).ready(function() {
 		contentType : "application/json;charset=utf-8",
 		dataType : "json", 
 	}).then(function(data) {
-		role = data;
+		rol = data;
 	}).then (function () {	
 		
 		// Podela funkcionalnosti po ulogama
-		if (role === 'ADMIN') {
+		if (rol === 'ADMIN') {
 			$('#b_users').show();
 			$('#b_addApartment').hide();
+			$('#b_amenities').show();
 		}
-		else if (role === 'HOST') {
-			$('#b_users').hide();
+		else if (rol === 'HOST') {
+			$('#b_users').show();
 			$('#b_addApartment').show();
+			$('#b_amenities').hide();
 		}
 		else {
 			$('#b_users').hide();
 			$('#b_addApartment').hide();
+			$('#b_amenities').hide();
 		}
 		
-		if (role != null) {
+		if (rol != null) {
 		
 		} else {
 			// Ako korisnik nije ulogovan
 			window.location.href = "welcome.html";
 		}
-		if (role === 'ADMIN') {
-			$('.i_changeRole').show();
+		if (rol === 'ADMIN') {
+//			$('.i_changeRole').show();
 			$('.l_role').hide();
-			
+		}
+		else if (rol === 'HOST') {
+			$('.i_changeRole').hide();
+			$('.l_role').show();
+			$('#i_role').hide();
+			//i_role
 		}
 		//document.getElementById("myP").style.visibility = "hidden";
 	});
@@ -72,6 +82,9 @@ $(document).ready(function() {
 	$('#b_reservations').click(function () {
 		window.location.href = "reservations.html";
 	});
+	$('#b_addApartment').click(function () {
+		window.location.href = "add_apartment.html";
+	});
 	
 	// Dobavi spisak sa beka
 	$.ajax({
@@ -82,6 +95,8 @@ $(document).ready(function() {
 		dataType : "json", 
 	}).then(function(data) {
 		showData(data);
+	}).then (function () {
+    	
 	});
 	
 	$('#b_prev').click(function () {
@@ -135,6 +150,10 @@ $(document).ready(function() {
 				$('#b_next').attr("disabled", false);
 			}
 			d = data;
+			
+			
+			
+			
 		}).then (function () {
 			if (d[0].username === null) {
 				page--;
@@ -340,6 +359,19 @@ function getData () {
 		else {
 			$('#b_next').attr("disabled", false);
 		}
+    	
+    	
+    	
+//    	$.ajax({
+//			type: "GET",
+//			url: "http://localhost:8080/NarsProj/rest/users/nextPage/" + page,
+//			contentType : "application/json;charset=utf-8",
+//			dataType : "json", 
+//		}).then(function(data) {
+//			alert("something");
+//		});
+    	
+    	
 	});
 }
 
@@ -358,18 +390,37 @@ function showData (data) {
 			case 'ADMIN':
 				$('#p_role' + (i + 1)).text("admin");
 				$('#i_role' + (i + 1)).val("ADMIN");
+				if (rol === 'ADMIN') {
+					$('#i_role' + (i + 1)).show();
+				}
 				break;
 			case 'HOST':
 				$('#p_role' + (i + 1)).text("host");
 				$('#i_role' + (i + 1)).val("HOST");
+				if (rol === 'ADMIN') {
+					$('#i_role' + (i + 1)).show();
+				}
 				break;
 			case 'GUEST':
 				$('#p_role' + (i + 1)).text("guest");
 				$('#i_role' + (i + 1)).val("GUEST");
+				if (rol === 'ADMIN') {
+					$('#i_role' + (i + 1)).show();
+				}
 				break;
+			case null:
+				$('#p_role' + (i + 1)).text("-");
+				$('#i_role' + (i + 1)).hide();
 			default: 
 				$('#p_role' + (i + 1)).text("-");
+//				$('#i_role' + (i + 1)).hide();
 				break;
 		}
+//		if (rol === 'HOST') {
+//			$('#p_role' + (i + 1)).prop('disabled', true);
+//		}
+		
+		
+		
 	}
 }

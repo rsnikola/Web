@@ -385,12 +385,13 @@ public class ApartmentService {
 			retVal = filterType(retVal, requestData.get("apartmentType"));
 		}
 		// Nakon sto sam profiltrirao, vreme je da sortiram
-		if (requestData.get("ascDesc").equals("asc")) {
-			retVal = sortAsc(retVal);
-		}
-		else {
-			retVal = sortDesc(retVal);
-		}
+//		if (requestData.get("ascDesc").equals("asc")) {
+//			retVal = sortAsc(retVal);
+//		}
+//		else {
+//			retVal = sortDesc(retVal);
+//		}
+		retVal = sort(retVal, requestData.get("ascDesc"), requestData.get("sort"));
 		ArrayList<ApartmentOverviewDTO> dto = new ArrayList<ApartmentOverviewDTO> ();
 		for (int i = 0; i < retVal.size(); ++i) {
 			ApartmentOverviewDTO newDto = new ApartmentOverviewDTO(retVal.get(i));
@@ -531,50 +532,7 @@ public class ApartmentService {
 		}
 		return retVal;
 	}
-	
-	private ArrayList<Apartment> sortAsc (ArrayList<Apartment> input) {
-		Apartment temp;
-		Apartment[] list = new Apartment[input.size()];
-		for (int i = 0; i < input.size(); ++i) {
-			list[i] = input.get(i);
-		}
-		for (int i = 0; i < input.size() - 1; ++i) {
-			for (int j = i + 1; j < input.size(); ++j) {
-				if (list[i].getPricePerNight() > list[j].getPricePerNight()) {
-					temp = list[i];
-					list[i] = list[j];
-					list[j] = temp;
-				}
-			}
-		}
-		input = new ArrayList<Apartment> ();
-		for (int i = 0; i < list.length; ++i) {
-			input.add(list[i]);
-		}
-		return input;
-	}
-	
-	private ArrayList<Apartment> sortDesc (ArrayList<Apartment> input) {
-		Apartment temp;
-		Apartment[] list = new Apartment[input.size()];
-		for (int i = 0; i < input.size(); ++i) {
-			list[i] = input.get(i);
-		}
-		for (int i = 0; i < input.size() - 1; ++i) {
-			for (int j = i + 1; j < input.size(); ++j) {
-				if (list[i].getPricePerNight() < list[j].getPricePerNight()) {
-					temp = list[i];
-					list[i] = list[j];
-					list[j] = temp;
-				}
-			}
-		}
-		input = new ArrayList<Apartment> ();
-		for (int i = 0; i < list.length; ++i) {
-			input.add(list[i]);
-		}
-		return input;
-	}
+
 	
 	private ArrayList<Apartment> filterType (ArrayList<Apartment> input, String type) {
 		ArrayList<Apartment> retVal = new ArrayList<Apartment> ();
@@ -583,6 +541,146 @@ public class ApartmentService {
 			if (a.getType() == t) {
 				retVal.add(a);
 			}
+		}
+		return retVal;
+	}
+	
+	private ArrayList<Apartment> sort (ArrayList<Apartment> input, String price, String criteria) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment> ();
+		Apartment temp;
+		Apartment[] list = new Apartment[input.size()];
+		for (int i = 0; i < input.size(); ++i) {
+			list[i] = input.get(i);
+		}
+		System.out.println("Criteria is: " + criteria);
+		switch (criteria) {
+			case "unfiltered":
+				for (int i = 0; i < input.size() - 1; ++i) {
+					for (int j = i + 1; j < input.size(); ++j) {
+						if (list[i].getPricePerNight() > list[j].getPricePerNight()) {
+							temp = list[i];
+							list[i] = list[j];
+							list[j] = temp;
+						}
+					}
+				}
+				break;
+			case "firstAvailable":
+				for (int i = 0; i < input.size() - 1; ++i) {
+					for (int j = i + 1; j < input.size(); ++j) {
+						if (((list[j].getFirstAvailable().before(list[i].getFirstAvailable()) && (price.equals("asc")) ||
+							((list[i].getFirstAvailable().before(list[j].getFirstAvailable()) && (price.equals("desc")))))))
+						{
+							temp = list[i];
+							list[i] = list[j];
+							list[j] = temp;
+						}
+					}
+				}
+				break;
+			case "lastAvailable":
+				for (int i = 0; i < input.size() - 1; ++i) {
+					for (int j = i + 1; j < input.size(); ++j) {
+						if (((list[i].getLastAvailable().before(list[j].getLastAvailable()) && (price.equals("desc")) ||
+							((list[j].getLastAvailable().before(list[i].getLastAvailable()) && (price.equals("asc")))))))
+						{
+							temp = list[i];
+							list[i] = list[j];
+							list[j] = temp;
+						}
+					}
+				}
+				break;
+			case "noOfRooms":
+				for (int i = 0; i < input.size() - 1; ++i) {
+					for (int j = i + 1; j < input.size(); ++j) {
+						if (((list[i].getRooms() > list[j].getRooms()) && (price.equals("asc"))) ||
+							((list[i].getRooms() < list[j].getRooms()) && (price.equals("desc"))))
+						{
+							temp = list[i];
+							list[i] = list[j];
+							list[j] = temp;
+						}
+					}
+				}
+				break;
+			case "noOfGuests":
+				for (int i = 0; i < input.size() - 1; ++i) {
+					for (int j = i + 1; j < input.size(); ++j) {
+						if (((list[i].getGuests() > list[j].getGuests()) && (price.equals("asc"))) ||
+							((list[i].getGuests() < list[j].getGuests()) && (price.equals("desc"))))
+						{
+							temp = list[i];
+							list[i] = list[j];
+							list[j] = temp;
+						}
+					}
+				}
+				break;
+			case "price":
+				for (int i = 0; i < input.size() - 1; ++i) {
+					for (int j = i + 1; j < input.size(); ++j) {
+						if (((list[i].getPricePerNight() > list[j].getPricePerNight()) && (price.equals("asc"))) ||
+							((list[i].getPricePerNight() < list[j].getPricePerNight()) && (price.equals("desc"))))
+						{
+							temp = list[i];
+							list[i] = list[j];
+							list[j] = temp;
+						}
+					}
+				}
+				break;
+			case "city":
+				for (int i = 0; i < input.size() - 1; ++i) {
+					for (int j = i + 1; j < input.size(); ++j) {
+						Location li = Data.getLocations().get(list[i].getLocation());
+						Location lj = Data.getLocations().get(list[j].getLocation());
+						Address ai = Data.getAddresses().get(li.getAddress());
+						Address aj = Data.getAddresses().get(lj.getAddress());
+						if (((ai.getTown().compareTo(aj.getTown()) > 0) && (price.equals("asc"))) ||
+							((ai.getTown().compareTo(aj.getTown()) < 0) && (price.equals("desc"))))
+						{
+							temp = list[i];
+							list[i] = list[j];
+							list[j] = temp;
+						}
+					}
+				}
+				break;
+			case "country":
+				for (int i = 0; i < input.size() - 1; ++i) {
+					for (int j = i + 1; j < input.size(); ++j) {
+						Location li = Data.getLocations().get(list[i].getLocation());
+						Location lj = Data.getLocations().get(list[j].getLocation());
+						Address ai = Data.getAddresses().get(li.getAddress());
+						Address aj = Data.getAddresses().get(lj.getAddress());
+						if (((ai.getCountry().compareTo(aj.getCountry()) > 0) && (price.equals("asc"))) ||
+							((ai.getCountry().compareTo(aj.getCountry()) < 0) && (price.equals("desc"))))
+						{
+							temp = list[i];
+							list[i] = list[j];
+							list[j] = temp;
+						}
+					}
+				}
+				break;
+			case "type":
+				for (int i = 0; i < input.size() - 1; ++i) {
+					for (int j = i + 1; j < input.size(); ++j) {
+						if (((list[i].getType().compareTo(list[j].getType()) > 0) && (price.equals("asc"))) ||
+							(((list[i].getType().compareTo(list[j].getType()) < 0) && (price.equals("desc")))))
+						{
+							temp = list[i];
+							list[i] = list[j];
+							list[j] = temp;
+						}
+					}
+				}
+				break;
+			
+		}
+		for (Apartment a : list) {
+			retVal.add(a);
 		}
 		return retVal;
 	}

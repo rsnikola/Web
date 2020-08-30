@@ -171,6 +171,12 @@ public class UserService {
 			retVal = Utility.paginateUsers(filter(allUsers, email, firstName, 
 					lastName, gender, role), p);
 		}
+		else if (Utility.getRole(request) == Role.HOST) {
+			ArrayList<User> myUsers = Utility.getMyGuests((String) request.getSession().getAttribute("username"));
+			
+			retVal = Utility.paginateUsers(filter(myUsers, email, firstName, 
+					lastName, gender, role), p);
+		}
 		else {
 			return Response.status(Response.Status.FORBIDDEN).build();
 		}
@@ -259,10 +265,10 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getUsers (@Context HttpServletRequest request, 
 				@PathParam("username") String username, @PathParam("role") String role) {
-		System.out.println("================================================================================");
-		System.out.println("Username: " + username);
-		System.out.println("Role: " + role);
-		System.out.println("================================================================================");
+//		System.out.println("================================================================================");
+//		System.out.println("Username: " + username);
+//		System.out.println("Role: " + role);
+//		System.out.println("================================================================================");
 		if (Utility.getRole(request) == Role.ADMIN) {
 			User user = Data.getUsers().get(username);
 			switch (role) {
@@ -283,7 +289,7 @@ public class UserService {
 			}
 		}
 		else { 
-			return Response.ok(false, MediaType.APPLICATION_JSON).build();
+			return Response.status(405).build();
 		}
 
 		

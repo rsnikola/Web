@@ -31,8 +31,18 @@ public class ApartmentOverviewDTO {
 				break;
 		}
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		this.firstDate = dateFormat.format(apartment.getFirstAvailable());
-		this.lastDate = dateFormat.format(apartment.getLastAvailable());
+		if (apartment.getFirstAvailable() != null) {
+			this.firstDate = dateFormat.format(apartment.getFirstAvailable());
+		}
+		else {
+			this.firstDate = "-";
+		}
+		if (apartment.getLastAvailable() != null) {
+			this.lastDate = dateFormat.format(apartment.getLastAvailable());
+		}
+		else {
+			this.lastDate = "-";
+		}
 		this.rooms = apartment.getRooms() + "";
 		this.guests = apartment.getGuests() + "";
 		Location loc = Data.getLocations().get(apartment.getLocation());

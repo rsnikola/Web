@@ -11,6 +11,7 @@ var guestsMax = "";
 var ascDesc = "";
 var sorted;
 var apartmentType = "-";
+var cirteria = "-";
 
 
 $(document).ready(function() {
@@ -41,7 +42,7 @@ $(document).ready(function() {
 				$('#b_amenities').show();
 			}
 			else if (role === 'HOST') {
-				$('#b_users').hide();
+				$('#b_users').show();
 				$('#b_addApartment').show();
 				$('#b_amenities').hide();
 			}
@@ -107,6 +108,7 @@ $(document).ready(function() {
 				window.location.href = "welcome.html";
 			} else {
 				$('#p_data').text("Login failed");
+				alert("Username and password do not match an existing user! ");
 			}
 		});
 	});
@@ -186,7 +188,8 @@ function search () {
 			"guestsMin": guestsMin, 
 			"guestsMax": guestsMax, 
 			"ascDesc": ascDesc, 
-			"apartmentType": apartmentType
+			"apartmentType": apartmentType, 
+			"sort": cirteria
 		})
 	}).then (function (response){
 		sorted = response;
@@ -211,6 +214,7 @@ function getData() {
 	guestsMax = (($('#i_guestsMax').val() === "") ? ("unfiltered") : ($('#i_guestsMax').val()));
 	ascDesc = (($('#o_ascDesc').val() === "") ? ("unfiltered") : ($('#o_ascDesc').val()));
 	apartmentType = (($('#o_type').val() === "-") ? ("unfiltered") : ($('#o_type').val()));
+	cirteria = (($('#o_crit').val() === "-") ? ("unfiltered") : ($('#o_crit').val()));
 }
 
 function putRow (row) {
@@ -235,31 +239,3 @@ function putRow (row) {
 	);
 }
 
-
-
-
-//
-//$('#t_apartments').append(
-////		"<tr onclick=" + onClickString + ">" +
-//		"<tr onclick=" + "\'selectApartment(" + data[i].id + ")\'" + ">" +
-//			"<td>" + data[i].id + "</td>" +
-//			"<td>" + ((data[i].type === "ROOM") ? ("Single room") : ("Full apartment")) + "</td>" +
-//			"<td>" +
-//				new Date(data[i].firstAvailable).getDate() + "." +
-//				((new Date(data[i].firstAvailable).getMonth()) + 1) + "." +
-//				((new Date(data[i].firstAvailable).getYear()) + 1900) + "." +
-////				+ (new Date()) + 
-//			"</td>" +
-//			"<td>" + 
-//				new Date(data[i].lastAvailable).getDate() + "." +
-//				((new Date(data[i].lastAvailable).getMonth()) + 1) + "." +
-//				((new Date(data[i].lastAvailable).getYear()) + 1900) + "." +
-////				data[i].lastAvailable + 
-//			"</td>" +
-//			"<td>" + data[i].rooms + "</td>" +
-//			"<td>" + data[i].guests + "</td>" +
-//			"<td>" + data[i].location + "</td>" +
-//			"<td>" + data[i].host + "</td>" +
-//			"<td> $" + data[i].pricePerNight + "</td>" +
-//		"</tr>"
-//	);

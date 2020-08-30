@@ -35,7 +35,7 @@ $(document).ready(function() {
 			$('#b_addApartment').hide();
 		}
 		else if (role === 'HOST') {
-			$('#b_users').hide();
+			$('#b_users').show();
 			$('#b_addApartment').show();
 		}
 		else {

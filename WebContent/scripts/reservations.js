@@ -19,8 +19,15 @@ $(document).ready(function (){
 		}
 		if (role !== 'ADMIN') {
 			$('#b_amenities').hide();
-			$('#b_users').hide();
+//			$('#b_users').hide();
 		}
+		
+		if ((role === 'ADMIN') || (role === 'HOST')) {
+			$('#b_users').show();
+		}
+		else {
+			$('#b_users').hide();
+		} 
 
 	}).then(function () {
 		$.ajax({

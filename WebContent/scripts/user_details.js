@@ -27,7 +27,7 @@ $(document).ready(function() {
 			$('#b_amenities').show();
 		}
 		else if (role === 'HOST') {
-			$('#b_users').hide();
+			$('#b_users').show();
 			$('#b_addApartment').show();
 			$('#b_amenities').hide();
 		}
