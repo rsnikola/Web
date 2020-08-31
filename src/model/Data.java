@@ -27,6 +27,7 @@ public class Data {
 	private static HashMap<Integer, Apartment> apartments = null;
 	private static HashMap<Integer, Amenity> amenities = null;
 	private static HashMap<Integer, Reservation> reservations = null;
+	private static HashMap<Integer, Comment> comments = null;
 	private static ObjectMapper obj = new ObjectMapper();
 	
 	public static HashMap<String, User> getUsers () {	
@@ -179,6 +180,24 @@ public class Data {
 		return reservations;
 	}
 	
+	
+	public static HashMap<Integer, Comment> getComments () {
+		if (comments == null) {
+			System.out.println("Data: Loading comments");
+			try {
+				comments = obj.readValue(new File(pathPrefix + "comments.txt"), new TypeReference<Map<Integer, Comment>>() {});
+			} catch (Exception e) {
+				System.out.println("Error while loading comments! ");
+				Comment c1 = new Comment(1, "gue1@mail.com", 6, "Was nice, thx!", 4);
+				Comment c2 = new Comment(2, "gue1@mail.com", 2, "You bailed on me!", 1);
+				comments = new HashMap<Integer, Comment> ();
+				comments.put(c1.getId(), c1);
+				comments.put(c2.getId(), c2);
+				Data.saveComments();
+			}
+		}
+		return comments;
+	}
 
 	
 	public static void saveUsers () {
@@ -264,6 +283,20 @@ public class Data {
 			e.printStackTrace();
 		}
 		System.out.println("Data: Reservations saved. ");
+	}
+	
+	public static void saveComments () {
+		try {
+			String filePath = pathPrefix + "comments.txt";
+			
+			FileWriter fileWriter = new FileWriter(filePath);
+		    PrintWriter printWriter = new PrintWriter(fileWriter);
+		    printWriter.print(obj.writeValueAsString(comments));
+		    printWriter.close(); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Data: Comments saved. ");
 	}
 
 }

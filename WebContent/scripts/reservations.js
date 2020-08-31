@@ -95,84 +95,120 @@ $(document).ready(function (){
 });
 
 function showReservation(reservation) {
-	$.ajax({
-		type: "GET",
-		url: "http://localhost:8080/NarsProj/rest/reservation/address/" + reservation.apartment,
-		contentType : "application/json;charset=utf-8",
-		dataType : "json", 
-	}).then (function (data) {
-		reservation.apartment = (data.streetNumber + " " + data.street + " " + data.town + ", " + data.country);
-	}).then (function (){
-		$('#t_reservations').append(
-			"<tr>" +
-				"<td>" +
-					reservation.apartment +
-				"</td>" +
-				"<td>" +
-				reservation.guest +
-				"</td>" +
-				"<td>" +
-					new Date(reservation.start).getDate() + "." +
-					((new Date(reservation.start).getMonth()) + 1) + "." +
-					((new Date(reservation.start).getYear()) + 1900) + "." +
-				"</td>" +
-				"<td>" +
-					new Date(reservation.end).getDate() + "." +
-					((new Date(reservation.end).getMonth()) + 1) + "." +
-					((new Date(reservation.end).getYear()) + 1900) + "." +
-				"</td>" +
-				"<td>" +
-					reservation.price + "$" +
-				"</td>" +
-				"<td>" +
-					reservation.status.toLowerCase() +
-				"</td>" +
-				"<td class='c_cancel'>" +
-					"<button " + (((reservation.status ==='CREATED') || (reservation.status ==='ACCEPTED')) ? ("") : ("style='display:none;'")) +
-								 "onclick='cancel(" + reservation.id + ")'" +
-					">" +
-						"Cancel" +
-					"</button>" +
-				"</td>" +
-				"<td class='c_accept'>" +
-					"<button " + ((reservation.status === 'CREATED') ? ("") : ("style='display:none;'")) + 
-								" onclick='accept(" + reservation.id + ")'" + 
-					">" +
-						"Accept" +
-					"</button>" +
-				"</td>" +
-				"<td class='c_decline'>" +
-					"<button " + (((reservation.status ==='CREATED') || (reservation.status ==='ACCEPTED')) ? ("") : ("style='display:none;'")) + 
-						" onclick='decline(" + reservation.id + ")'" + 
-					">" +
-						"Decline" +
-					"</button>" +
-				"</td>" +
-				"<td class='c_end'>" +
-					"<button " + ((reservation.status === 'ACCEPTED') ? ("") : ("style='display:none;'")) + 
-						" onclick='end(" + reservation.id + ")'" +
-					">" +
-						"End" +
-					"</button>" +
-				"</td>" +
-			"</tr>"
-		);
-	}).then (function () {
-		if (role === 'ADMIN') {
-			$('.c_cancel').hide();
-			$('.c_accept').hide();
-			$('.c_decline').hide();
-			$('.c_end').hide();
-		}
-		else if (role === 'GUEST') {
-			$('.c_accept').hide();
-			$('.c_decline').hide();
-			$('.c_end').hide();
-		}
-		else if (role === 'HOST') {
-			$('.c_cancel').hide();
-		}
-	});	
+	$('#t_reservations').append(
+		"<tr>" +
+			"<td>" +
+				reservation.id +
+			"</td>" +
+			"<td>" +
+				reservation.address +
+			"</td>" +
+			"<td>" +
+			reservation.guest +
+			"</td>" +
+			"<td>" +
+				reservation.startDate +
+			"</td>" +
+			"<td>" +
+				reservation.endDate +
+			"</td>" +
+			"<td>" +
+				reservation.price + "$" +
+			"</td>" +
+			"<td>" +
+				reservation.status.toLowerCase() +
+			"</td>" +
+			"<td class='c_cancel'>" +
+				"<button " + (((reservation.status ==='Created') || (reservation.status ==='Accepted')) ? ("") : ("style='display:none;'")) +
+							 "onclick='cancel(" + reservation.id + ")'" +
+				">" +
+					"Cancel" +
+				"</button>" +
+			"</td>" +
+			"<td class='c_comment' " + 
+			(((reservation.status ==='Denied') || (reservation.status ==='Finished')) ? ("") : ("hidden")) + ">" +
+				"<input type='text' " + "id='i_commentText" + reservation.id + "' " + "/>" +
+			"</td>" +
+			"<td class='c_comment' " + 
+			(((reservation.status ==='Denied') || (reservation.status ==='Finished')) ? ("") : ("hidden")) + ">" +
+				"<select " + "id='o_rating" + reservation.id + "'" + ">" +
+					"<option value='-'>" +
+						"-" +
+					"</option>" +
+					"<option value='1'>" +
+						"1" +
+					"</option>" +
+					"<option value='2'>" +
+						"2" +
+					"</option>" +
+					"<option value='3'>" +
+						"3" +
+					"</option>" +
+					"<option value='4'>" +
+						"4" +
+					"</option>" +
+					"<option value='5'>" +
+						"5" +
+					"</option>" +
+				"</select>" +
+			"</td>" +
+			"<td class='c_comment' " + "onclick='postComment(" + reservation.id + ")' " +
+			((((reservation.status ==='Denied') || (reservation.status ==='Finished')) && (reservation.comment === "-")) ? ("") : ("hidden")) + ">" +
+				"<button>Post</button>" +
+			"</td>" +
+			"<td class='c_comment' " + "onclick='deleteComment(" + reservation.commentId + ")' " +
+			((((reservation.status ==='Denied') || (reservation.status ==='Finished')) && (reservation.comment !== "-")) ? ("") : ("hidden")) + ">" +
+				"<button>Delete</button>" +
+			"</td>" +
+			"<td class='c_accept'>" +
+				"<button " + ((reservation.status === 'Created') ? ("") : ("style='display:none;'")) + 
+							" onclick='accept(" + reservation.id + ")'" + 
+				">" +
+					"Accept" +
+				"</button>" +
+			"</td>" +
+			"<td class='c_decline'>" +
+				"<button " + (((reservation.status ==='Created') || (reservation.status ==='Accepted')) ? ("") : ("style='display:none;'")) + 
+					" onclick='decline(" + reservation.id + ")'" + 
+				">" +
+					"Decline" +
+				"</button>" +
+			"</td>" +
+			"<td class='c_end'>" +
+				"<button " + ((reservation.status === 'Accepted') ? ("") : ("style='display:none;'")) + 
+					" onclick='end(" + reservation.id + ")'" +
+				">" +
+					"End" +
+				"</button>" +
+			"</td>" +
+		"</tr>"
+	);
+	
+	
+	if (reservation.comment !== "-") {
+		$('#i_commentText' + reservation.id).val(reservation.comment);
+		$('#o_rating' + reservation.id).val(reservation.rating);
+	} 
+	else {
+		
+	}
+	if (role === 'ADMIN') {
+		$('.c_cancel').hide();
+		$('.c_accept').hide();
+		$('.c_decline').hide();
+		$('.c_end').hide();
+		$('.c_comment').hide();
+	}
+	else if (role === 'GUEST') {
+		$('.c_accept').hide();
+		$('.c_decline').hide();
+		$('.c_end').hide();
+//		$('.c_comment').show();
+	}
+	else if (role === 'HOST') {
+		$('.c_cancel').hide();
+		$('.c_comment').hide();
+	}
 }
 
 
@@ -255,3 +291,65 @@ function end (id) {
 	});
 }
 
+
+function postComment (reservationId) {
+	var text = $('#i_commentText' + reservationId).val();
+	var rating = $('#o_rating' + reservationId).val();
+//	alert ("Rating: " + rating + "; Text: " + text);
+	if (text === "") {
+		alert ("Please type a comment text!");
+		return;
+	}
+	if (rating === "-") {
+		alert("Please give a 1-5 rating!");
+		return;
+	}
+	$.ajax({
+		type: "POST",
+		url: "http://localhost:8080/NarsProj/rest/comments/",
+		contentType: "application/json;charset=utf-8",
+		dataType: "json", 
+		data: JSON.stringify({
+			"text": text + "", 
+			"rating": rating + "", 
+			"reservation": reservationId + ""
+		}), 
+		error: function () {
+			alert("Error while posting comment! Please log out, log in and try again. ");
+		}
+	}).then (function (data) {
+		if (data) {
+			alert("Comment sucessfully posted.");
+			window.location.href = "reservations.html";
+		}
+		else {
+			alert("Error while deleting comment! Please log out, log in and try again. ");
+		}
+	});
+}
+
+
+function deleteComment (reservationId) {
+	var text = $('#i_commentText' + reservationId).val();
+	var rating = $('#o_rating' + reservationId).val();
+	$.ajax({
+		type: "DELETE",
+		url: "http://localhost:8080/NarsProj/rest/comments/",
+		contentType: "application/json;charset=utf-8",
+		dataType: "json", 
+		data: JSON.stringify({
+			"id": reservationId + ""
+		}), 
+		error: function () {
+			alert("Error while deleting comment! Please log out, log in and try again. ");
+		}
+	}).then (function (data) {
+		if (data) {
+			alert("Comment sucessfully deleted.");
+			window.location.href = "reservations.html";
+		}
+		else {
+			alert("Error while deleting comment! Please log out, log in and try again. ");
+		}
+	});
+}

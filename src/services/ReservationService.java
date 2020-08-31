@@ -23,6 +23,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import dto.ReservationDTO;
 import model.Address;
 import model.Apartment;
 import model.Data;
@@ -126,7 +127,6 @@ public class ReservationService {
 					}
 				}
 			}
-			return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
 		}
 		else if (Utility.getRole(request) == Role.HOST) {
 			for (Reservation r : Data.getReservations().values()) {
@@ -137,7 +137,6 @@ public class ReservationService {
 					}
 				}
 			}
-			return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
 		}
 		else if (Utility.getRole(request) == Role.ADMIN) {
 			for (Reservation r : Data.getReservations().values()) {
@@ -145,11 +144,15 @@ public class ReservationService {
 					retVal.add(r);
 				}
 			}
-			return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
 		}
 		else {
 			return Response.status(401).build();
 		}
+		ArrayList<ReservationDTO> dtoList = new ArrayList<ReservationDTO> ();
+		for (Reservation r : retVal) {
+			dtoList.add(new ReservationDTO(r));
+		}
+		return Response.ok(dtoList, MediaType.APPLICATION_JSON).build();
 	}
 	
 	@GET

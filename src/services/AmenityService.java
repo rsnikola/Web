@@ -79,9 +79,9 @@ public class AmenityService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getAmenities (@Context HttpServletRequest request) {
-		if (Utility.getRole(request) != Role.ADMIN) {
-			return Response.status(401).build();
-		}
+//		if (Utility.getRole(request) != Role.ADMIN) {
+//			return Response.status(401).build();
+//		}
 		ArrayList<Amenity> retVal = new ArrayList<Amenity> ();
 		for (Amenity a : Data.getAmenities().values()) {
 			if (!a.isDeleted()) {

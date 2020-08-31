@@ -26,7 +26,7 @@ public class Apartment {
 	private boolean active;
 	private boolean deleted = false;
 	
-	private ArrayList<Integer> amenities;
+	private ArrayList<Integer> amenities = new ArrayList<Integer>();
 	private ArrayList<Integer> reservations;
 	
 	public Apartment() {

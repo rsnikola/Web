@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -25,6 +26,7 @@ import javax.ws.rs.core.Response;
 
 import dto.ApartmentOverviewDTO;
 import model.Address;
+import model.Amenity;
 import model.Apartment;
 import model.Data;
 import model.Location;
@@ -684,5 +686,83 @@ public class ApartmentService {
 		}
 		return retVal;
 	}
+	
+	@PUT
+	@Path("/amenity")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addAmenity (@Context HttpServletRequest request) throws IOException {
+		HashMap<String, String> requestData = Utility.getBodyMap(request);
+		Amenity amenity = null;
+		for (Amenity a : Data.getAmenities().values()) {
+			if (a.getName().equals(requestData.get("name"))) {
+				amenity = a;
+				break;
+			}
+		}
+		if (amenity == null) {
+			return Response.status(404).build();
+		}
+		Apartment apartment = (Apartment) request.getSession().getAttribute("selected_apartment");
+		boolean isNew = true;
+		for (Integer i : apartment.getAmenities()) {
+			if (i == amenity.getId()) {
+				isNew = false;
+				break;
+			}
+		}
+		if (isNew) {
+			apartment.getAmenities().add(amenity.getId());
+			Data.saveApartments();
+		}
+		return Response.ok(true, MediaType.APPLICATION_JSON).build();
+	}
+	
+	
+	@GET
+	@Path("/amenities/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAmenities (@Context HttpServletRequest request, 
+				@PathParam("id") Integer id) {
+		Apartment apartment = Data.getApartments().get(id);
+		if (apartment == null) {
+			return Response.status(404).build();
+		}
+		ArrayList<Amenity> retVal = new ArrayList<Amenity>();
+		if (apartment.getAmenities() == null) {
+			apartment.setAmenities(new ArrayList<Integer>());
+		}
+ 		for (Integer i : apartment.getAmenities()) {
+			if (!Data.getAmenities().get(i).isDeleted()) {
+				retVal.add(Data.getAmenities().get(i));
+			}
+		}
+		return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
+	}
+	
+	
+	@DELETE
+	@Path("/amenities/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response removeAmenity (@Context HttpServletRequest request, 
+				@PathParam("id") Integer id) throws IOException {
+		Apartment apartment = Data.getApartments().get(id);
+		if (apartment == null) {
+			return Response.status(404).build();
+		}
+		HashMap<String, String> requestData = Utility.getBodyMap(request);
+		ArrayList<Integer> newList = new ArrayList<Integer>();
+		for (Integer i : apartment.getAmenities()) {
+			if (i != Integer.valueOf(requestData.get("delete"))) {
+				newList.add(i);
+			}
+		}
+		apartment.setAmenities(newList);
+		Data.saveApartments();
+		return Response.ok(true, MediaType.APPLICATION_JSON).build();
+	}
+	
 	
 } 

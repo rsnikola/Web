@@ -24,6 +24,9 @@ var activeTo = "";
 
 var role = "";
 
+var allAmenities;
+var apartmentAmenities;
+
 $(document).ready(function (){
 	
 	$.ajax({
@@ -43,6 +46,8 @@ $(document).ready(function (){
 			$('#b_amenities').show();
 			$('#t_activateDeactivate').hide();
 			$('#b_makeReservation').hide();
+			$('.c_amenities').hide();
+			$('#b_logout').show();
 		}
 		else if (role === 'HOST') {
 			$('#b_users').show();
@@ -50,6 +55,9 @@ $(document).ready(function (){
 			$('#b_amenities').hide();
 			$('#t_activateDeactivate').show();
 			$('#b_makeReservation').hide();
+			$('.c_amenities').show();
+			$('#b_reservations').show();
+			$('#b_logout').show();
 		}
 		else if (role === "GUEST") {
 			$('#b_users').hide();
@@ -57,6 +65,9 @@ $(document).ready(function (){
 			$('#b_amenities').hide();
 			$('#t_activateDeactivate').hide();
 			$('#b_makeReservation').show();
+			$('.c_amenities').hide();
+			$('#b_reservations').show();
+			$('#b_logout').show();
 		}
 		else {
 			$('#b_users').hide();
@@ -64,12 +75,16 @@ $(document).ready(function (){
 			$('#b_amenities').hide();
 			$('#t_activateDeactivate').hide();
 			$('#b_makeReservation').hide();
+			$('.c_amenities').hide();
+			$('#b_reservations').hide();
+			$('#b_logout').show();
 		}
 		if (role === undefined) {
 			$('#b_profile').hide();
 			$('#b_logout').hide();
 			$('#t_activateDeactivate').hide();
 			$('#b_makeReservation').hide();
+			$('#b_reservations').hide();
 		}
 	});
 	
@@ -134,7 +149,11 @@ $(document).ready(function (){
 		}
 	});
 	
+	getAmenityOptions();
 	
+	$('#b_addAmenity').click(function () {
+		addAmenity();
+	});
 	
 });
 
@@ -150,6 +169,8 @@ function getSelectedApartment () {
 	}).then (function (data) {
 		apartment = data;
 		getLocationData(apartment.location);
+	}).then (function () {
+		getAmenities();
 	}).then (function () {
 		fillInApartmentData();
 		if (apartment.type !=="APARTMENT") {
@@ -532,3 +553,121 @@ function putActive(value) {
 		}
 	});
 }
+
+
+function getAmenityOptions () {
+//	allAmenities = "-";
+	$.ajax({
+		type: "GET",
+		url: "http://localhost:8080/NarsProj/rest/amenities",
+		contentType: "application/json;charset=utf-8",
+		dataType: "json"
+	}).then(function (data) {
+		allAmenities = data;
+	}).then(function () {
+		allAmenities.forEach(element => appendAmenityOption(element));
+	});
+}
+
+
+function appendAmenityOption (value) {
+	$('#s_amenities').append(
+		"<option id='" + value.name + "'>" +
+			value.name + 
+		"</option>"
+	);
+}
+
+
+function addAmenity () {
+	var selectedAmenity = $('#s_amenities').val();
+//	alert (selectedAmenity);
+	$.ajax({
+		type: "PUT",
+		url: "http://localhost:8080/NarsProj/rest/apartments/amenity",
+		contentType: "application/json;charset=utf-8",
+		dataType: "json", 
+		data: JSON.stringify({
+			"name": selectedAmenity,
+		}), 
+		error: function () {
+			alert("Error while adding amenity!");
+		}
+	}).then (function (data) {
+		window.location.href = "apartment_details.html";
+	});
+}
+
+
+function getAmenities () {
+//	apartmentAmenities
+	$.ajax({
+		type: "GET",
+		url: "http://localhost:8080/NarsProj/rest/apartments/amenities/" + apartment.id,
+		contentType: "application/json;charset=utf-8",
+		dataType: "json"
+	}).then(function (data) {
+		apartmentAmenities = data;
+	}).then(function (data) {
+		apartmentAmenities.forEach (element => fillInAmenities(element));
+	});
+}
+
+
+function fillInAmenities (amenity) {
+	$('#t_amenity').append (
+		"<tr>" +
+			"<td> * " +
+				amenity.name + 
+			"</td>" +
+			"<td>" +
+				"<button onclick='removeAmenity(" + amenity.id + ")' " + " class='c_amenities'>" +
+					"Remove" +
+				"</button>" + 
+			"</td>" +
+		"</tr>"
+	);
+
+	if (role !== 'HOST') {
+		$('.c_amenities').hide();
+	}
+//	if (role !== 'HOST') {
+//		#('.c_amenities').hide();
+//	}
+}
+
+
+function removeAmenity (amenityId) {
+//	alert (amenityId);
+	$.ajax({
+		type: "DELETE",
+		url: "http://localhost:8080/NarsProj/rest/apartments/amenities/" + apartment.id,
+		contentType: "application/json;charset=utf-8",
+		dataType: "json", 
+		data: JSON.stringify({
+			"delete": amenityId + "",
+		}), 
+		error: function () {
+			alert("Error while deleting amenity!");
+		}
+	}).then (function (data) {
+		window.location.href = "apartment_details.html";
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
