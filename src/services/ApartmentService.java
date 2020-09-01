@@ -28,8 +28,10 @@ import dto.ApartmentOverviewDTO;
 import model.Address;
 import model.Amenity;
 import model.Apartment;
+import model.Comment;
 import model.Data;
 import model.Location;
+import model.Reservation;
 import model.enumerations.ApartmentType;
 import model.enumerations.Role;
 import utility.Utility;
@@ -764,5 +766,41 @@ public class ApartmentService {
 		return Response.ok(true, MediaType.APPLICATION_JSON).build();
 	}
 	
+	@GET
+	@Path("/{id}/comments")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getComments (@Context HttpServletRequest request, 
+			@PathParam("id") Integer id) {
+		ArrayList<Comment> retVal = new ArrayList<Comment> ();
+		if (Utility.getRole(request) == Role.HOST) {
+			for (Comment c : Data.getComments().values()) {
+				if (!c.isDeleted()) {
+					Reservation r = Data.getReservations().get(id);
+					if (r.getApartment() == id) {
+						retVal.add(c);
+					}
+				}
+			}
+		}
+		else if ((Utility.getRole(request) == Role.GUEST) || (Utility.getRole(request) == Role.UNREGISTERED)) {
+			for (Comment c : Data.getComments().values()) {
+				if (!c.isDeleted()) {
+					if (c.isShow()) {
+						retVal.add(c);
+					}
+				}
+			}
+		}
+		else if (Utility.getRole(request) == Role.ADMIN) {
+			for (Comment c : Data.getComments().values()) {
+				if (!c.isDeleted()) {
+					retVal.add(c);
+				}
+			}
+		}
+		
+		return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
+	}
 	
 } 

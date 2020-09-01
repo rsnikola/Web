@@ -127,7 +127,7 @@ function showReservation(reservation) {
 			"</td>" +
 			"<td class='c_comment' " + 
 			(((reservation.status ==='Denied') || (reservation.status ==='Finished')) ? ("") : ("hidden")) + ">" +
-				"<input type='text' " + "id='i_commentText" + reservation.id + "' " + "/>" +
+				"<input type='text' " + "id='i_commentText" + reservation.id + "' size='60' " + ((reservation.comment === "-") ? ("") : ("disabled")) + "/>" +
 			"</td>" +
 			"<td class='c_comment' " + 
 			(((reservation.status ==='Denied') || (reservation.status ==='Finished')) ? ("") : ("hidden")) + ">" +

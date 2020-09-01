@@ -10,11 +10,13 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import model.Apartment;
 import model.Comment;
 import model.Data;
 import model.Reservation;
@@ -85,5 +87,55 @@ public class CommentService {
 		return Response.ok(true, MediaType.APPLICATION_JSON).build();
 	}
 	
+	
+	@POST
+	@Path("/show/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response showComment (@Context HttpServletRequest request, 
+			@PathParam("id") Integer id) {
+		if (Utility.getRole(request) != Role.HOST) {
+			return Response.status(401).build();
+		}
+		Comment comment = Data.getComments().get(id);
+		if (comment == null) {
+			return Response.status(404).build();
+		}
+		Reservation reservation = Data.getReservations().get(comment.getReservation());
+		Apartment apartment = Data.getApartments().get(reservation.getApartment());
+		if (request.getSession().getAttribute("username").equals(apartment.getHost())) {
+			comment.setShow(true);
+			Data.saveComments();
+			return Response.ok(true, MediaType.APPLICATION_JSON).build();
+		}
+		else {
+			return Response.status(401).build();
+		}
+	}
+	
+	@POST
+	@Path("/hide/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response hideComment (@Context HttpServletRequest request, 
+				@PathParam("id") Integer id) {
+		if (Utility.getRole(request) != Role.HOST) {
+			return Response.status(401).build();
+		}
+		Comment comment = Data.getComments().get(id);
+		if (comment == null) {
+			return Response.status(404).build();
+		}
+		Reservation reservation = Data.getReservations().get(comment.getReservation());
+		Apartment apartment = Data.getApartments().get(reservation.getApartment());
+		if (request.getSession().getAttribute("username").equals(apartment.getHost())) {
+			comment.setShow(false);
+			Data.saveComments();
+			return Response.ok(true, MediaType.APPLICATION_JSON).build();
+		}
+		else {
+			return Response.status(401).build();
+		}
+	}
 	
 }

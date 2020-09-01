@@ -27,6 +27,8 @@ var role = "";
 var allAmenities;
 var apartmentAmenities;
 
+var comments;
+
 $(document).ready(function (){
 	
 	$.ajax({
@@ -155,6 +157,9 @@ $(document).ready(function (){
 		addAmenity();
 	});
 	
+	
+	
+	
 });
 
 function getSelectedApartment () {
@@ -171,6 +176,7 @@ function getSelectedApartment () {
 		getLocationData(apartment.location);
 	}).then (function () {
 		getAmenities();
+		getComments();
 	}).then (function () {
 		fillInApartmentData();
 		if (apartment.type !=="APARTMENT") {
@@ -656,16 +662,87 @@ function removeAmenity (amenityId) {
 }
 
 
+function getComments() {
+	$.ajax({
+		type: "GET",
+		url: "http://localhost:8080/NarsProj/rest/apartments/" + apartment.id + "/comments",
+		contentType: "application/json;charset=utf-8",
+		dataType: "json",
+		error: function () {
+			alert("Error while getting comments!");
+		}
+	}).then (function (data) {
+//		window.location.href = "apartment_details.html";
+		comments = data;
+	}).then (function () {
+		if (role === 'ADMIN') {
+			$('#r_commentHeader').append("<th>Shown</th>");
+		}
+		comments.forEach(element => showComment(element));
+	});
+}
 
 
+function showComment (comm) {
+	$('#t_comments').append (
+		"<tr>" +
+			"<td>" +
+				comm.guest + 
+			"</td>" +
+			"<td>" +
+				comm.rating + 
+			"</td>" +
+			"<td>" +
+				comm.text + 
+			"</td>" +
+			"<td " + ((role !== 'ADMIN') ? ("hidden") : ("")) + ">" +
+				"<label>" +
+					((comm.show) ? ("Yes") : ("No")) +
+				"</label>" +
+			"</td>" +
+			"<td " + (((comm.show) || (role !== 'HOST')) ? ("hidden") : ("")) + ">" +
+				"<button onclick='postShowComment(" + comm.id + ")' " + ">Show</button>" +
+			"</td>" +
+			"<td " + (((!comm.show) || (role !== 'HOST')) ? ("hidden") : ("")) + ">" +
+				"<button onclick='postHideComment(" + comm.id + ")' " + ">Hide</button>" +
+			"</td>" +
+		"</tr>"
+	);
+}
 
 
+function postShowComment (commentId) {
+//	alert (commentId);
+	
+	$.ajax({
+		type: "POST",
+		url: "http://localhost:8080/NarsProj/rest/comments/show/" + commentId,
+		contentType: "application/json;charset=utf-8",
+		dataType: "json", 
+		error: function () {
+			alert("Error while showing comment!");
+		}
+	}).then (function (data) {
+		window.location.href = "apartment_details.html";
+	});
+}
 
 
-
-
-
-
+function postHideComment (commentId) {
+//	alert (commentId);
+	
+	$.ajax({
+		type: "POST",
+		url: "http://localhost:8080/NarsProj/rest/comments/hide/" + commentId,
+		contentType: "application/json;charset=utf-8",
+		dataType: "json", 
+		error: function () {
+			alert("Error while hidin comment!");
+		}
+	}).then (function (data) {
+		window.location.href = "apartment_details.html";
+	});
+}
 
 
 
