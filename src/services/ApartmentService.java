@@ -132,6 +132,7 @@ public class ApartmentService {
 		}
 		// Admin je svevideci
 		else {
+			request.getSession().setAttribute("selected_apartment", retVal);
 			return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
 		}
 	}
@@ -404,9 +405,6 @@ public class ApartmentService {
 		else {
 			welcomePageDTO.setHasNextPage(false);
 		}
-		System.out.println("Page: " + page);
-		System.out.println("Size: " + retVal.size());
-		System.out.println("Has next: " + welcomePageDTO.isHasNextPage());
 		welcomePageDTO.setPage(page);
 		return Response.ok(welcomePageDTO, MediaType.APPLICATION_JSON).build();
 	}

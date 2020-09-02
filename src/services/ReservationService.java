@@ -24,6 +24,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import dto.ReservationDTO;
+import dto.ReservationPageDTO;
 import model.Address;
 import model.Apartment;
 import model.Data;
@@ -114,10 +115,11 @@ public class ReservationService {
 	}
 	
 	@GET
-	@Path("/")
+	@Path("/{sortBy}/{page}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response loadReservations (@Context HttpServletRequest request) {
+	public Response loadReservations (@Context HttpServletRequest request, 
+				@PathParam("sortBy") String sortBy, @PathParam("page") Integer page) {
 		ArrayList<Reservation> retVal = new ArrayList<Reservation> ();
 		if (Utility.getRole(request) == Role.GUEST) {
 			for (Reservation r : Data.getReservations().values()) {
@@ -148,12 +150,50 @@ public class ReservationService {
 		else {
 			return Response.status(401).build();
 		}
+		ReservationPageDTO reservationPageDTO = new ReservationPageDTO();
+		retVal = sort(retVal, sortBy);
 		ArrayList<ReservationDTO> dtoList = new ArrayList<ReservationDTO> ();
-		for (Reservation r : retVal) {
-			dtoList.add(new ReservationDTO(r));
+		for (int i = page * 5; i < (((retVal.size()) < (page * 5 + 5)) ? (retVal.size()) : (page * 5 + 5)); ++i) {
+			ReservationDTO newDto = new ReservationDTO(retVal.get(i));
+			dtoList.add(newDto);
 		}
-		return Response.ok(dtoList, MediaType.APPLICATION_JSON).build();
+		reservationPageDTO.setReservations(dtoList);
+		if (5 * page + 5 < retVal.size()) {
+			reservationPageDTO.setHasNextPage(true);
+		}
+		else {
+			reservationPageDTO.setHasNextPage(false);
+		}
+		return Response.ok(reservationPageDTO, MediaType.APPLICATION_JSON).build();
 	}
+	
+	
+	
+	
+	private ArrayList<Reservation> sort (ArrayList<Reservation> input, String sortBy) {
+		ArrayList<Reservation> retVal = new ArrayList<Reservation>();
+		Reservation temp;
+		Reservation[] list = new Reservation[input.size()];
+		for (int i = 0; i < input.size(); ++i) {
+			list[i] = input.get(i);
+		}
+		for (int i = 0; i < input.size() - 1; ++i) {
+			for (int j = i + 1; j < input.size(); ++j) {
+				if (((list[i].getPrice() > list[j].getPrice()) && (sortBy.equals("asc"))) ||
+					((list[i].getPrice() < list[j].getPrice()) && (sortBy.equals("desc"))))
+				{
+					temp = list[i];
+					list[i] = list[j];
+					list[j] = temp;
+				}
+			}
+		}
+		for (Reservation r : list) {
+			retVal.add(r);
+		}
+		return retVal;
+	}
+	
 	
 	@GET
 	@Path("/address/{apartmentId}")

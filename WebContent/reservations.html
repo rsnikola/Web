@@ -48,6 +48,24 @@
 			<h1>Reservations</h1>
 		</div>
 		<div class="content">
+			<table>
+				<tr>
+					<td>
+						Sort price: 
+					</td>
+					<td>
+						<button id="b_sort">Sort</button>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<select id="s_ascDesc">
+							<option value="asc">Ascending</option>
+							<option value="desc">Descending</option>
+						</select>
+					</td>
+				</tr>
+			</table>
 			<table id="t_reservations" border="1">
 				<tr>
 					<th>ID</th>
@@ -62,6 +80,22 @@
 					<th class="c_accept">Accept</th>
 					<th class="c_decline">Decline</th>
 					<th class="c_end">End</th>
+				</tr>
+				<tbody id="t_reservationsBody">
+					<!-- Data goes here -->
+				</tbody>
+			</table>
+			<table>
+				<tr>
+					<td>
+						<button id="b_prev" disabled>Previous</button>
+					</td>
+					<td>
+						<label id="l_page">1</label>
+					</td>
+					<td>
+						<button id="b_next">Next</button>
+					</td>
 				</tr>
 			</table>
 		</div>

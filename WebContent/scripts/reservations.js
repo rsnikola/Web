@@ -1,5 +1,7 @@
 var role;
 var reservations;
+var page = 0; 
+var hasNextPage = false;
 
 $(document).ready(function (){
 	
@@ -30,28 +32,7 @@ $(document).ready(function (){
 		} 
 
 	}).then(function () {
-		$.ajax({
-			type: "GET",
-			url: "http://localhost:8080/NarsProj/rest/reservation",
-			contentType : "application/json;charset=utf-8",
-			dataType : "json", 
-		}).then(function(data) {
-			reservations = data;
-		}).then (function () {
-			reservations.forEach (element => showReservation(element));
-		}).then (function () {
-			if (role === 'ADMIN') {
-				$('.c_cancel').hide();
-				$('.c_accept').hide();
-				$('.c_decline').hide();
-				$('.c_end').hide();
-			}
-			else if (role === 'GUEST') {
-				$('.c_accept').hide();
-				$('.c_decline').hide();
-				$('.c_end').hide();
-			}
-		});
+		sort("asc");
 	}).then(function () {
 		if (role === 'ADMIN') {
 			$('.c_cancel').hide();
@@ -91,11 +72,22 @@ $(document).ready(function (){
 	$('#b_users').click (function () {
 		window.location.href = "users.html";
 	});
+	$('#b_sort').click(function () {
+		$('#t_reservationsBody').empty();
+		sort($('#s_ascDesc').val());
+	});
+	$('#b_prev').click(function (){
+		prevButton();
+	});
+	$('#b_next').click(function (){
+		nextButton();
+	});
+	
 	
 });
 
 function showReservation(reservation) {
-	$('#t_reservations').append(
+	$('#t_reservationsBody').append(
 		"<tr>" +
 			"<td>" +
 				reservation.id +
@@ -353,3 +345,63 @@ function deleteComment (reservationId) {
 		}
 	});
 }
+
+
+function sort (sortBy) {
+	$.ajax({
+		type: "GET",
+		url: "http://localhost:8080/NarsProj/rest/reservation/" + sortBy + "/" + page,
+		contentType : "application/json;charset=utf-8",
+		dataType : "json", 
+	}).then(function(data) {
+		reservations = data.reservations;
+		hasNextPage = data.hasNextPage;
+	}).then (function () {
+		if (!hasNextPage) {
+			$('#b_next').attr("disabled", true);
+		}
+		reservations.forEach (element => showReservation(element));
+	}).then (function () {
+		if (role === 'ADMIN') {
+			$('.c_cancel').hide();
+			$('.c_accept').hide();
+			$('.c_decline').hide();
+			$('.c_end').hide();
+		}
+		else if (role === 'GUEST') {
+			$('.c_accept').hide();
+			$('.c_decline').hide();
+			$('.c_end').hide();
+		}
+	});
+}
+
+
+function prevButton() {
+	if (page > 0) {
+		--page;
+	}
+	$("#b_next").attr("disabled", false);
+	if (page === 0) {
+		$("#b_prev").attr("disabled", true);
+	}
+	$('#l_page').text(page + 1);
+	$('#t_reservationsBody').empty();
+	sort($('#s_ascDesc').val());
+}
+
+
+function nextButton() {
+	++page;
+	$("#b_prev").attr("disabled", false);
+	$('#l_page').text(page + 1);
+	$("#t_reservationsBody").empty();
+	sort($('#s_ascDesc').val());
+}
+
+
+
+
+
+
+
