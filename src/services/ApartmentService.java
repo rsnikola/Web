@@ -25,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import dto.ApartmentOverviewDTO;
+import dto.WelcomePageDTO;
 import model.Address;
 import model.Amenity;
 import model.Apartment;
@@ -263,7 +264,7 @@ public class ApartmentService {
 		}
 		if (Utility.getRole(request) == Role.HOST) {
 			if (apartment.getHost().equals(request.getSession().getAttribute("username"))) {
-				Utility.printMap(requestData);
+//				Utility.printMap(requestData);
 				if (requestData.get("isActive").equals("true ")) {
 					Date ativeFrom = new SimpleDateFormat("yyyy-MM-dd").parse(requestData.get("activeFrom"));
 					Date activeTo = new SimpleDateFormat("yyyy-MM-dd").parse(requestData.get("activeTo"));
@@ -327,9 +328,10 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response filter (@Context HttpServletRequest request) throws IOException {
+		WelcomePageDTO welcomePageDTO = new WelcomePageDTO();
 		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
 		Map<String, String> requestData = Utility.getBodyMap(request);
-		Utility.printMap(requestData);
+//		Utility.printMap(requestData);
 		if (Utility.getRole(request) == Role.ADMIN) {
 			for (Apartment a : Data.getApartments().values()) {
 				if (!a.isDeleted()) {
@@ -388,20 +390,25 @@ public class ApartmentService {
 		if (!requestData.get("apartmentType").equals("unfiltered")) {
 			retVal = filterType(retVal, requestData.get("apartmentType"));
 		}
-		// Nakon sto sam profiltrirao, vreme je da sortiram
-//		if (requestData.get("ascDesc").equals("asc")) {
-//			retVal = sortAsc(retVal);
-//		}
-//		else {
-//			retVal = sortDesc(retVal);
-//		}
 		retVal = sort(retVal, requestData.get("ascDesc"), requestData.get("sort"));
 		ArrayList<ApartmentOverviewDTO> dto = new ArrayList<ApartmentOverviewDTO> ();
-		for (int i = 0; i < retVal.size(); ++i) {
+		Integer page = Integer.valueOf(requestData.get("page"));
+		for (int i = page * 5; i < (((retVal.size()) < (page * 5 + 5)) ? (retVal.size()) : (page * 5 + 5)); ++i) {
 			ApartmentOverviewDTO newDto = new ApartmentOverviewDTO(retVal.get(i));
 			dto.add(newDto);
 		}
-		return Response.ok(dto, MediaType.APPLICATION_JSON).build();
+		welcomePageDTO.setApartments(dto);
+		if (5 * page + 5 < retVal.size()) {
+			welcomePageDTO.setHasNextPage(true);
+		}
+		else {
+			welcomePageDTO.setHasNextPage(false);
+		}
+		System.out.println("Page: " + page);
+		System.out.println("Size: " + retVal.size());
+		System.out.println("Has next: " + welcomePageDTO.isHasNextPage());
+		welcomePageDTO.setPage(page);
+		return Response.ok(welcomePageDTO, MediaType.APPLICATION_JSON).build();
 	}
 
 	private ArrayList<Apartment> filterFromDate (ArrayList<Apartment> input, String fromDate) {
@@ -556,7 +563,7 @@ public class ApartmentService {
 		for (int i = 0; i < input.size(); ++i) {
 			list[i] = input.get(i);
 		}
-		System.out.println("Criteria is: " + criteria);
+//		System.out.println("Criteria is: " + criteria);
 		switch (criteria) {
 			case "unfiltered":
 				for (int i = 0; i < input.size() - 1; ++i) {
@@ -572,7 +579,13 @@ public class ApartmentService {
 			case "firstAvailable":
 				for (int i = 0; i < input.size() - 1; ++i) {
 					for (int j = i + 1; j < input.size(); ++j) {
-						if (((list[j].getFirstAvailable().before(list[i].getFirstAvailable()) && (price.equals("asc")) ||
+						if ((list[j].getFirstAvailable() == null) || (list[i].getFirstAvailable() == null)) {
+							temp = list[i];
+							list[i] = list[j];
+							list[j] = temp;
+							continue;
+						}
+						else if (((list[j].getFirstAvailable().before(list[i].getFirstAvailable()) && (price.equals("asc")) ||
 							((list[i].getFirstAvailable().before(list[j].getFirstAvailable()) && (price.equals("desc")))))))
 						{
 							temp = list[i];
@@ -585,6 +598,12 @@ public class ApartmentService {
 			case "lastAvailable":
 				for (int i = 0; i < input.size() - 1; ++i) {
 					for (int j = i + 1; j < input.size(); ++j) {
+						if ((list[j].getFirstAvailable() == null) || (list[i].getFirstAvailable() == null)) {
+							temp = list[i];
+							list[i] = list[j];
+							list[j] = temp;
+							continue;
+						}
 						if (((list[i].getLastAvailable().before(list[j].getLastAvailable()) && (price.equals("desc")) ||
 							((list[j].getLastAvailable().before(list[i].getLastAvailable()) && (price.equals("asc")))))))
 						{
@@ -777,8 +796,10 @@ public class ApartmentService {
 			for (Comment c : Data.getComments().values()) {
 				if (!c.isDeleted()) {
 					Reservation r = Data.getReservations().get(id);
-					if (r.getApartment() == id) {
-						retVal.add(c);
+					if (r != null) {
+						if (r.getApartment() == id) {
+							retVal.add(c);
+						}
 					}
 				}
 			}

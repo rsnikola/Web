@@ -12,6 +12,8 @@ var ascDesc = "";
 var sorted;
 var apartmentType = "-";
 var cirteria = "-";
+var page = 0; 
+var hasNextPage = false;
 
 
 $(document).ready(function() {
@@ -153,7 +155,18 @@ $(document).ready(function() {
 
 	$('#b_search').click(function () {
 		search();
-	})
+	}); 
+	
+	$('#b_next').click(function () {
+		nextButton();
+	});
+	
+	$('#b_prev').click(function () {
+		prevButton();
+	});
+	
+	$("#b_prev").attr("disabled", true);
+	
 });
 
 // Kada kliknem na apartman, zelim da je bas taj apartman selektovan
@@ -189,14 +202,23 @@ function search () {
 			"guestsMax": guestsMax, 
 			"ascDesc": ascDesc, 
 			"apartmentType": apartmentType, 
-			"sort": cirteria
+			"sort": cirteria, 
+			"page": page + ""
 		})
 	}).then (function (response){
-		sorted = response;
+		sorted = response.apartments;
+		page = response.page;
+		hasNextPage = response.hasNextPage;
+		//
+		//
+		//
 	}).then (function () {
 		
 		$("#t_apartmentsBody").empty();
 
+		if (hasNextPage === false) {
+			$("#b_next").attr("disabled", true);
+		}
 		sorted.forEach(element => putRow(element));
 	});
 }
@@ -239,3 +261,40 @@ function putRow (row) {
 	);
 }
 
+
+function nextButton () {
+	++page;
+	$("#b_prev").attr("disabled", false);
+	$('#l_page').text(page + 1);
+	$("#t_apartmentsBody").empty();
+	search();
+		
+//	script();
+}
+
+
+function prevButton () {
+	if (page > 0) {
+		--page;
+	}
+	$("#b_next").attr("disabled", false);
+	if (page == 0) {
+		$("#b_prev").attr("disabled", true);
+	}
+	$('#l_page').text(page + 1);
+	$("#t_apartmentsBody").empty();
+	search();
+	
+	
+//	script();
+}
+
+
+function script() {
+	if (page == 2) {
+		hasNextPage = false;
+	}
+	else {
+		hasNextPage = true;
+	}
+}
