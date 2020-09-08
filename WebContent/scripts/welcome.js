@@ -14,6 +14,8 @@ var apartmentType = "-";
 var cirteria = "-";
 var page = 0; 
 var hasNextPage = false;
+var allAmenities;
+var selectedAmenities = null;
 
 
 $(document).ready(function() {
@@ -167,6 +169,13 @@ $(document).ready(function() {
 	
 	$("#b_prev").attr("disabled", true);
 	
+	$('#b_addAmenity').click(function () {
+		addAmenity();
+	});
+	
+	
+//	addAmenity
+	
 });
 
 // Kada kliknem na apartman, zelim da je bas taj apartman selektovan
@@ -203,12 +212,14 @@ function search () {
 			"ascDesc": ascDesc, 
 			"apartmentType": apartmentType, 
 			"sort": cirteria, 
-			"page": page + ""
+			"page": page + "", 
+			"selectedAmenities": selectedAmenities
 		})
 	}).then (function (response){
 		sorted = response.apartments;
 		page = response.page;
 		hasNextPage = response.hasNextPage;
+		allAmenities = response.amenities;
 		//
 		//
 		//
@@ -220,6 +231,7 @@ function search () {
 			$("#b_next").attr("disabled", true);
 		}
 		sorted.forEach(element => putRow(element));
+		allAmenities.forEach(element => putAmenity(element));
 	});
 }
 
@@ -268,8 +280,6 @@ function nextButton () {
 	$('#l_page').text(page + 1);
 	$("#t_apartmentsBody").empty();
 	search();
-		
-//	script();
 }
 
 
@@ -284,17 +294,89 @@ function prevButton () {
 	$('#l_page').text(page + 1);
 	$("#t_apartmentsBody").empty();
 	search();
-	
-	
-//	script();
 }
 
 
-function script() {
-	if (page == 2) {
-		hasNextPage = false;
+
+function putAmenity (row) {
+	$('#s_amenities').append(
+		"<option value='" + row.id + "'>" +
+			row.name + 
+		"</option>"
+	);
+}
+
+
+function addAmenity () {
+	if (selectedAmenities === null) {
+		selectedAmenities = new Array();
+	}
+	var newAmenityId = $('#s_amenities').val();
+	var exists = false;
+	for (var i = 0; i < selectedAmenities.length; ++i) {
+		if (selectedAmenities[i] === newAmenityId) {
+			exists = true;
+			break;
+		}
+	}
+	if (!exists) {
+		selectedAmenities.push(newAmenityId);
+		var selectedAmenity;
+		for (var i = 0; i < allAmenities.length; ++i) {
+			if (allAmenities[i].id + "" === newAmenityId) {
+				selectedAmenity = allAmenities[i];
+				break;
+			}
+		}
+		$('#s_amenities').empty();
+		search();
+		$('#b_amenitiBody').append(
+			"<tr>" +
+				"<td>" +
+					selectedAmenity.name + 
+				"</td>" +
+				"<td>" +
+					"<button onclick='removeAmenity(" + selectedAmenity.id + ")'>Remove</button>" + 
+				"</td>" +  
+			"</tr>"
+		);
+	}
+//	alert("Adding amenity");
+}
+
+
+function removeAmenity (amenityId) {
+	var newList = new Array();
+	if (selectedAmenities.length === 1) {
+		selectedAmenities = null;
 	}
 	else {
-		hasNextPage = true;
+		for (var i = 0; i < selectedAmenities.length; ++i) {
+			if (selectedAmenities[i] !== amenityId + "") {
+				newList.push(selectedAmenities[i]);
+			}
+		}
+	}
+	selectedAmenities = newList;
+	$('#s_amenities').empty();
+	search();
+	$('#b_amenitiBody').empty();
+	for (var i = 0; i < newList.length; ++i) {
+		var thisAmenity; 
+		for (var j = 0; j < allAmenities.length; ++j) {
+			if (allAmenities[j].id + "" === newList[i]) {
+				thisAmenity = allAmenities[j];
+			}
+		}
+		$('#b_amenitiBody').append(
+				"<tr>" +
+					"<td>" +
+						thisAmenity.name + 
+					"</td>" +
+					"<td>" +
+						"<button onclick='removeAmenity(" + thisAmenity.id + ")'>Remove</button>" + 
+					"</td>" +  
+				"</tr>"
+			);
 	}
 }

@@ -35,6 +35,19 @@ public class Utility {
 		HashMap<String, String> retVal = jsonToMap(line);
 		return retVal;
 	}
+
+	@SuppressWarnings("unchecked")
+	public static HashMap<String, Object> jsonToelcomeMap (String input) throws JsonParseException, JsonMappingException, IOException {
+		HashMap<String, Object> retVal = obj.readValue(input, HashMap.class);
+		return retVal;
+	}
+	
+	public static HashMap<String, Object> getWelcomeBodyMap (HttpServletRequest request) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+		String line = reader.readLine();
+		HashMap<String, Object> retVal = jsonToelcomeMap(line);
+		return retVal;
+	}
 	
 	public static Role getRole (HttpServletRequest request) {
 		if (request.getSession().getAttribute("username") == null) {

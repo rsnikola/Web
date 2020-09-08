@@ -331,8 +331,10 @@ public class ApartmentService {
 	public Response filter (@Context HttpServletRequest request) throws IOException {
 		WelcomePageDTO welcomePageDTO = new WelcomePageDTO();
 		ArrayList<Apartment> retVal = new ArrayList<Apartment>();
-		Map<String, String> requestData = Utility.getBodyMap(request);
+//		Map<String, String> requestData = Utility.getBodyMap(request);
+		Map<String, Object> requestData = Utility.getWelcomeBodyMap(request);
 //		Utility.printMap(requestData);
+//		System.out.println("selectedAmenities: " + requestData.get("selectedAmenities").toString());
 		if (Utility.getRole(request) == Role.ADMIN) {
 			for (Apartment a : Data.getApartments().values()) {
 				if (!a.isDeleted()) {
@@ -359,41 +361,49 @@ public class ApartmentService {
 			}
 		}
 		if (!requestData.get("fromDate").equals("unfiltered")) {
-			retVal = filterFromDate(retVal, requestData.get("fromDate"));
+			retVal = filterFromDate(retVal, (String) requestData.get("fromDate"));
 		}
 		if (!requestData.get("priceMin").equals("unfiltered")) {
-			retVal = filterPriceMin(retVal, requestData.get("priceMin"));
+			retVal = filterPriceMin(retVal, (String) requestData.get("priceMin"));
 		}
 		if (!requestData.get("country").equals("unfiltered")) {
-			retVal = filterCountry(retVal, requestData.get("country"));
+			retVal = filterCountry(retVal, (String) requestData.get("country"));
 		}
 		if (!requestData.get("priceMax").equals("unfiltered")) {
-			retVal = filterPriceMax(retVal, requestData.get("priceMax"));
+			retVal = filterPriceMax(retVal, (String) requestData.get("priceMax"));
 		}
 		if (!requestData.get("roomsMin").equals("unfiltered")) {
-			retVal = filterRoomsMin(retVal, requestData.get("roomsMin"));
+			retVal = filterRoomsMin(retVal, (String) requestData.get("roomsMin"));
 		}
 		if (!requestData.get("city").equals("unfiltered")) {
-			retVal = filterCity(retVal, requestData.get("city"));
+			retVal = filterCity(retVal, (String) requestData.get("city"));
 		}
 		if (!requestData.get("roomsMax").equals("unfiltered")) {
-			retVal = filterRoomsMax(retVal, requestData.get("roomsMax"));
+			retVal = filterRoomsMax(retVal, (String) requestData.get("roomsMax"));
 		}
 		if (!requestData.get("guestsMax").equals("unfiltered")) {
-			retVal = filterGuestsMax(retVal, requestData.get("guestsMax"));
+			retVal = filterGuestsMax(retVal, (String) requestData.get("guestsMax"));
 		}
 		if (!requestData.get("toDate").equals("unfiltered")) {
-			retVal = filterToDate(retVal, requestData.get("toDate"));
+			retVal = filterToDate(retVal, (String) requestData.get("toDate"));
 		}
 		if (!requestData.get("guestsMin").equals("unfiltered")) {
-			retVal = filterGuestsMin(retVal, requestData.get("guestsMin"));
+			retVal = filterGuestsMin(retVal, (String) requestData.get("guestsMin"));
 		}
 		if (!requestData.get("apartmentType").equals("unfiltered")) {
-			retVal = filterType(retVal, requestData.get("apartmentType"));
+			retVal = filterType(retVal, (String) requestData.get("apartmentType"));
 		}
-		retVal = sort(retVal, requestData.get("ascDesc"), requestData.get("sort"));
+		if (requestData.get("selectedAmenities") != null) {
+			ArrayList<String> amenityIds = (ArrayList<String>) requestData.get("selectedAmenities");
+			for (String s : amenityIds) {
+//				System.out.println(Data.getAmenities().get(Integer.valueOf(s)).getName());
+				retVal = filterAmenity(retVal, Integer.valueOf(s));
+				
+			}
+		}
+		retVal = sort(retVal, (String) requestData.get("ascDesc"), (String) requestData.get("sort"));
 		ArrayList<ApartmentOverviewDTO> dto = new ArrayList<ApartmentOverviewDTO> ();
-		Integer page = Integer.valueOf(requestData.get("page"));
+		Integer page = Integer.valueOf((String) requestData.get("page"));
 		for (int i = page * 5; i < (((retVal.size()) < (page * 5 + 5)) ? (retVal.size()) : (page * 5 + 5)); ++i) {
 			ApartmentOverviewDTO newDto = new ApartmentOverviewDTO(retVal.get(i));
 			dto.add(newDto);
@@ -406,6 +416,11 @@ public class ApartmentService {
 			welcomePageDTO.setHasNextPage(false);
 		}
 		welcomePageDTO.setPage(page);
+		for (Amenity a : Data.getAmenities().values()) {
+			if (!a.isDeleted()) {
+				welcomePageDTO.getAmenities().add(a);
+			}
+		}
 		return Response.ok(welcomePageDTO, MediaType.APPLICATION_JSON).build();
 	}
 
@@ -549,6 +564,19 @@ public class ApartmentService {
 		for (Apartment a : input) {
 			if (a.getType() == t) {
 				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+	
+	private ArrayList<Apartment> filterAmenity (ArrayList<Apartment> input, Integer amenityId) {
+		ArrayList<Apartment> retVal = new ArrayList<Apartment> ();
+		for (Apartment ap : input) {
+			for (Integer am : ap.getAmenities()) {
+				if (am == amenityId) {
+					retVal.add(ap);
+					continue;
+				}
 			}
 		}
 		return retVal;

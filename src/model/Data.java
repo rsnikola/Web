@@ -66,7 +66,6 @@ public class Data {
 				addresses = obj.readValue(new File(pathPrefix + "addresses.txt"), new TypeReference<Map<Integer, Address>>(){});
 			} catch (Exception e) {
 				System.out.println("Data: Error while loading addresses! ");
-				
 				Address a1 = new Address(1, 12, "Stevana Musica", "Novi Sad", "21000", "Serbia");
 				Address a2 = new Address(2, 41, "Stevan Musica", "Novi Sad", "21000", "Serbia");
 				Address a3 = new Address(3, 25, "Skadarska", "Beograd", "11000", "Serbia");
@@ -121,6 +120,14 @@ public class Data {
 				Apartment a3 = new Apartment(3, ApartmentType.ROOM, 1, 1, 3, new Date(120, 10, 12), new Date(120, 11, 9), "hos1@mail.com", 
 								new ArrayList<Integer>(), 13.99, new Time(2, 2, 2), new Time(3, 3, 3), true, new ArrayList<Integer> (), 
 								new ArrayList<Integer>());
+				Data.getAmenities();
+				a1.getAmenities().add(1);
+				a1.getAmenities().add(2);
+				a1.getAmenities().add(3);
+				a2.getAmenities().add(2);
+				a2.getAmenities().add(3);
+				a3.getAmenities().add(1);
+				a3.getAmenities().add(3);
 				apartments = new HashMap<Integer, Apartment> ();
 				apartments.put(a1.getId(), a1);
 				apartments.put(a2.getId(), a2);
