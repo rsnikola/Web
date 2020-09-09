@@ -50,6 +50,7 @@ $(document).ready(function (){
 			$('#b_makeReservation').hide();
 			$('.c_amenities').hide();
 			$('#b_logout').show();
+			$('#r_deleteApartment').show();
 		}
 		else if (role === 'HOST') {
 			$('#b_users').show();
@@ -60,6 +61,7 @@ $(document).ready(function (){
 			$('.c_amenities').show();
 			$('#b_reservations').show();
 			$('#b_logout').show();
+			$('#r_deleteApartment').show();
 		}
 		else if (role === "GUEST") {
 			$('#b_users').hide();
@@ -70,6 +72,7 @@ $(document).ready(function (){
 			$('.c_amenities').hide();
 			$('#b_reservations').show();
 			$('#b_logout').show();
+			$('#r_deleteApartment').hide();
 		}
 		else {
 			$('#b_users').hide();
@@ -80,6 +83,7 @@ $(document).ready(function (){
 			$('.c_amenities').hide();
 			$('#b_reservations').hide();
 			$('#b_logout').show();
+			$('#r_deleteApartment').hide();
 		}
 		if (role === undefined) {
 			$('#b_profile').hide();
@@ -87,6 +91,7 @@ $(document).ready(function (){
 			$('#t_activateDeactivate').hide();
 			$('#b_makeReservation').hide();
 			$('#b_reservations').hide();
+			$('#r_deleteApartment').hide();
 		}
 	});
 	
@@ -115,6 +120,9 @@ $(document).ready(function (){
 	});
 	$('#b_reservations').click(function () {
 		window.location.href = "reservations.html";
+	});
+	$('#r_deleteApartment').click(function() {
+		deleteApartment();
 	});
 	
 	
@@ -737,7 +745,7 @@ function postHideComment (commentId) {
 		contentType: "application/json;charset=utf-8",
 		dataType: "json", 
 		error: function () {
-			alert("Error while hidin comment!");
+			alert("Error while hiding comment!");
 		}
 	}).then (function (data) {
 		window.location.href = "apartment_details.html";
@@ -745,6 +753,24 @@ function postHideComment (commentId) {
 }
 
 
-
+function deleteApartment () {
+//	alert("Deleting apartment " + apartment.id);
+	$.ajax({
+		type: "DELETE",
+		url: "http://localhost:8080/NarsProj/rest/apartments",
+		contentType: "application/json;charset=utf-8",
+		dataType: "json", 
+		error: function () {
+			alert("Error while deleting apartment!");
+		}
+	}).then (function (data) {
+		if (data) {
+			window.location.href = "welcome.html";
+		}
+		else {
+			alert ("There are already accepted reservations for this appartment, meaning you can not delete it! ");
+		}
+	});
+}
 
 

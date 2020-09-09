@@ -34,6 +34,7 @@ import model.Data;
 import model.Location;
 import model.Reservation;
 import model.enumerations.ApartmentType;
+import model.enumerations.ReservationStatus;
 import model.enumerations.Role;
 import utility.Utility;
 
@@ -849,5 +850,62 @@ public class ApartmentService {
 		
 		return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
 	}
+	
+	
+	@DELETE
+	@Path("")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteApartment (@Context HttpServletRequest request) {
+		Apartment requestApartment = (Apartment) request.getSession().getAttribute("selected_apartment");
+		if (requestApartment == null) {
+			return Response.status(404).build();
+		}
+		if (Utility.getRole(request) == Role.HOST) {
+			if (!requestApartment.getHost().equals(request.getSession().getAttribute("username"))) {
+				return Response.status(405).build();
+			}
+		}
+		if ((Utility.getRole(request) != Role.ADMIN) && (Utility.getRole(request) != Role.HOST)) {
+			return Response.status(405).build();
+		}
+		Apartment systemApartment = Data.getApartments().get(requestApartment.getId());
+		// Ako postoji jedna prihvacena rezervacija, ne smem da ga obirsem
+		for (Reservation r : Data.getReservations().values()) {
+			if (r.getApartment() == systemApartment.getId()) {
+				if (r.getStatus() == ReservationStatus.ACCEPTED) {
+					return Response.ok(false, MediaType.APPLICATION_JSON).build();
+				}
+			}
+		}
+		for (Reservation r : Data.getReservations().values()) {
+			if (r.getApartment() == systemApartment.getId()) {
+				for (Comment c : Data.getComments().values()) {
+					if (c.getReservation() == r.getId()) {
+						c.setDeleted(true);
+					}
+				}
+				r.setDeleted(true);
+			}
+		}
+//		for (Comment c : Data.getComments().values()) {
+//			if (c.getApartment() == systemApartment.getId()) {
+//				
+//			}
+//		}
+		Location location = Data.getLocations().get(systemApartment.getLocation());
+		Address address = Data.getAddresses().get(location.getAddress());
+		location.setDeleted(false);
+		systemApartment.setDeleted(true);
+		address.setDeleted(false);
+		Data.saveApartments();
+		Data.saveLocations();
+		Data.saveAddresses();
+		Data.saveComments();
+		Data.saveReservations();
+		return Response.ok(true, MediaType.APPLICATION_JSON).build();
+	}
+	
+	
 	
 } 
