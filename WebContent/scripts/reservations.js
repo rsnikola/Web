@@ -2,6 +2,7 @@ var role;
 var reservations;
 var page = 0; 
 var hasNextPage = false;
+var userSearch = "";
 
 $(document).ready(function (){
 	
@@ -190,16 +191,22 @@ function showReservation(reservation) {
 		$('.c_decline').hide();
 		$('.c_end').hide();
 		$('.c_comment').hide();
+		$('#l_userSearch').show();
+		$('#i_userToFind').show();
 	}
 	else if (role === 'GUEST') {
 		$('.c_accept').hide();
 		$('.c_decline').hide();
 		$('.c_end').hide();
 //		$('.c_comment').show();
+		$('#l_userSearch').hide();
+		$('#i_userToFind').hide();
 	}
 	else if (role === 'HOST') {
 		$('.c_cancel').hide();
 		$('.c_comment').hide();
+		$('#l_userSearch').show();
+		$('#i_userToFind').show();
 	}
 }
 
@@ -348,11 +355,13 @@ function deleteComment (reservationId) {
 
 
 function sort (sortBy) {
+	userSearch = $("#i_userToFind").val();
+	userSearch = ((userSearch === "") ? ("unfiltered") : (userSearch));
 	$.ajax({
 		type: "GET",
-		url: "http://localhost:8080/NarsProj/rest/reservation/" + sortBy + "/" + page,
+		url: "http://localhost:8080/NarsProj/rest/reservation/" + sortBy + "/" + page + "/" + userSearch,
 		contentType : "application/json;charset=utf-8",
-		dataType : "json", 
+		dataType : "json",  
 	}).then(function(data) {
 		reservations = data.reservations;
 		hasNextPage = data.hasNextPage;

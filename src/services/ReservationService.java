@@ -115,11 +115,12 @@ public class ReservationService {
 	}
 	
 	@GET
-	@Path("/{sortBy}/{page}")
+	@Path("/{sortBy}/{page}/{userToFind}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response loadReservations (@Context HttpServletRequest request, 
-				@PathParam("sortBy") String sortBy, @PathParam("page") Integer page) {
+				@PathParam("sortBy") String sortBy, @PathParam("page") Integer page, 
+				@PathParam("userToFind") String userToFind) {
 		ArrayList<Reservation> retVal = new ArrayList<Reservation> ();
 		if (Utility.getRole(request) == Role.GUEST) {
 			for (Reservation r : Data.getReservations().values()) {
@@ -150,6 +151,9 @@ public class ReservationService {
 		else {
 			return Response.status(401).build();
 		}
+		if (!userToFind.equals("unfiltered")) {
+			retVal = filterByGuest(retVal, userToFind);
+		}
 		ReservationPageDTO reservationPageDTO = new ReservationPageDTO();
 		retVal = sort(retVal, sortBy);
 		ArrayList<ReservationDTO> dtoList = new ArrayList<ReservationDTO> ();
@@ -167,6 +171,16 @@ public class ReservationService {
 		return Response.ok(reservationPageDTO, MediaType.APPLICATION_JSON).build();
 	}
 	
+	
+	private ArrayList<Reservation> filterByGuest (ArrayList<Reservation> reservations, String guestId) {
+		ArrayList<Reservation> retVal = new ArrayList<Reservation> ();
+		for (Reservation r : reservations) {
+			if (r.getGuest().toLowerCase().contains(guestId.toLowerCase())) {
+				retVal.add(r);
+			}
+		}
+		return retVal; 
+	}
 	
 	
 	
