@@ -2,7 +2,6 @@ package services;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,16 +28,16 @@ public class UserService {
 //		System.out.println("User service");
 	}
 	
-	@GET
-	@Path("/test")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public HashMap<String, User> loadUsers () {
-		
-//		System.out.println("User service : test");
-		
-		return Data.getUsers();
-	}
+//	@GET
+//	@Path("/test")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public HashMap<String, User> loadUsers () {
+//		
+////		System.out.println("User service : test");
+//		
+//		return Data.getUsers();
+//	}
 	
 	@POST
 	@Path("/login")
@@ -71,7 +70,7 @@ public class UserService {
 //		System.out.println("User service : logout");
 
 		if (request.getSession().getAttribute("username") != null) {
-			System.out.println("Logging " + request.getSession().getAttribute("username") + " out");
+//			System.out.println("Logging " + request.getSession().getAttribute("username") + " out");
 			request.getSession().setAttribute ("username", null);
 			return true;
 		}
@@ -107,6 +106,7 @@ public class UserService {
 		return null;
 	}
 	
+	@SuppressWarnings("unused")
 	@POST
 	@Path("/update")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -121,11 +121,11 @@ public class UserService {
 		
 		Map<String, String> requestData = Utility.getBodyMap(request);
 		for (String s : requestData.keySet()) {
-			System.out.println(s + ": " + requestData.get(s));
+//			System.out.println(s + ": " + requestData.get(s));
 		}
 		if (request.getSession().getAttribute("username") != null) {
 			User currentUser = Data.getUsers().get(request.getSession().getAttribute("username"));
-			System.out.println("Email to update: " + currentUser.getUsername());
+//			System.out.println("Email to update: " + currentUser.getUsername());
 			currentUser.setFirstName(requestData.get("firstName"));
 			currentUser.setLastName(requestData.get("lastName"));
 			currentUser.setPassword(requestData.get("password"));

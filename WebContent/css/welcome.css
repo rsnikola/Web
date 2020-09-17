@@ -37,7 +37,12 @@
 
 
 #t_apartments, #t_apartments * {
+//	border: 0px solid;
+}
+
+#t_apartments *, #t_reservationsBody * {
 	border: 1px solid;
+	padding:5px;
 }
 
 #t_apartments {
@@ -47,4 +52,8 @@
 body {
 	background-color: #0b360c;
 	color: #ba479a;
+}
+
+.apartmentRow, .reservationsAddress {
+	cursor: pointer;
 }

@@ -47,8 +47,8 @@ public class ApartmentOverviewDTO {
 		this.guests = apartment.getGuests() + "";
 		Location loc = Data.getLocations().get(apartment.getLocation());
 		Address adr = Data.getAddresses().get(loc.getAddress());
-		this.address = adr.getStreetNumber() + " " + adr.getStreet() + " " + 
-					adr.getTown() + " " + adr.getCountry();
+		this.address = adr.getStreetNumber() + " " + adr.getStreet() + ", " + 
+					adr.getTown() + ", " + adr.getCountry();
 		this.owner = apartment.getHost();
 		this.price = apartment.getPricePerNight() + "";
 	}

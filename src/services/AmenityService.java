@@ -2,7 +2,6 @@ package services;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,14 +28,14 @@ public class AmenityService {
 		
 	}
 	
-	@GET
-	@Path("/test")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public HashMap<Integer, Amenity> loadAmenities () {
-		System.out.println("Amenities: test");
-		return Data.getAmenities();
-	}
+//	@GET
+//	@Path("/test")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public HashMap<Integer, Amenity> loadAmenities () {
+//		System.out.println("Amenities: test");
+//		return Data.getAmenities();
+//	}
 	
 	@POST
 	@Path("/")

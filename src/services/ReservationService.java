@@ -41,14 +41,14 @@ public class ReservationService {
 		
 	}
 	
-	@GET
-	@Path("/test")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public HashMap<Integer, Reservation> testReservations () {
-		System.out.println("Reservation service: test");
-		return Data.getReservations();
-	}
+//	@GET
+//	@Path("/test")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public HashMap<Integer, Reservation> testReservations () {
+//		System.out.println("Reservation service: test");
+//		return Data.getReservations();
+//	}
 	
 	@GET
 	@Path("/price/{non}")
@@ -370,7 +370,7 @@ public class ReservationService {
 //	    System.out.println(dateFormat.format(reservation.getEnd()));
 //	    cFirst.setTime(dateFormat.parse(dateFormat.format(apartment.getFirstAvailable())));
 		
-		System.out.println();
+//		System.out.println();
 		if (reservation.getEnd().before(dat)) {
 			reservation.setStatus(ReservationStatus.FINISHED);
 			Data.saveReservations();

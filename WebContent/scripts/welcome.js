@@ -71,7 +71,7 @@ $(document).ready(function() {
 			$('#l_register').hide();
 		} else {
 			// Ako korisnik nije ulogovan
-			$('#p_data').text("Please log in");
+			$('#p_data').text("To make a reservation, please log in");
 			$('#b_login').show();
 			$('#b_logout').hide();
 			$('#b_users').hide();
@@ -181,6 +181,11 @@ $(document).ready(function() {
 	$('#b_addAmenity').click(function () {
 		addAmenity();
 	});
+	$('#b_clearAll').click(function () {
+		window.location.href = "welcome.html";
+	});
+	
+	//b_clearAll
 	
 	
 //	addAmenity
@@ -264,7 +269,7 @@ function getData() {
 
 function putRow (row) {
 	$('#t_apartmentsBody').append(
-		"<tr onclick=" + "\'selectApartment(" + row.id + ")\'" + ">" +
+		"<tr onclick=" + "\'selectApartment(" + row.id + ")\' class='apartmentRow'" + ">" +
 			"<td>" + row.id + "</td>" +
 			"<td>" + 
 				row.type + 

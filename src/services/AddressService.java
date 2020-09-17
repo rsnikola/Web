@@ -22,14 +22,14 @@ import utility.Utility;
 @Path("/address")
 public class AddressService {
 
-	@GET
-	@Path("/test")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response loadAddresses () {
-		System.out.println("Address service: test");
-		return Response.ok(Data.getAddresses(), MediaType.APPLICATION_JSON).build();
-	}
+//	@GET
+//	@Path("/test")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response loadAddresses () {
+////		System.out.println("Address service: test");
+//		return Response.ok(Data.getAddresses(), MediaType.APPLICATION_JSON).build();
+//	}
 	
 	@GET
 	@Path("/{id}")

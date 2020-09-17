@@ -83,8 +83,8 @@ $(document).ready(function() {
 		$('#i_lastName').val(data.lastName);
 		$('#l_gender').text((data.male) ? ('male') : ('female'));
 		(data.male) ? ($('#male').prop('checked', true)) : ($('#female').prop('checked', true));
-		$('#l_role').text((data.role === 'GUEST') ? ('Guest') : ((data.role === 'GUEST') ? ('Host') : ('Administrator')));
-		$('#i_role').val((data.role === 'GUEST') ? ('Guest') : ((data.role === 'GUEST') ? ('Host') : ('Administrator')));
+		$('#l_role').text((data.role === 'GUEST') ? ('Guest') : ((data.role === 'HOST') ? ('Host') : ('Administrator')));
+		$('#i_role').val((data.role === 'GUEST') ? ('Guest') : ((data.role === 'HOST') ? ('Host') : ('Administrator')));
 	});
 	
 	$('.input').hide();

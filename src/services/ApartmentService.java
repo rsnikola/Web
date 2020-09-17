@@ -45,14 +45,14 @@ public class ApartmentService {
 //		System.out.println("Apartment service");
 	}
 	
-	@GET
-	@Path("/test")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public HashMap<Integer, Apartment> loadApartments () {
-		System.out.println("Apartment service: test");
-		return Data.getApartments();
-	}
+//	@GET
+//	@Path("/test")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public HashMap<Integer, Apartment> loadApartments () {
+//		System.out.println("Apartment service: test");
+//		return Data.getApartments();
+//	}
 	
 	@GET
 	@Path("")
@@ -843,10 +843,13 @@ public class ApartmentService {
 		if (Utility.getRole(request) == Role.HOST) {
 			for (Comment c : Data.getComments().values()) {
 				if (!c.isDeleted()) {
-					Reservation r = Data.getReservations().get(id);
+					Reservation r = Data.getReservations().get(c.getReservation());
 					if (r != null) {
 						if (r.getApartment() == id) {
-							retVal.add(c);
+							Apartment a = Data.getApartments().get(id);
+							if (a.getHost().equals(request.getSession().getAttribute("username"))) {
+								retVal.add(c);
+							}
 						}
 					}
 				}
@@ -855,8 +858,13 @@ public class ApartmentService {
 		else if ((Utility.getRole(request) == Role.GUEST) || (Utility.getRole(request) == Role.UNREGISTERED)) {
 			for (Comment c : Data.getComments().values()) {
 				if (!c.isDeleted()) {
-					if (c.isShow()) {
-						retVal.add(c);
+					Reservation r = Data.getReservations().get(c.getReservation());
+					if (r != null) {
+						if (r.getApartment() == id) {
+							if (c.isShow()) {
+								retVal.add(c);
+							}
+						}
 					}
 				}
 			}
@@ -864,7 +872,12 @@ public class ApartmentService {
 		else if (Utility.getRole(request) == Role.ADMIN) {
 			for (Comment c : Data.getComments().values()) {
 				if (!c.isDeleted()) {
-					retVal.add(c);
+					Reservation r = Data.getReservations().get(c.getReservation());
+					if (r != null) {
+						if (r.getApartment() == id) {
+							retVal.add(c);
+						}
+					}
 				}
 			}
 		}

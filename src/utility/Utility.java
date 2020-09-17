@@ -104,7 +104,7 @@ public class Utility {
 		ArrayList<User> retVal = new ArrayList<User> ();
 		for (int i = page * 5; i < page * 5 + 5; ++i) {
 			User tempUser;
-			System.out.println("i: " + i);
+//			System.out.println("i: " + i);
 			if (users.size() > i) {
 				tempUser = new User(users.get(i));
 				tempUser.setPassword(null);
@@ -117,9 +117,10 @@ public class Utility {
 		return retVal;
 	}
 	
+	@SuppressWarnings("unused")
 	public static void printMap (Map<String, String> map) {
 		for (String s : map.keySet()) {
-			System.out.println("    " + s + ": " + map.get(s));
+//			System.out.println("    " + s + ": " + map.get(s));
 		}
 	}
 	

@@ -93,7 +93,7 @@ function showReservation(reservation) {
 			"<td>" +
 				reservation.id +
 			"</td>" +
-			"<td>" +
+			"<td class='reservationsAddress' onclick='goToApartment(" + reservation.id + ")' >" +
 				reservation.address +
 			"</td>" +
 			"<td>" +
@@ -415,7 +415,17 @@ function nextButton() {
 }
 
 
-
+function goToApartment (apartmentId) {
+//	alert(apartmentId);
+	$.ajax({
+		type: "GET",
+		url: "http://localhost:8080/NarsProj/rest/apartments/" + apartmentId,
+		contentType: "application/json;charset=utf-8",
+		dataType: "json"
+	}).then (function (response){
+		window.location.href="apartment_details.html";
+	});
+}
 
 
 

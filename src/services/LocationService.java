@@ -21,14 +21,14 @@ import utility.Utility;
 @Path("/location")
 public class LocationService {
 
-	@GET
-	@Path("/test")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response loadApartments () {
-		System.out.println("Location service: test");
-		return Response.ok(Data.getLocations(), MediaType.APPLICATION_JSON).build();
-	}
+//	@GET
+//	@Path("/test")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response loadApartments () {
+//		System.out.println("Location service: test");
+//		return Response.ok(Data.getLocations(), MediaType.APPLICATION_JSON).build();
+//	}
 	
 	@GET
 	@Path("/{id}")
