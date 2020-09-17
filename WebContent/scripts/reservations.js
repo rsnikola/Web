@@ -193,6 +193,8 @@ function showReservation(reservation) {
 		$('.c_comment').hide();
 		$('#l_userSearch').show();
 		$('#i_userToFind').show();
+		$('#l_resStatus').show();
+		$('#s_status').show();
 	}
 	else if (role === 'GUEST') {
 		$('.c_accept').hide();
@@ -201,12 +203,16 @@ function showReservation(reservation) {
 //		$('.c_comment').show();
 		$('#l_userSearch').hide();
 		$('#i_userToFind').hide();
+		$('#l_resStatus').hide();
+		$('#s_status').hide();
 	}
 	else if (role === 'HOST') {
 		$('.c_cancel').hide();
 		$('.c_comment').hide();
 		$('#l_userSearch').show();
 		$('#i_userToFind').show();
+		$('#l_resStatus').show();
+		$('#s_status').show();
 	}
 }
 
@@ -359,7 +365,7 @@ function sort (sortBy) {
 	userSearch = ((userSearch === "") ? ("unfiltered") : (userSearch));
 	$.ajax({
 		type: "GET",
-		url: "http://localhost:8080/NarsProj/rest/reservation/" + sortBy + "/" + page + "/" + userSearch,
+		url: "http://localhost:8080/NarsProj/rest/reservation/" + sortBy + "/" + page + "/" + userSearch + "/" + $('#s_status').val(),
 		contentType : "application/json;charset=utf-8",
 		dataType : "json",  
 	}).then(function(data) {

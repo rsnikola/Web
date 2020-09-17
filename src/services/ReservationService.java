@@ -115,12 +115,12 @@ public class ReservationService {
 	}
 	
 	@GET
-	@Path("/{sortBy}/{page}/{userToFind}")
+	@Path("/{sortBy}/{page}/{userToFind}/{reservationStatus}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response loadReservations (@Context HttpServletRequest request, 
 				@PathParam("sortBy") String sortBy, @PathParam("page") Integer page, 
-				@PathParam("userToFind") String userToFind) {
+				@PathParam("userToFind") String userToFind, @PathParam("reservationStatus") String reservationStatus) {
 		ArrayList<Reservation> retVal = new ArrayList<Reservation> ();
 		if (Utility.getRole(request) == Role.GUEST) {
 			for (Reservation r : Data.getReservations().values()) {
@@ -154,6 +154,9 @@ public class ReservationService {
 		if (!userToFind.equals("unfiltered")) {
 			retVal = filterByGuest(retVal, userToFind);
 		}
+		if (!reservationStatus.equals("unfiltered")) {
+			retVal = filterByStatus(retVal, reservationStatus);
+		}
 		ReservationPageDTO reservationPageDTO = new ReservationPageDTO();
 		retVal = sort(retVal, sortBy);
 		ArrayList<ReservationDTO> dtoList = new ArrayList<ReservationDTO> ();
@@ -182,6 +185,36 @@ public class ReservationService {
 		return retVal; 
 	}
 	
+	
+	private ArrayList<Reservation> filterByStatus(ArrayList<Reservation> input, String reservationStatus) {
+		ReservationStatus status; 
+		switch (reservationStatus) {
+			case "CREATED":
+				status = ReservationStatus.CREATED;
+				break; 
+			case "DENIED": 
+				status = ReservationStatus.DENIED;
+				break;
+			case "CANCELED": 
+				status = ReservationStatus.CANCELED;
+				break;
+			case "ACCEPTED":
+				status = ReservationStatus.ACCEPTED;
+				break;
+			case "FINISHED": 
+				status = ReservationStatus.FINISHED;
+				break;
+			default: 
+				return null;
+		}
+		ArrayList<Reservation> retVal = new ArrayList<Reservation> ();
+		for (Reservation r : input) {
+			if (r.getStatus() == status) {
+				retVal.add(r);
+			}
+		}
+		return retVal;
+	}
 	
 	
 	private ArrayList<Reservation> sort (ArrayList<Reservation> input, String sortBy) {
