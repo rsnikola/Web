@@ -16,6 +16,7 @@ var page = 0;
 var hasNextPage = false;
 var allAmenities;
 var selectedAmenities = null;
+var activeStatus = "-"
 
 
 $(document).ready(function() {
@@ -44,16 +45,22 @@ $(document).ready(function() {
 				$('#b_users').show();
 				$('#b_addApartment').hide();
 				$('#b_amenities').show();
+				$('#l_status').show();
+				$('#s_active').show();
 			}
 			else if (role === 'HOST') {
 				$('#b_users').show();
 				$('#b_addApartment').show();
 				$('#b_amenities').hide();
+				$('#l_status').show();
+				$('#s_active').show();
 			}
 			else {
 				$('#b_users').hide();
 				$('#b_addApartment').hide();
 				$('#b_amenities').hide();
+				$('#l_status').hide();
+				$('#s_active').hide();
 			}
 			
 			$('#l_username').hide();
@@ -76,6 +83,8 @@ $(document).ready(function() {
 			$('#i_password').show();
 			
 			$('#l_register').show();
+			$('#l_status').hide();
+			$('#s_active').hide();
 		}
 	});
 	
@@ -213,7 +222,8 @@ function search () {
 			"apartmentType": apartmentType, 
 			"sort": cirteria, 
 			"page": page + "", 
-			"selectedAmenities": selectedAmenities
+			"selectedAmenities": selectedAmenities, 
+			"activeStatus": activeStatus
 		})
 	}).then (function (response){
 		sorted = response.apartments;
@@ -249,6 +259,7 @@ function getData() {
 	ascDesc = (($('#o_ascDesc').val() === "") ? ("unfiltered") : ($('#o_ascDesc').val()));
 	apartmentType = (($('#o_type').val() === "-") ? ("unfiltered") : ($('#o_type').val()));
 	cirteria = (($('#o_crit').val() === "-") ? ("unfiltered") : ($('#o_crit').val()));
+	activeStatus = (($('#s_active').val() === "-") ? ("unfiltered") : ($('#s_active').val()));
 }
 
 function putRow (row) {

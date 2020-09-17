@@ -325,6 +325,7 @@ public class ApartmentService {
 		return Response.ok(retVal, MediaType.APPLICATION_JSON).build();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@POST
 	@Path("/filter")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -394,6 +395,11 @@ public class ApartmentService {
 		if (!requestData.get("apartmentType").equals("unfiltered")) {
 			retVal = filterType(retVal, (String) requestData.get("apartmentType"));
 		}
+		//
+		if (!requestData.get("activeStatus").equals("unfiltered")) {
+			retVal = filterStatus(retVal, (String) requestData.get("activeStatus"));
+		}
+		//
 		if (requestData.get("selectedAmenities") != null) {
 			ArrayList<String> amenityIds = (ArrayList<String>) requestData.get("selectedAmenities");
 			for (String s : amenityIds) {
@@ -570,6 +576,7 @@ public class ApartmentService {
 		return retVal;
 	}
 	
+	
 	private ArrayList<Apartment> filterAmenity (ArrayList<Apartment> input, Integer amenityId) {
 		ArrayList<Apartment> retVal = new ArrayList<Apartment> ();
 		for (Apartment ap : input) {
@@ -582,6 +589,20 @@ public class ApartmentService {
 		}
 		return retVal;
 	}
+	
+	
+	private ArrayList<Apartment> filterStatus (ArrayList<Apartment> input, String statusString) {
+		boolean status = ((statusString.equals("true")) ? (true) : (false));
+		ArrayList<Apartment> retVal = new ArrayList<Apartment> ();
+		for (Apartment a : input) {
+			if (status == a.isActive()) {
+				retVal.add(a);
+			}
+		}
+		return retVal;
+	}
+	
+	
 	
 	private ArrayList<Apartment> sort (ArrayList<Apartment> input, String price, String criteria) {
 		ArrayList<Apartment> retVal = new ArrayList<Apartment> ();
