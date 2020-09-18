@@ -86,7 +86,6 @@ $(document).ready(function() {
 		window.location.href = "add_apartment.html";
 	});
 	
-	// Dobavi spisak sa beka
 	$.ajax({
 		type: "GET",
 		url: "http://localhost:8080/NarsProj/rest/users/page/"

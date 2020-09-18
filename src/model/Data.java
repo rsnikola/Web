@@ -18,8 +18,8 @@ import model.enumerations.Role;
 
 public class Data {
 
-	private static String pathPrefix = "";
-//	private static String pathPrefix = "../webapps/WebProjekat/";
+//	private static String pathPrefix = "";
+	private static String pathPrefix = "../webapps/WebProjekat/";
 	
 	private static HashMap<String, User> users = null;
 	private static HashMap<Integer, Address> addresses = null;
