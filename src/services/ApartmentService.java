@@ -225,7 +225,7 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateApartment (@Context HttpServletRequest request) throws IOException {
-		if (Utility.getRole(request) != Role.HOST) {
+		if ((Utility.getRole(request) != Role.HOST) && (Utility.getRole(request) != Role.ADMIN)){
 			return Response.status(401).build(); 
 		}
 		Map<String, String> requestData = Utility.getBodyMap(request);

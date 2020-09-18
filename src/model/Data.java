@@ -38,22 +38,22 @@ public class Data {
 			} catch (Exception e) {
 //				System.out.println("Data: Error while loading users! ");
 			
-				User admin1 = new User("luka@mail.com", "1234", "Luka", "Jovanović", true, Role.ADMIN);
-				User admin2 = new User("milica@mail.com", "1234", "Milica", "Petrović", false, Role.ADMIN);
-				User admin3 = new User("milan@mail.com", "1234", "Milan", "Nikolić", true, Role.ADMIN);
-				User admin4 = new User("ana@mail.com", "1234", "Ana", "Marković", false, Role.ADMIN);
-				User admin5 = new User("vuk@mail.com", "1234", "Vuk", "Đorđević", true, Role.ADMIN);
+				User admin1 = new User("luka@mail.com", "1234", "Luka", "Jovanovic", true, Role.ADMIN);
+				User admin2 = new User("milica@mail.com", "1234", "Milica", "Petrovic", false, Role.ADMIN);
+				User admin3 = new User("milan@mail.com", "1234", "Milan", "Nikolic", true, Role.ADMIN);
+				User admin4 = new User("ana@mail.com", "1234", "Ana", "Markovic", false, Role.ADMIN);
+				User admin5 = new User("vuk@mail.com", "1234", "Vuk", "Đorđevic", true, Role.ADMIN);
 				
-				User guest1 = new User("teodora@mail.com", "1234", "Teodora", "Stojanović", false, Role.GUEST);
-				User guest2 = new User("dusan@mail.com", "1234", "Dušan", "Ilić", true, Role.GUEST);
-				User guest3 = new User("sara@mail.com", "1234", "Sara", "Stanković", false, Role.GUEST);
-				User guest4 = new User("marko@mail.com", "1234", "Marko", "Pavlović", true, Role.GUEST);
-				User guest5 = new User("nina@mail.com", "1234", "Nina", "Milošević", false, Role.GUEST);
+				User guest1 = new User("teodora@mail.com", "1234", "Teodora", "Stojanovic", false, Role.GUEST);
+				User guest2 = new User("dusan@mail.com", "1234", "Dušan", "Ilic", true, Role.GUEST);
+				User guest3 = new User("sara@mail.com", "1234", "Sara", "Stankovic", false, Role.GUEST);
+				User guest4 = new User("marko@mail.com", "1234", "Marko", "Pavlovic", true, Role.GUEST);
+				User guest5 = new User("nina@mail.com", "1234", "Nina", "Miloševic", false, Role.GUEST);
 				
-				User host1 = new User("david@mail.com", "1234", "David", "Tijanić", true, Role.HOST);
-				User host2 = new User("jana@mail.com", "1234", "Jana", "Obradović", false, Role.HOST);
-				User host3 = new User("matija@mail.com", "1234", "Matija", "Maničić", true, Role.HOST);
-				User host4 = new User("katarina@mail.com", "1234", "Katarina", "Anđelić", false, Role.HOST);
+				User host1 = new User("david@mail.com", "1234", "David", "Tijanic", true, Role.HOST);
+				User host2 = new User("jana@mail.com", "1234", "Jana", "Obradovic", false, Role.HOST);
+				User host3 = new User("matija@mail.com", "1234", "Matija", "Maničic", true, Role.HOST);
+				User host4 = new User("katarina@mail.com", "1234", "Katarina", "Anđelic", false, Role.HOST);
 				User host5 = new User("miroslav@mail.com", "1234", "Miroslav", "Obradov", true, Role.HOST);
 				
 				users = new HashMap<String, User> ();
@@ -92,34 +92,34 @@ public class Data {
 //				System.out.println("Data: Error while loading addresses! ");
 				
 				Address a1 = new Address(1, 11, "Stevana Milovanova", "Novi Sad", "21000", "Serbia");
-				Address a2 = new Address(2, 15, "Save Vukovića", "Novi Sad", "21000", "Serbia");
+				Address a2 = new Address(2, 15, "Save Vukovica", "Novi Sad", "21000", "Serbia");
 				Address a3 = new Address(3, 6, "Zlatne grede", "Novi Sad", "21000", "Serbia");
-				Address a4 = new Address(4, 10, "Zemljane Ćuprije", "Novi Sad", "21000", "Serbia");
-				Address a5 = new Address(5, 1, "Almaška", "Novi Sad", "21000", "Serbia");
+				Address a4 = new Address(4, 10, "Zemljane Cuprije", "Novi Sad", "21000", "Serbia");
+				Address a5 = new Address(5, 1, "Almaska", "Novi Sad", "21000", "Serbia");
 				
 				Address a6 = new Address(6, 19, "Drinska", "Novi Sad", "21000", "Serbia");
-				Address a7 = new Address(7, 84, "Branka Bajića", "Novi Sad", "21000", "Serbia");
-				Address a8 = new Address(8, 7, "Janka Čmelika", "Novi Sad", "21000", "Serbia");
+				Address a7 = new Address(7, 84, "Branka Bajica", "Novi Sad", "21000", "Serbia");
+				Address a8 = new Address(8, 7, "Janka Cmelika", "Novi Sad", "21000", "Serbia");
 				Address a9 = new Address(9, 38, "Jug Bogdana", "Zrenjanin", "23000", "Serbia");
 				Address a10 = new Address(10, 3, "Ljubljanska", "Zrenjanin", "23000", "Serbia");
 				
 				Address a11 = new Address(11, 21, "Kosmajska", "Beograd", "11000", "Serbia");
 				Address a12 = new Address(12, 32, "Frontovska", "Beograd", "11000", "Serbia");
-				Address a13 = new Address(13, 6, "Lazara Sočice", "Beograd", "11000", "Serbia");
-				Address a14 = new Address(14, 135, "Šumatovačka", "Beograd", "11000", "Serbia");
+				Address a13 = new Address(13, 6, "Lazara Socice", "Beograd", "11000", "Serbia");
+				Address a14 = new Address(14, 135, "Sumatovacka", "Beograd", "11000", "Serbia");
 				Address a15 = new Address(15, 8, "Severni Bedem", "Sremska Mitrovica", "22000", "Serbia");
 				
 				Address a16 = new Address(16, 54, "Akifa Seremeta", "Sarajevo", "71000", "Bosna i Hercegovina");
-				Address a17 = new Address(17, 163, "Lepenička", "Sarajevo", "71000", "Bosna i Hercegovina");
-				Address a18 = new Address(18, 22, "Izeta Fazlinovića", "Tuzla", "75000", "Bosna i Hercegovina");
+				Address a17 = new Address(17, 163, "Lepenicka", "Sarajevo", "71000", "Bosna i Hercegovina");
+				Address a18 = new Address(18, 22, "Izeta Fazlinovica", "Tuzla", "75000", "Bosna i Hercegovina");
 				Address a19 = new Address(19, 12, "Carice Milice", "Banja Luka", "78000", "Bosna i Hercegovina");
-				Address a20 = new Address(20, 36, "Koste Vujanovića", "Zagreb", "10000", "Hrvatska");
+				Address a20 = new Address(20, 36, "Koste Vujanovica", "Zagreb", "10000", "Hrvatska");
 				
-				Address a21 = new Address(21, 43, "Ziehrerstraße", "Graz", "8041", "Österreich");
-				Address a22 = new Address(22, 7, "Viola út", "Budapest", "1094", "Magyarország");
-				Address a23 = new Address(23, 58, "Soroksári út", "Budapest", "1095", "Magyarország");
-				Address a24 = new Address(24, 65, "Szabad Sajtó u.", "Szeged", "6725", "Magyarország");
-				Address a25 = new Address(25, 17, "János u.", "Budapest", "7621", "Magyarország");
+				Address a21 = new Address(21, 43, "Ziehrerstrasse", "Graz", "8041", "Osterreich");
+				Address a22 = new Address(22, 7, "Viola ut", "Budapest", "1094", "Magyarorszag");
+				Address a23 = new Address(23, 58, "Soroksari ut", "Budapest", "1095", "Magyarorszag");
+				Address a24 = new Address(24, 65, "Szabad Sajto u.", "Szeged", "6725", "Magyarorszag");
+				Address a25 = new Address(25, 17, "Janos u.", "Budapest", "7621", "Magyarorszag");
 				
 				addresses = new HashMap<Integer, Address> ();
 				

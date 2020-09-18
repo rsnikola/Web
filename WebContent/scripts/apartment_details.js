@@ -39,9 +39,9 @@ $(document).ready(function (){
 	}).then(function(data) {
 		role = data;
 	}).then (function () {
-		if (role !== 'HOST') {
-			$('#b_confirm').hide();
-		}
+//		if (role !== 'HOST') {
+//			$('#b_confirm').hide();
+//		}
 		if (role === 'ADMIN') {
 			$('#b_users').show();
 			$('#b_addApartment').hide();
@@ -51,6 +51,7 @@ $(document).ready(function (){
 			$('.c_amenities').hide();
 			$('#b_logout').show();
 			$('#r_deleteApartment').show();
+			$('#b_confirm').show();
 		}
 		else if (role === 'HOST') {
 			$('#b_users').show();
@@ -62,6 +63,7 @@ $(document).ready(function (){
 			$('#b_reservations').show();
 			$('#b_logout').show();
 			$('#r_deleteApartment').show();
+			$('#b_confirm').show();
 		}
 		else if (role === "GUEST") {
 			$('#b_users').hide();
@@ -73,6 +75,7 @@ $(document).ready(function (){
 			$('#b_reservations').show();
 			$('#b_logout').show();
 			$('#r_deleteApartment').hide();
+			$('#b_confirm').hide();
 		}
 		else {
 			$('#b_users').hide();
@@ -84,6 +87,7 @@ $(document).ready(function (){
 			$('#b_reservations').hide();
 			$('#b_logout').show();
 			$('#r_deleteApartment').hide();
+			$('#b_confirm').hide();
 		}
 		if (role === undefined) {
 			$('#b_profile').hide();
