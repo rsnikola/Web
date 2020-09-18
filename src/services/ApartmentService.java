@@ -55,7 +55,7 @@ public class ApartmentService {
 //	}
 	
 	@GET
-	@Path("")
+//	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getApartments (@Context HttpServletRequest request) {
@@ -221,7 +221,7 @@ public class ApartmentService {
 	
 	@SuppressWarnings("deprecation")
 	@PUT
-	@Path("/")
+//	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateApartment (@Context HttpServletRequest request) throws IOException {
@@ -887,7 +887,7 @@ public class ApartmentService {
 	
 	
 	@DELETE
-	@Path("")
+//	@Path("")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteApartment (@Context HttpServletRequest request) {

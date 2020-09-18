@@ -38,7 +38,7 @@ public class AmenityService {
 //	}
 	
 	@POST
-	@Path("/")
+//	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addAmenity (@Context HttpServletRequest request) throws IOException {
@@ -74,7 +74,7 @@ public class AmenityService {
 	}
 	
 	@GET
-	@Path("/")
+//	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getAmenities (@Context HttpServletRequest request) {
@@ -91,7 +91,7 @@ public class AmenityService {
 	}
 	
 	@PUT
-	@Path("/")
+//	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateAmenity (@Context HttpServletRequest request) throws IOException {
@@ -124,7 +124,7 @@ public class AmenityService {
 	}
 	
 	@DELETE 
-	@Path("/")
+//	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteAmenity (@Context HttpServletRequest request) throws IOException {

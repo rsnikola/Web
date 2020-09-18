@@ -38,7 +38,7 @@ public class CommentService {
 //	}
 	
 	@DELETE
-	@Path("")
+//	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteComment (@Context HttpServletRequest request) throws IOException {
@@ -59,7 +59,7 @@ public class CommentService {
 	}
 	
 	@POST
-	@Path("")
+//	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response postComment (@Context HttpServletRequest request) throws IOException {

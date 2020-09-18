@@ -67,7 +67,7 @@ public class ReservationService {
 	}
 	
 	@POST
-	@Path("/")
+//	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addReservation (@Context HttpServletRequest request) throws IOException, ParseException {

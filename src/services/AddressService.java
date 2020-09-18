@@ -47,7 +47,7 @@ public class AddressService {
 	}
 	
 	@PUT
-	@Path("")
+//	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateAddress (@Context HttpServletRequest request) throws IOException {

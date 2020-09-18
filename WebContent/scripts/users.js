@@ -224,6 +224,11 @@ $(document).ready(function() {
 });
 
 function changeRole (em, ro) {
+	if (ro === 'ADMIN') {
+		alert("You can't create a new admin!");
+		window.location.href = "users.html";
+		return;
+	}
 	$.ajax({
 		type: "PUT",
 		url: "http://localhost:8080/NarsProj/rest/users/" + em + "/" + ro,

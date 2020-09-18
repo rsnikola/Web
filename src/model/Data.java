@@ -19,7 +19,7 @@ import model.enumerations.Role;
 public class Data {
 
 	private static String pathPrefix = "";
-//	private static String pathPrefix = "../webapps/";
+//	private static String pathPrefix = "../webapps/WebProjekat/";
 	
 	private static HashMap<String, User> users = null;
 	private static HashMap<Integer, Address> addresses = null;
@@ -505,11 +505,9 @@ public class Data {
 	@SuppressWarnings("deprecation")
 	public static HashMap<Integer, Reservation> getReservations () {
 		if (reservations == null) {
-//			System.out.println("Data: Loading reservations. ");
 			try {
 				reservations = obj.readValue(new File(pathPrefix + "reservations.txt"), new TypeReference<Map<Integer, Reservation>>() {});
 			} catch (Exception e) {
-//				System.out.println("Error while loading reservations! ");
 				// Finished, stare
 				Reservation r1 = new Reservation(1, 20, "teodora@mail.com", new Date(119, 10, 15), new Date(119, 10, 25), 37.8, "I WILL clean up after myself. ", ReservationStatus.FINISHED);
 				Reservation r2 = new Reservation(2, 20, "dusan@mail.com", new Date(119, 9, 15), new Date(119, 9, 25), 37.8, "Please. may I stay? ", ReservationStatus.FINISHED);

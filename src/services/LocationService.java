@@ -46,7 +46,7 @@ public class LocationService {
 	}
 	
 	@PUT
-	@Path("")
+//	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateLocation (@Context HttpServletRequest request) throws IOException {
